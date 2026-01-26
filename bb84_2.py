@@ -60,10 +60,10 @@ st.set_page_config(
 # GOOGLE SITE VERIFICATION & SEO META TAGS
 # ============================================================
 st.markdown("""
-    <meta name="google-site-verification" content="googlee377ea5b5384f5f6" />
+    <meta name="google-site-verification" content="7HhNywCANQArbpIx4e4NyEHl7xLI5GHHyaC64jIxFmo" />
     <meta name="description" content="Interactive JNTUA BB84 Quantum Key Distribution Simulator - Learn quantum cryptography, QKD protocols, and eavesdropping detection with interactive visualizations and Bloch sphere analysis." />
     <meta name="keywords" content="BB84, Quantum Key Distribution, QKD, Quantum Cryptography, Quantum Computing, JNTUA, ECE, Eavesdropping Detection, QBER" />
-    <meta name="author" content="Keerthan V S, Team Silicon, JNTUACEA" />
+    <meta name="author" content="Keerthan V S and Team, Team Silicon, JNTUACEA" />
     <meta name="robots" content="index, follow" />
     <meta property="og:title" content="JNTUA BB84 Quantum Key Distribution Simulator" />
     <meta property="og:description" content="Interactive Quantum Cryptography Learning & Research Platform" />

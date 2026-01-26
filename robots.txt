@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Allow: /bb84_2.py
+
+# Disallow sensitive files
+Disallow: /.streamlit/
+Disallow: /.venv/
+Disallow: /__pycache__/
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
+# Sitemaps
+Sitemap: https://jntua-bb84-qkd-simulator.streamlit.app/sitemap.xml

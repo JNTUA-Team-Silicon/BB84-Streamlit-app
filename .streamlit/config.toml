@@ -1,0 +1,15 @@
+[client]
+showErrorDetails = true
+toolbarMode = "minimal"
+
+[server]
+maxUploadSize = 200
+enableCORS = false
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false
+
+[logger]
+level = "info"
+message.activationTime = "once"

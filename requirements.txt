@@ -1,0 +1,13 @@
+streamlit==1.41.0
+numpy==1.26.4
+pandas==2.2.2
+matplotlib==3.8.4
+plotly==5.22.0
+reportlab>=3.6.0
+
+qiskit==1.0.2
+qiskit-aer==0.13.3
+
+# Required Qiskit visualization
+pylatexenc==2.10
+pillow==10.4.0

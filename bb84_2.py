@@ -148,12 +148,6 @@ def run_bb84_simulation():
     Results cached in st.session_state.
     Prevents simultaneous runs with simulation_in_progress flag.
     """
-    # Prevent simultaneous simulation runs
-    if st.session_state.get("simulation_in_progress", False):
-        st.warning("Simulation already running. Please wait for it to complete.")
-        return
-    
-    # Set lock
     st.session_state.simulation_in_progress = True
     
     try:
@@ -239,7 +233,6 @@ def run_bb84_simulation():
         }
 
         progress_bar.empty()
-        st.success("Simulation completed successfully!")
         st.session_state.simulation_completed = True
     
     finally:

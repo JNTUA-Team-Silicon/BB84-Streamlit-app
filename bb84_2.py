@@ -871,12 +871,6 @@ def main():
     # This must be the absolute first operation to prevent SessionInfo errors
     _initialize_session_state()
     
-    # CRITICAL: CHECK IF SIMULATION IS IN PROGRESS
-    # If so, exit early to prevent rerun storms
-    if st.session_state.get("simulation_in_progress", False):
-        st.warning("⏳ Simulation in progress. Please wait...")
-        return
-    
     # HEADER SECTION - PURE STREAMLIT COMPONENTS (NO HTML)
     st.title("BB84 Quantum Key Distribution Simulator")
     st.markdown("Interactive Quantum Cryptography Learning & Research Platform", help=None)

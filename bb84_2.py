@@ -410,7 +410,7 @@ def render_metrics_display():
         st.metric(" Errors Detected", no_eve['errors'])
         st.metric(" QBER", f"{no_eve['qber']:.4f}")
         st.metric(" Final Secure Key", no_eve['final_key_length'])
-        st.metric("⊡ Key Rate", f"{no_eve['final_key_length'] / num_bits:.4f}")
+        st.metric("⟱ Key Rate", f"{no_eve['final_key_length'] / num_bits:.4f}")
         st.plotly_chart(
             qber_gauge(no_eve['qber'], st.session_state.threshold),
             use_container_width=True,
@@ -424,7 +424,7 @@ def render_metrics_display():
         st.metric(" Errors Detected", eve['errors'])
         st.metric(" QBER", f"{eve['qber']:.4f}")
         st.metric(" Final Secure Key", eve['final_key_length'])
-        st.metric("⊡ Key Rate", f"{eve['final_key_length'] / num_bits:.4f}")
+        st.metric("⟱ Key Rate", f"{eve['final_key_length'] / num_bits:.4f}")
         st.plotly_chart(
             qber_gauge(eve['qber'], st.session_state.threshold),
             use_container_width=True,
@@ -487,7 +487,7 @@ def render_sifted_key_display():
     eve = st.session_state.sim_results['eve']
     sifted_display_size = st.session_state.sifted_display_size
 
-    st.markdown("### ⊞ **Sifted Bits Comparison**")
+    st.markdown("### ⊟ **Sifted Bits Comparison**")
     col_no, col_e = st.columns(2)
     
     with col_no:
@@ -702,12 +702,12 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
                 states.append(sv)
                 state_info.append(f"Qubit {i}: {BB84Simulator.state_label(bit, basis)}")
 
-        st.markdown("**⊞ Quantum States in Range:**")
+        st.markdown("**☑ Quantum States in Range:**")
         for info in state_info:
             st.markdown(f"• {info}")
 
         try:
-            st.markdown("**⊗ 3D Bloch Sphere Multi-State View:**")
+            st.markdown("**◊ 3D Bloch Sphere Multi-State View:**")
             st.plotly_chart(plotly_bloch_sphere(states), use_container_width=True)
         except Exception as e:
             st.error(f"Error displaying multi-qubit Bloch sphere: {e}")
@@ -804,7 +804,7 @@ def render_report_downloads():
         detailed_analysis = st.checkbox(" **Detailed Analysis**", value=True)
 
     st.markdown("---")
-    st.subheader("⊞ **Report Downloads**")
+    st.subheader("☑ **Report Downloads**")
 
     project_info = {
         "University": "JNTUA",
@@ -975,11 +975,11 @@ def main():
     inject_custom_css()
     
     # Platform features card - PURE STREAMLIT
-    st.subheader("· Platform Capabilities")
+    st.subheader("● Platform Capabilities")
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("⊙ **Simulation:** Complete BB84 protocol execution")
-        st.markdown("⌲ **Security:** Eavesdropper detection via QBER")
+        st.markdown("◑ **Simulation:** Complete BB84 protocol execution")
+        st.markdown("▲ **Security:** Eavesdropper detection via QBER")
         st.markdown(" **Analysis:** Timeline & comparative metrics")
     with col2:
         st.markdown(" **Visualization:** Bloch sphere quantum states")
@@ -995,7 +995,7 @@ def main():
         if gpu_available:
             st.success(" GPU Acceleration Enabled — Using CUDA GPU for quantum simulations")
         else:
-            st.warning("⊡ CPU Mode — GPU not available, using CPU for simulations")
+            st.warning("⟱ CPU Mode — GPU not available, using CPU for simulations")
     except Exception:
         pass
     
@@ -1195,7 +1195,7 @@ def main():
             
             # Protocol steps with detailed explanation
             st.markdown("""
-            ### ↻ The BB84 Protocol Steps
+            ### ⟲ The BB84 Protocol Steps
             
             **Step ① Key Generation by Alice:**
             - Generates random bits: 0 or 1

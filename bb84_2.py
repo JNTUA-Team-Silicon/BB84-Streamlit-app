@@ -50,63 +50,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# GOOGLE SITE VERIFICATION & SEO META TAGS
-st.markdown("""
-    <meta name="google-site-verification" content="7HhNywCANQArbpIx4e4NyEHl7xLI5GHHyaC64jIxFmo" />
-    <meta name="description" content="Interactive JNTUA BB84 Quantum Key Distribution Simulator - Learn quantum cryptography, QKD protocols, and eavesdropping detection with interactive visualizations and Bloch sphere analysis." />
-    <meta name="keywords" content="BB84, Quantum Key Distribution, QKD, Quantum Cryptography, Quantum Computing, JNTUA, ECE, Eavesdropping Detection, QBER" />
-    <meta name="author" content="Keerthan V S and Team, Team Silicon, JNTUACEA" />
-    <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="JNTUA BB84 Quantum Key Distribution Simulator" />
-    <meta property="og:description" content="Interactive Quantum Cryptography Learning & Research Platform" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://jntua-bb84-qkd-simulator.streamlit.app/" />
-    <meta property="og:site_name" content="BB84 QKD Simulator" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-""", unsafe_allow_html=True)
-
-# SEO META TAGS FOR GOOGLE INDEXING
-st.markdown("""
-    <meta name="description" content="Interactive BB84 Quantum Key Distribution Simulator for learning quantum cryptography, eavesdropping detection, QBER analysis, and secure key generation. Educational tool for quantum physics and cybersecurity.">
-    <meta name="keywords" content="BB84, Quantum Key Distribution, QKD, Quantum Cryptography, Eavesdropping Detection, QBER, Quantum Computing, JNTUA">
-    <meta name="author" content="Keerthan V S, Team Silicon, JNTUA ECE Department">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="JNTUA BB84 Quantum Key Distribution Simulator">
-    <meta property="og:description" content="Learn quantum cryptography with interactive BB84 protocol simulator. Detect eavesdropping with QBER analysis.">
-    <meta property="og:url" content="https://jntua-bb84-qkd-simulator.streamlit.app/">
-    <meta property="og:type" content="website">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="English">
-""", unsafe_allow_html=True)
-
-# Schema Markup for Google
-st.markdown("""
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "BB84 Quantum Key Distribution Simulator",
-      "description": "Interactive educational simulator for BB84 quantum key distribution protocol with eavesdropping detection",
-      "url": "https://jntua-bb84-qkd-simulator.streamlit.app/",
-      "applicationCategory": "EducationalApplication",
-      "author": {
-        "@type": "Person",
-        "name": "Keerthan V S",
-        "url": "https://github.com/keer999"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "ratingCount": "100"
-      },
-      "potentialAction": {
-        "@type": "UseAction",
-        "target": "https://jntua-bb84-qkd-simulator.streamlit.app/"
-      }
-    }
-    </script>
-""", unsafe_allow_html=True)
-
 # GPU BACKEND DETECTION (MUST BE BEFORE SESSION INIT)
 @st.cache_resource
 def get_quantum_backend():

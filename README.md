@@ -1,4 +1,4 @@
-# 🔐 JNTUA BB84 Quantum Key Distribution (QKD) Simulator
+# JNTUA BB84 Quantum Key Distribution (QKD) Simulator
 
 [![Streamlit App](https://img.shields.io/badge/Streamlit-Live%20App-FF4B4B?logo=streamlit)](https://jntua-bb84-qkd-simulator.streamlit.app/)
 ![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
@@ -10,11 +10,11 @@ A comprehensive, production-ready **Streamlit-based interactive simulator** for 
 
 **Developed by**: Team Silicon | **Department**: Electronics and Communication Engineering | **University**: JNTUA
 
-🚀 **[Launch the Live App Now](https://jntua-bb84-qkd-simulator.streamlit.app/)**
+ **[Launch the Live App Now](https://jntua-bb84-qkd-simulator.streamlit.app/)**
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Key Features](#-key-features)
@@ -45,10 +45,10 @@ This project implements a **full-featured BB84 quantum key distribution protocol
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. **Launch the Live App** (Easiest)
-Click here to run the simulator in your browser: **[🚀 Launch Live App](https://jntua-bb84-qkd-simulator.streamlit.app/)**
+Click here to run the simulator in your browser: **[ Launch Live App](https://jntua-bb84-qkd-simulator.streamlit.app/)**
 
 ### 2. **Run Locally**
 ```bash
@@ -72,9 +72,9 @@ streamlit run bb84_2.py
 
 ---
 
-## 📚 Learning Resources
+## Learning Resources
 
-### 🎓 **Understanding BB84 Protocol**
+### **Understanding BB84 Protocol**
 
 #### **Foundational Concepts**
 | Resource | Link | Duration | Level |
@@ -92,16 +92,16 @@ streamlit run bb84_2.py
 | **Post-Quantum Cryptography** | [NIST Guidelines](https://csrc.nist.gov/projects/post-quantum-cryptography/) | Future-proof cryptography |
 
 #### **Video Tutorials**
-- 📹 **3Blue1Brown - Quantum Computing** [YouTube](https://www.youtube.com/playlist?list=PLTd5ehIj0goKEqwGeZyPsTJjBBUHi14En)
-- 📹 **Qiskit Learn** [YouTube Tutorials](https://www.youtube.com/c/Qiskit)
-- 📹 **Quantum Cryptography Lecture** [Coursera](https://www.coursera.org/learn/quantum-cryptography)
+- **3Blue1Brown - Quantum Computing** [YouTube](https://www.youtube.com/playlist?list=PLTd5ehIj0goKEqwGeZyPsTJjBBUHi14En)
+- **Qiskit Learn** [YouTube Tutorials](https://www.youtube.com/c/Qiskit)
+- **Quantum Cryptography Lecture** [Coursera](https://www.coursera.org/learn/quantum-cryptography)
 
 #### **Interactive Learning Platforms**
-- 🎮 **Qiskit Textbook** - [Quantum Computing](https://qiskit.org/textbook/)
-- 🎮 **IBM Quantum Composer** - [Visual Circuit Builder](https://quantum.ibm.com/composer)
-- 🎮 **QuTiP** - [Quantum Toolkit](http://qutip.org/)
+- **Qiskit Textbook** - [Quantum Computing](https://qiskit.org/textbook/)
+- **IBM Quantum Composer** - [Visual Circuit Builder](https://quantum.ibm.com/composer)
+- **QuTiP** - [Quantum Toolkit](http://qutip.org/)
 
-### 🔐 **Cryptography & Security**
+### **Cryptography & Security**
 
 | Topic | Resource | Link |
 |-------|----------|------|
@@ -109,64 +109,64 @@ streamlit run bb84_2.py
 | **Information Security** | Computer Security Course | [CMU Course](https://www.cmu.edu) |
 | **Quantum Computing Risk** | NIST PQC Standards | [NIST PQC](https://csrc.nist.gov/projects/post-quantum-cryptography/) |
 
-### 🧪 **Hands-on Projects**
+### **Hands-on Projects**
 
 1. **Modify the Simulator**
-   - Add custom eavesdropping attacks
-   - Implement different basis sets
-   - Create new visualization modes
+ - Add custom eavesdropping attacks
+ - Implement different basis sets
+ - Create new visualization modes
 
 2. **Research Ideas**
-   - Compare BB84 with E91 protocol
-   - Implement quantum channel noise models
-   - Analyze QBER statistics across different parameters
+ - Compare BB84 with E91 protocol
+ - Implement quantum channel noise models
+ - Analyze QBER statistics across different parameters
 
 3. **Integration Projects**
-   - Build a hybrid classical-quantum key exchange system
-   - Create a secure communication protocol UI
-   - Develop a quantum network simulator
+ - Build a hybrid classical-quantum key exchange system
+ - Create a secure communication protocol UI
+ - Develop a quantum network simulator
 
 ---
 
-## 🎯 Key Features
+## Key Features
 
-### 🔒 **Core BB84 Protocol**
-- ✅ Alice generates random bits and bases
-- ✅ Quantum transmission simulation with optional eavesdropping
-- ✅ Bob's measurement with random basis selection
-- ✅ Sifting process (basis matching validation)
-- ✅ Privacy amplification using SHA-256 hashing
-- ✅ Dual-scenario analysis (With & Without Eve)
+### **Core BB84 Protocol**
+- Alice generates random bits and bases
+- Quantum transmission simulation with optional eavesdropping
+- Bob's measurement with random basis selection
+- Sifting process (basis matching validation)
+- Privacy amplification using SHA-256 hashing
+- Dual-scenario analysis (With & Without Eve)
 
-### 🕵️ **Eavesdropping Detection**
-- 📊 **QBER Analysis**: Quantum Bit Error Rate measurement
-- 🎯 **Attack Detection**: Real-time eavesdropping identification
-- 📈 **Parallel Comparison**: Side-by-side No Eve vs With Eve analysis
-- 🔴 **Security Threshold**: Configurable QBER threshold (default: 11%)
-- 📉 **Error Pattern Analysis**: Detailed error distribution visualization
+### **Eavesdropping Detection**
+- **QBER Analysis**: Quantum Bit Error Rate measurement
+- **Attack Detection**: Real-time eavesdropping identification
+- **Parallel Comparison**: Side-by-side No Eve vs With Eve analysis
+- **Security Threshold**: Configurable QBER threshold (default: 11%)
+- **Error Pattern Analysis**: Detailed error distribution visualization
 
-### 🔬 **Quantum Visualization**
-- 🎓 **Bloch Sphere**: Interactive 3D quantum state visualization
-- 📡 **Transmission Timelines**: 
-  - Alice's transmitted bits (light/dark blue for 0/1)
-  - Base matching (green/red for match/mismatch)
-  - Transmission results (green/red/gray for correct/error/unused)
-- 🎨 **Polarization Analysis**:
-  - Rectilinear (Z-basis): |0⟩, |1⟩ states
-  - Diagonal (X-basis): |+⟩, |-⟩ states
-- 📊 **Multi-view Analysis**: Single qubit, multi-qubit, and statistical views
+### **Quantum Visualization**
+- **Bloch Sphere**: Interactive 3D quantum state visualization
+- **Transmission Timelines**: 
+ - Alice's transmitted bits (light/dark blue for 0/1)
+ - Base matching (green/red for match/mismatch)
+ - Transmission results (green/red/gray for correct/error/unused)
+- **Polarization Analysis**:
+ - Rectilinear (Z-basis): |0, |1 states
+ - Diagonal (X-basis): |+, |- states
+- **Multi-view Analysis**: Single qubit, multi-qubit, and statistical views
 
-### 📄 **Professional Report Generation**
+### **Professional Report Generation**
 - **PDF Reports** (5 pages):
-  - Page 1: Project details and summary
-  - Page 2: Transmission timeline (No Eve)
-  - Page 3: Transmission timeline (With Eve)
-  - Page 4: Comparison bar charts
-  - Page 5: Detailed security assessment
+ - Page 1: Project details and summary
+ - Page 2: Transmission timeline (No Eve)
+ - Page 3: Transmission timeline (With Eve)
+ - Page 4: Comparison bar charts
+ - Page 5: Detailed security assessment
 - **CSV Export**: Raw timeline data for external analysis
 - **PDF Preview**: Embedded viewer in Streamlit UI
 
-### ⚡ **Performance Optimizations**
+### **Performance Optimizations**
 - Batch processing for large datasets
 - Vectorized NumPy operations
 - Efficient Pandas DataFrames
@@ -176,57 +176,57 @@ streamlit run bb84_2.py
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ### Project Structure
 ```
 bb84_2/
-├── bb84_2.py                 # Main Streamlit application (1,179 lines)
-├── bb84_config.py            # Configuration & constants
-├── bb84_simulator.py         # Quantum simulator core (Qiskit)
-├── bb84_utils.py             # Data processing utilities
-├── bb84_visualizations.py    # Visualization & PDF generation
-├── bb84_2_backup.py          # Backup of original monolithic code
-├── jntua_logo.png            # University logo
-├── requirements.txt          # Python dependencies
-├── runtime.txt               # Python version specification
-├── README.md                 # This file
-├── COMPLETION_REPORT.md      # Project completion documentation
-├── ARCHITECTURE.md           # Detailed architecture guide
-├── QUICKSTART.md             # Quick start guide
-└── REORGANIZATION_SUMMARY.md # Code reorganization details
+ bb84_2.py # Main Streamlit application (1,179 lines)
+ bb84_config.py # Configuration & constants
+ bb84_simulator.py # Quantum simulator core (Qiskit)
+ bb84_utils.py # Data processing utilities
+ bb84_visualizations.py # Visualization & PDF generation
+ bb84_2_backup.py # Backup of original monolithic code
+ jntua_logo.png # University logo
+ requirements.txt # Python dependencies
+ runtime.txt # Python version specification
+ README.md # This file
+ COMPLETION_REPORT.md # Project completion documentation
+ ARCHITECTURE.md # Detailed architecture guide
+ QUICKSTART.md # Quick start guide
+ REORGANIZATION_SUMMARY.md # Code reorganization details
 ```
 
 ### Modular Design
 ```
 bb84_2.py (Main UI)
-    │
-    ├── bb84_config.py (Settings & Constants)
-    ├── bb84_simulator.py (Quantum Logic)
-    ├── bb84_utils.py (Data Processing)
-    └── bb84_visualizations.py (Rendering & Reports)
+ 
+ bb84_config.py (Settings & Constants)
+ bb84_simulator.py (Quantum Logic)
+ bb84_utils.py (Data Processing)
+ bb84_visualizations.py (Rendering & Reports)
 ```
 
 ### Data Flow
 ```
 User Input (Parameters)
-    ↓
+ ↓
 bb84_config (Load Settings)
-    ↓
+ ↓
 bb84_simulator (Run Quantum Simulation)
-    ↓
+ ↓
 bb84_utils (Process & Analyze Data)
-    ↓
+ ↓
 bb84_visualizations (Generate Visualizations & Reports)
-    ↓
+ ↓
 bb84_2 (Display in Streamlit UI)
-    ↓
+ ↓
 User Results & Downloads
 ```
 
 ---
 
-## 💻 Installation
+## Installation
 
 ### Prerequisites
 - Python 3.8 or higher
@@ -241,7 +241,7 @@ cd /home/keerthan/Desktop/bb84_2
 ### Step 2: Create Virtual Environment (Optional but Recommended)
 ```bash
 python3 -m venv bb84env
-source bb84env/bin/activate  # On Windows: bb84env\Scripts\activate
+source bb84env/bin/activate # On Windows: bb84env\Scripts\activate
 ```
 
 ### Step 3: Install Dependencies
@@ -266,7 +266,7 @@ The application will open in your default browser at `http://localhost:8501`
 
 ---
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### 1. **Launch the Application**
 ```bash
@@ -286,9 +286,9 @@ streamlit run bb84_2.py
 ### 3. **Run Simulation**
 ```
 Click "Run BB84 Simulation" Button
-    ↓
+ ↓
 Wait for Progress Bar to Complete
-    ↓
+ ↓
 Results Display Automatically
 ```
 
@@ -333,7 +333,7 @@ Results Display Automatically
 
 ---
 
-## 📁 Project Structure Details
+## Project Structure Details
 
 ### **bb84_2.py** - Main Application (1,179 lines)
 ```python
@@ -370,12 +370,12 @@ BATCH_SIZE = 200
 ### **bb84_simulator.py** - Quantum Logic
 ```python
 class BB84Simulator:
-    def __init__(self)
-    def encode_qubit(basis, bit)
-    def measure_qubit(qubit, basis)
-    def simulate_transmission()
-    def eve_intercept()
-    def privacy_amplification()
+ def __init__(self)
+ def encode_qubit(basis, bit)
+ def measure_qubit(qubit, basis)
+ def simulate_transmission()
+ def eve_intercept()
+ def privacy_amplification()
 ```
 
 ### **bb84_utils.py** - Data Processing
@@ -402,7 +402,7 @@ create_pdf_report_with_graphs()
 
 ---
 
-## 🔌 API Reference
+## API Reference
 
 ### BB84Simulator Class
 
@@ -431,16 +431,16 @@ Generate complete 5-page PDF report.
 
 ---
 
-## ⚡ Performance
+## Performance
 
 ### Execution Times
 
 | Qubits | Time | Status | Notes |
 |--------|------|--------|-------|
-| 50-100 | <0.5s | ⚡ Instant | Immediate results |
-| 200 | 1-2s | ⚡ Very Fast | Recommended default |
-| 500 | 3-5s | ✅ Good | Good balance |
-| 1000 | 5-10s | ⚠️ Moderate | Slower but manageable |
+| 50-100 | <0.5s | Instant | Immediate results |
+| 200 | 1-2s | Very Fast | Recommended default |
+| 500 | 3-5s | Good | Good balance |
+| 1000 | 5-10s | Moderate | Slower but manageable |
 | 2000 | 15-20s | ⏳ Slow | Patience required |
 
 ### Optimization Techniques
@@ -452,12 +452,12 @@ Generate complete 5-page PDF report.
 
 ---
 
-## 🔐 Security Features
+## Security Features
 
 ### QBER Threshold Analysis
 ```
-QBER < 11%  → ✅ Secure (No eavesdropping detected)
-QBER ≥ 11%  → ⚠️ Attack Detected (Probable eavesdropping)
+QBER < 11% → Secure (No eavesdropping detected)
+QBER ≥ 11% → Attack Detected (Probable eavesdropping)
 ```
 
 ### Eve Attack Types
@@ -471,17 +471,17 @@ QBER ≥ 11%  → ⚠️ Attack Detected (Probable eavesdropping)
 
 ---
 
-## 🧪 Testing & Validation
+## Testing & Validation
 
-✅ **Syntax Validation**: All Python files pass syntax checks
-✅ **Import Testing**: All module imports work correctly
-✅ **Backward Compatibility**: 100% compatible with original
-✅ **Functionality Testing**: All features operational
-✅ **Performance Testing**: Optimized for large datasets
+ **Syntax Validation**: All Python files pass syntax checks
+ **Import Testing**: All module imports work correctly
+ **Backward Compatibility**: 100% compatible with original
+ **Functionality Testing**: All features operational
+ **Performance Testing**: Optimized for large datasets
 
 ---
 
-## 🎓 Educational Value
+## Educational Value
 
 **Perfect for learning:**
 - Quantum cryptography fundamentals
@@ -499,47 +499,47 @@ QBER ≥ 11%  → ⚠️ Attack Detected (Probable eavesdropping)
 
 ---
 
-## 📊 Project Statistics
+## Project Statistics
 
 ```
 Code Organization:
-├── Total Lines (Main App):     1,179 lines
-├── Total Lines (All Modules):  3,558 lines
-├── Number of Modules:          5 production modules
-├── File Size:                  ~52 KB main file
-├── Code Quality:               PEP 8 compliant
-└── Documentation:              4 guide files
+ Total Lines (Main App): 1,179 lines
+ Total Lines (All Modules): 3,558 lines
+ Number of Modules: 5 production modules
+ File Size: ~52 KB main file
+ Code Quality: PEP 8 compliant
+ Documentation: 4 guide files
 
 Features:
-├── Simulation Scenarios:        2 (No Eve, With Eve)
-├── Analysis Tabs:              6 interactive tabs
-├── Visualization Types:        10+ chart types
-├── Report Pages:               5-page PDF
-└── Qubit Range:                50-2000+
+ Simulation Scenarios: 2 (No Eve, With Eve)
+ Analysis Tabs: 6 interactive tabs
+ Visualization Types: 10+ chart types
+ Report Pages: 5-page PDF
+ Qubit Range: 50-2000+
 
 Performance:
-├── Max Tested Qubits:          5000+
-├── Typical Load Time:          <5 seconds
-├── Report Generation:          <2 seconds
-└── Memory Usage:               Optimized for 4GB+
+ Max Tested Qubits: 5000+
+ Typical Load Time: <5 seconds
+ Report Generation: <2 seconds
+ Memory Usage: Optimized for 4GB+
 ```
 
 ---
 
-## 📝 Recent Updates (Latest Release)
+## Recent Updates (Latest Release)
 
-✅ **PDF Preview**: Embedded PDF viewer in Streamlit UI
-✅ **Color Scheme**: Professional blue/red/green timeline visualization
-✅ **Error Handling**: Fixed DataFrame boolean evaluation errors
-✅ **Animation Removal**: Removed unused animation speed slider
-✅ **Timeline Colors**: 
-   - Light cyan (#ADD8E6) for 0-bits
-   - Dark blue (#00008B) for 1-bits
-   - Green for matches, Red for mismatches
+ **PDF Preview**: Embedded PDF viewer in Streamlit UI
+ **Color Scheme**: Professional blue/red/green timeline visualization
+ **Error Handling**: Fixed DataFrame boolean evaluation errors
+ **Animation Removal**: Removed unused animation speed slider
+ **Timeline Colors**: 
+ - Light cyan (#ADD8E6) for 0-bits
+ - Dark blue (#00008B) for 1-bits
+ - Green for matches, Red for mismatches
 
 ---
 
-## 🐛 Known Issues & Limitations
+## Known Issues & Limitations
 
 - **Large Datasets**: 5000+ qubits may require increased RAM
 - **Browser Compatibility**: Best on Chrome/Firefox (tested)
@@ -548,7 +548,7 @@ Performance:
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Areas for improvement:
 - Additional attack types
@@ -559,15 +559,15 @@ Contributions are welcome! Areas for improvement:
 
 ---
 
-## 📜 License
+## License
 
 This project is licensed under the MIT License - see LICENSE file for details.
 
 ---
 
-## 👥 Project Information
+## Project Information
 
-### 🏛️ **Institution Details**
+### **Institution Details**
 | Attribute | Details |
 |-----------|---------|
 | **University** | Jawaharlal Nehru Technological University Anantapur (JNTUA) |
@@ -576,36 +576,36 @@ This project is licensed under the MIT License - see LICENSE file for details.
 | **Team** | Team Silicon |
 | **Project Name** | AQVH FINAL - BB84 Quantum Key Distribution Simulator |
 | **Version** | 2.0 |
-| **Status** | ✅ Production Ready |
+| **Status** | Production Ready |
 | **Last Updated** | January 26, 2026 |
 
-### 🌐 **Live Application**
+### **Live Application**
 - **App URL**: https://jntua-bb84-qkd-simulator.streamlit.app/
 - **Platform**: Streamlit Cloud
 - **Accessibility**: Free, open to everyone
 - **Browser Support**: Chrome, Firefox, Safari, Edge
 
-### 👨‍💻 **Technology Stack**
+### **Technology Stack**
 ```
-Frontend:        Streamlit 1.x with Components
-Backend:         Python 3.8+
-Quantum:         Qiskit, Qiskit-Aer, NumPy
-Visualization:   Matplotlib, Plotly
-Data:            Pandas, NumPy
-Reports:         ReportLab, Pillow
-Performance:     Caching, GPU Support (Optional)
+Frontend: Streamlit 1.x with Components
+Backend: Python 3.8+
+Quantum: Qiskit, Qiskit-Aer, NumPy
+Visualization: Matplotlib, Plotly
+Data: Pandas, NumPy
+Reports: ReportLab, Pillow
+Performance: Caching, GPU Support (Optional)
 ```
 
-### 📊 **Project Statistics**
+### **Project Statistics**
 - **Total Lines of Code**: ~1,500+ (Main + Modules)
 - **Python Modules**: 5 (main + 4 support modules)
 - **Functions**: 25+ utility functions
 - **Fragments**: 6 interactive UI components
-- **Test Coverage**: ✅ All syntax validated
+- **Test Coverage**: All syntax validated
 
 ---
 
-## 📚 Documentation Files
+## Documentation Files
 
 - **README.md** (This file) - Complete project guide with learning resources
 - **QUICKSTART.md** - Get started in 5 minutes
@@ -616,7 +616,7 @@ Performance:     Caching, GPU Support (Optional)
 
 ---
 
-## 🔗 Quick Links
+## Quick Links
 
 ### **Important Resources**
 | Resource | Link | Purpose |
@@ -636,18 +636,18 @@ Performance:     Caching, GPU Support (Optional)
 
 ---
 
-## 📧 Support & Feedback
+## Support & Feedback
 
 For issues, questions, or suggestions:
-1. 📖 Review **QUICKSTART.md** for basic usage
-2. 📚 Check **ARCHITECTURE.md** for technical details
-3. 🐛 Report bugs with detailed reproduction steps
-4. 💡 Suggest improvements via GitHub issues
+1. Review **QUICKSTART.md** for basic usage
+2. Check **ARCHITECTURE.md** for technical details
+3. Report bugs with detailed reproduction steps
+4. Suggest improvements via GitHub issues
 5. Test with default parameters first
 
 ---
 
-## ✨ Planned Features
+## Planned Features
 
 ### **Phase 2 (Future Enhancements)**
 - [ ] Additional quantum protocols (E91, B92, SARG04)
@@ -663,29 +663,29 @@ For issues, questions, or suggestions:
 
 ---
 
-## 📝 Citation
+## Citation
 
 If you use this simulator in academic work, please cite:
 
 ```
 @software{jntua_bb84_2026,
-  title={JNTUA BB84 Quantum Key Distribution Simulator},
-  author={Team Silicon, Department of ECE},
-  institution={Jawaharlal Nehru Technological University Anantapur},
-  year={2026},
-  url={https://jntua-bb84-qkd-simulator.streamlit.app/}
+ title={JNTUA BB84 Quantum Key Distribution Simulator},
+ author={Team Silicon, Department of ECE},
+ institution={Jawaharlal Nehru Technological University Anantapur},
+ year={2026},
+ url={https://jntua-bb84-qkd-simulator.streamlit.app/}
 }
 ```
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see LICENSE file for details.
 
 ---
 
-**Made with ❤️ by JNTUA Team Silicon for quantum cryptography education and research**
+**Made with by JNTUA Team Silicon for quantum cryptography education and research**
 
 *Advancing quantum computing knowledge, one qubit at a time.*
 
@@ -697,52 +697,52 @@ Last Updated: January 25, 2026
 | 2000 | 15-20s | Larger simulations |
 
 ### Optimization Features
-- ✅ Batch processing (3-4x faster)
-- ✅ Vectorized operations (8-40x faster)
-- ✅ Error analysis (10-100x faster)
-- ✅ Memory reduction (8x smaller)
-- ✅ Cached simulator (2x on reuse)
+- Batch processing (3-4x faster)
+- Vectorized operations (8-40x faster)
+- Error analysis (10-100x faster)
+- Memory reduction (8x smaller)
+- Cached simulator (2x on reuse)
 
 ## Configuration
 
 Edit `bb84_config.py` to customize:
 ```python
-DEFAULT_QUBITS = 200              # Default qubit count
-DEFAULT_QBER_THRESHOLD = 0.11     # 11% threshold
-BATCH_SIZE = 200                  # Qubits per batch
-DEFAULT_EVE_PROB = 0.5            # Eve probability
-DEFAULT_NOISE_PROB = 0.01         # Channel noise
+DEFAULT_QUBITS = 200 # Default qubit count
+DEFAULT_QBER_THRESHOLD = 0.11 # 11% threshold
+BATCH_SIZE = 200 # Qubits per batch
+DEFAULT_EVE_PROB = 0.5 # Eve probability
+DEFAULT_NOISE_PROB = 0.01 # Channel noise
 ```
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────┐
-│         bb84_2.py (Streamlit UI)            │
-├─────────────────────────────────────────────┤
-│  ┌────────────────────────────────────────┐ │
-│  │  bb84_simulator.py (Qiskit Core)       │ │
-│  │  - Quantum circuit generation          │ │
-│  │  - Measurement simulation              │ │
-│  │  - Privacy amplification               │ │
-│  └────────────────────────────────────────┘ │
-│  ┌────────────────────────────────────────┐ │
-│  │  bb84_utils.py (Data Processing)       │ │
-│  │  - Timeline generation                 │ │
-│  │  - Metric computation                  │ │
-│  │  - Error analysis                      │ │
-│  └────────────────────────────────────────┘ │
-│  ┌────────────────────────────────────────┐ │
-│  │  bb84_visualizations.py (Plotting)     │ │
-│  │  - Bloch spheres                       │ │
-│  │  - QBER gauges                         │ │
-│  │  - PDF report generation               │ │
-│  └────────────────────────────────────────┘ │
-│  ┌────────────────────────────────────────┐ │
-│  │  bb84_config.py (Configuration)        │ │
-│  │  - Constants and defaults               │ │
-│  └────────────────────────────────────────┘ │
-└─────────────────────────────────────────────┘
+
+ bb84_2.py (Streamlit UI) 
+
+ 
+ bb84_simulator.py (Qiskit Core) 
+ - Quantum circuit generation 
+ - Measurement simulation 
+ - Privacy amplification 
+ 
+ 
+ bb84_utils.py (Data Processing) 
+ - Timeline generation 
+ - Metric computation 
+ - Error analysis 
+ 
+ 
+ bb84_visualizations.py (Plotting) 
+ - Bloch spheres 
+ - QBER gauges 
+ - PDF report generation 
+ 
+ 
+ bb84_config.py (Configuration) 
+ - Constants and defaults 
+ 
+
 ```
 
 ## Security Model
@@ -768,8 +768,8 @@ DEFAULT_NOISE_PROB = 0.01         # Channel noise
 - **Summary Table**: All metrics at a glance
 
 ### Polarization Analysis
-- **Rectilinear (Z-basis)**: |0⟩ North, |1⟩ South
-- **Diagonal (X-basis)**: |+⟩ East, |-⟩ West
+- **Rectilinear (Z-basis)**: |0 North, |1 South
+- **Diagonal (X-basis)**: |+ East, |- West
 - **Interactive 3D Bloch Sphere**: Rotate and zoom
 - **State Statistics**: Bit counts and distributions
 

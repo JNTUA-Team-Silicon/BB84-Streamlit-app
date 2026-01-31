@@ -225,7 +225,7 @@ def run_bb84_simulation():
     """
     # Prevent simultaneous simulation runs
     if st.session_state.get("simulation_in_progress", False):
-        st.warning("⏳ Simulation already running. Please wait for it to complete.")
+        st.warning("Simulation already running. Please wait for it to complete.")
         return
     
     # Set lock
@@ -239,7 +239,7 @@ def run_bb84_simulation():
         noise_prob = st.session_state.noise_prob
         window = st.session_state.window
 
-        with st.spinner(" **Running BB84 Quantum Simulation...**"):
+        with st.spinner("Running BB84 Quantum Simulation..."):
             progress_bar = st.progress(0)
             progress_bar.progress(25, text="Initializing quantum simulator...")
 
@@ -314,7 +314,7 @@ def run_bb84_simulation():
         }
 
         progress_bar.empty()
-        st.success(" **Simulation completed successfully!**")
+        st.success("Simulation completed successfully!")
         st.session_state.simulation_completed = True
     
     finally:
@@ -325,22 +325,22 @@ def run_bb84_simulation():
 def render_final_key_download():
     """Display and download final keys. UI-only, reads from session_state."""
     if not st.session_state.get("simulation_completed", False):
-        st.info("⏳ Run simulation to see final keys.")
+        st.info("Run simulation to see final keys.")
         return
     
     if st.session_state.sim_results is None:
-        st.info("⏳ Run simulation to see final keys.")
+        st.info("Run simulation to see final keys.")
         return
 
     no_eve = st.session_state.sim_results['no_eve']
     eve = st.session_state.sim_results['eve']
 
-    st.markdown("###  **Final Secure Keys**")
+    st.markdown("### Final Secure Keys")
     
     key_col1, key_col2 = st.columns(2)
     
     with key_col1:
-        st.markdown("** No Eve Scenario Key:**")
+        st.markdown("**No Eve Scenario Key:**")
         if no_eve['final_key_length'] > 0:
             key_no_str = ''.join(map(str, no_eve['final_key']))
             st.code(key_no_str[:100] + "..." if len(key_no_str) > 100 else key_no_str, language="text")
@@ -349,7 +349,7 @@ def render_final_key_download():
             st.warning("No secure key generated.")
     
     with key_col2:
-        st.markdown("** With Eve Scenario Key:**")
+        st.markdown("**With Eve Scenario Key:**")
         if eve['final_key_length'] > 0:
             key_eve_str = ''.join(map(str, eve['final_key']))
             st.code(key_eve_str[:100] + "..." if len(key_eve_str) > 100 else key_eve_str, language="text")
@@ -390,11 +390,11 @@ def render_metrics_display():
     """Display main metrics. UI-only, reads from session_state."""
     # Fragment safety guard
     if not st.session_state.get("simulation_completed", False):
-        st.info("⏳ Run simulation to see metrics.")
+        st.info("Run simulation to see metrics.")
         return
     
     if st.session_state.sim_results is None:
-        st.info("⏳ Run simulation to see metrics.")
+        st.info("Run simulation to see metrics.")
         return
 
     no_eve = st.session_state.sim_results['no_eve']
@@ -443,7 +443,7 @@ def render_error_analysis():
     eve = st.session_state.sim_results['eve']
 
     st.markdown("---")
-    st.markdown("###  **Detailed Performance Metrics**")
+    st.markdown("### Detailed Performance Metrics")
     det_col1, det_col2 = st.columns(2)
     
     with det_col1:
@@ -456,7 +456,7 @@ def render_error_analysis():
         st.info(f"• Efficiency: {eve['sifted_count']/num_bits:.1%}\n• Security: {eve['status']}\n• Key Rate: {eve['final_key_length']/num_bits:.3f}")
 
     st.markdown("---")
-    st.markdown("###  **Error Pattern Analysis**")
+    st.markdown("### Error Pattern Analysis")
     err_col1, err_col2 = st.columns(2)
     
     with err_col1:
@@ -480,14 +480,14 @@ def render_error_analysis():
 def render_sifted_key_display():
     """Display sifted key comparison. UI-only."""
     if not st.session_state.simulation_completed or st.session_state.sim_results is None:
-        st.info("⏳ Run simulation to see sifted keys.")
+        st.info("Run simulation to see sifted keys.")
         return
 
     no_eve = st.session_state.sim_results['no_eve']
     eve = st.session_state.sim_results['eve']
     sifted_display_size = st.session_state.sifted_display_size
 
-    st.markdown("### ⊟ **Sifted Bits Comparison**")
+    st.markdown("### Sifted Bits Comparison")
     col_no, col_e = st.columns(2)
     
     with col_no:
@@ -529,14 +529,14 @@ def render_sifted_key_display():
 def render_timeline_analysis():
     """Display timeline visualizations. UI-only."""
     if not st.session_state.simulation_completed or st.session_state.sim_results is None:
-        st.info("⏳ Run simulation to see timelines.")
+        st.info("Run simulation to see timelines.")
         return
 
     no_eve = st.session_state.sim_results['no_eve']
     eve = st.session_state.sim_results['eve']
     pdf_max = st.session_state.pdf_max
 
-    st.markdown("###  **Timeline Analysis**")
+    st.markdown("### Timeline Analysis")
     
     viz_col1, viz_col2 = st.columns(2)
     with viz_col1:
@@ -631,20 +631,20 @@ def render_timeline_analysis():
 def render_bloch_visualizations():
     """Display Bloch sphere visualizations. UI-only."""
     if not st.session_state.simulation_completed:
-        st.info("⏳ Run simulation to see Bloch spheres.")
+        st.info("Run simulation to see Bloch spheres.")
         return
 
     if (st.session_state.alice_bits_stored is None or 
         st.session_state.alice_bases_stored is None):
-        st.warning(" Quantum states not available.")
+        st.warning("Quantum states not available.")
         return
 
-    st.markdown("###  **Quantum Visualization**")
+    st.markdown("### Quantum Visualization")
     
     qv_tab1, qv_tab2, qv_tab3 = st.tabs(["Single Qubit Analysis", "Multi-Qubit Comparison", "Polarization Analysis"])
 
     with qv_tab1:
-        st.subheader(" **Single Qubit Quantum State Analysis**")
+        st.subheader("Single Qubit Quantum State Analysis")
         bits_array = st.session_state.alice_bits_stored
         bases_array = st.session_state.alice_bases_stored
         max_idx = len(bits_array) - 1
@@ -677,7 +677,7 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
                 st.error(f"Error displaying Bloch sphere: {e}")
 
     with qv_tab2:
-        st.subheader(" **Multi-Qubit Range Analysis**")
+        st.subheader("Multi-Qubit Range Analysis")
         bits_array = st.session_state.alice_bits_stored
         bases_array = st.session_state.alice_bases_stored
         max_idx = len(bits_array) - 1
@@ -702,18 +702,18 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
                 states.append(sv)
                 state_info.append(f"Qubit {i}: {BB84Simulator.state_label(bit, basis)}")
 
-        st.markdown("**☑ Quantum States in Range:**")
+        st.markdown("**Quantum States in Range:**")
         for info in state_info:
             st.markdown(f"• {info}")
 
         try:
-            st.markdown("**◊ 3D Bloch Sphere Multi-State View:**")
+            st.markdown("**3D Bloch Sphere Multi-State View:**")
             st.plotly_chart(plotly_bloch_sphere(states), use_container_width=True)
         except Exception as e:
             st.error(f"Error displaying multi-qubit Bloch sphere: {e}")
 
     with qv_tab3:
-        st.subheader(" **Polarization Analysis**")
+        st.subheader("Polarization Analysis")
         pol_col1, pol_col2 = st.columns(2)
         
         with pol_col1:
@@ -789,7 +789,7 @@ def render_report_downloads():
         st.info("⏳ Run simulation to generate reports.")
         return
 
-    st.markdown("###  **Professional Report Generation**")
+    st.markdown("### Professional Report Generation")
 
     no_eve = st.session_state.sim_results['no_eve']
     eve = st.session_state.sim_results['eve']
@@ -804,7 +804,7 @@ def render_report_downloads():
         detailed_analysis = st.checkbox(" **Detailed Analysis**", value=True)
 
     st.markdown("---")
-    st.subheader("☑ **Report Downloads**")
+    st.subheader("Report Downloads")
 
     project_info = {
         "University": "JNTUA",
@@ -966,36 +966,35 @@ def main():
     
     # HEADER SECTION - PURE STREAMLIT COMPONENTS (NO HTML)
     # ============================================================
-    st.title(" BB84 Quantum Key Distribution Simulator")
+    st.title("BB84 Quantum Key Distribution Simulator")
     st.markdown("Interactive Quantum Cryptography Learning & Research Platform", help=None)
     
-    # ============================================================
     # INJECT CSS AFTER HEADER
     # ============================================================
     inject_custom_css()
     
     # Platform features card - PURE STREAMLIT
-    st.subheader("● Platform Capabilities")
+    st.subheader("Platform Capabilities")
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("◑ **Simulation:** Complete BB84 protocol execution")
-        st.markdown("▲ **Security:** Eavesdropper detection via QBER")
-        st.markdown(" **Analysis:** Timeline & comparative metrics")
+        st.markdown("**Simulation:** Complete BB84 protocol execution")
+        st.markdown("**Security:** Eavesdropper detection via QBER")
+        st.markdown("**Analysis:** Timeline & comparative metrics")
     with col2:
-        st.markdown(" **Visualization:** Bloch sphere quantum states")
-        st.markdown(" **Reports:** PDF export with full analysis")
-        st.markdown(" **Education:** Interactive learning platform")
+        st.markdown("**Visualization:** Bloch sphere quantum states")
+        st.markdown("**Reports:** PDF export with full analysis")
+        st.markdown("**Education:** Interactive learning platform")
     
     # System status badge - PURE STREAMLIT
-    st.success(" System Ready — Configure parameters and click **Run BB84 Simulation** to begin")
+    st.success("System Ready - Configure parameters and click Run BB84 Simulation to begin")
     
     # Display GPU Backend Status - PURE STREAMLIT
     try:
         backend, gpu_available = get_quantum_backend()
         if gpu_available:
-            st.success(" GPU Acceleration Enabled — Using CUDA GPU for quantum simulations")
+            st.success("GPU Acceleration Enabled - Using CUDA GPU for quantum simulations")
         else:
-            st.warning("⟱ CPU Mode — GPU not available, using CPU for simulations")
+            st.warning("CPU Mode - GPU not available, using CPU for simulations")
     except Exception:
         pass
     
@@ -1012,7 +1011,7 @@ def main():
     with center:
         st.subheader("JNTUA BB84 Quantum Key Distribution Simulator")
         st.markdown("**Department of Electronics and Communication Engineering**")
-    st.header(" BB84 Quantum Key Distribution Process")
+    st.header("BB84 Quantum Key Distribution Process")
     st.markdown("""
     **BB84** is the first quantum key distribution protocol. It allows two parties to share a secure key over an insecure channel.
 
@@ -1030,23 +1029,23 @@ def main():
     # ============================================================
     # SIMULATION PARAMETERS SECTION
     # ============================================================
-    st.header(" Simulation Configuration")
+    st.header("Simulation Configuration")
     
     # Enhanced parameter description - PURE STREAMLIT
-    st.info(" **Instructions:** Adjust the parameters below to customize your BB84 simulation. Each parameter affects how the quantum key distribution protocol behaves and how secure the shared key is.")
+    st.info("Instructions: Adjust the parameters below to customize your BB84 simulation. Each parameter affects how the quantum key distribution protocol behaves and how secure the shared key is.")
 
     param_col1, param_col2, param_col3 = st.columns(3)
     
     with param_col1:
         st.slider(
-            " Qubits to Transmit",
+            "Qubits to Transmit",
             config.MIN_QUBITS, config.MAX_QUBITS,
             key="num_bits",
             step=50,
             help="Total number of qubits Alice sends through the quantum channel. More qubits = longer sifted key"
         )
         st.slider(
-            " QBER Threshold (%)",
+            "QBER Threshold (%)",
             config.MIN_THRESHOLD, config.MAX_THRESHOLD,
             key="threshold",
             step=0.01,

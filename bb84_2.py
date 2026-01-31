@@ -1,14 +1,10 @@
-# ============================================================
 # BB84 Quantum Key Distribution Simulator - Main Application
 # REFACTORED FOR BEST PRACTICES
 # University: Jawaharlal Nehru Technological University Anantapur
 # Department: Electronics and Communication Engineering
 # Project: AQVH FINAL - BB84 QKD Simulator
-# ============================================================
 
-# ============================================================
 # IMPORTS - ORGANIZED BY CATEGORY (MUST BE FIRST)
-# ============================================================
 
 import streamlit as st
 import io
@@ -46,9 +42,7 @@ from qiskit import transpile
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# ============================================================
 # PAGE CONFIG - MUST BE FIRST STREAMLIT COMMAND
-# ============================================================
 st.set_page_config(
     page_title="JNTUA BB84 Quantum Key Distribution Simulator - QKD Protocol",
     page_icon="jntua_logo.png",
@@ -56,9 +50,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ============================================================
 # GOOGLE SITE VERIFICATION & SEO META TAGS
-# ============================================================
 st.markdown("""
     <meta name="google-site-verification" content="7HhNywCANQArbpIx4e4NyEHl7xLI5GHHyaC64jIxFmo" />
     <meta name="description" content="Interactive JNTUA BB84 Quantum Key Distribution Simulator - Learn quantum cryptography, QKD protocols, and eavesdropping detection with interactive visualizations and Bloch sphere analysis." />
@@ -73,9 +65,7 @@ st.markdown("""
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 """, unsafe_allow_html=True)
 
-# ============================================================
 # SEO META TAGS FOR GOOGLE INDEXING
-# ============================================================
 st.markdown("""
     <meta name="description" content="Interactive BB84 Quantum Key Distribution Simulator for learning quantum cryptography, eavesdropping detection, QBER analysis, and secure key generation. Educational tool for quantum physics and cybersecurity.">
     <meta name="keywords" content="BB84, Quantum Key Distribution, QKD, Quantum Cryptography, Eavesdropping Detection, QBER, Quantum Computing, JNTUA">
@@ -117,9 +107,7 @@ st.markdown("""
     </script>
 """, unsafe_allow_html=True)
 
-# ============================================================
 # GPU BACKEND DETECTION (MUST BE BEFORE SESSION INIT)
-# ============================================================
 @st.cache_resource
 def get_quantum_backend():
     """Auto-detect GPU, fallback to CPU"""
@@ -131,9 +119,7 @@ def get_quantum_backend():
         logger.info("🟡 GPU Backend Not Available - Using CPU")
         return AerSimulator(), False
 
-# ============================================================
 # CUSTOM STYLING - PROFESSIONAL THEME WITH VIBRANT COLORS
-# ============================================================
 def inject_custom_css():
     """Inject custom CSS for professional styling"""
     try:
@@ -170,9 +156,7 @@ from bb84_visualizations import (
     create_pdf_report_with_graphs,
 )
 
-# ============================================================
 # SESSION STATE INITIALIZATION - MODULE LEVEL (BEFORE ANY FUNCTIONS)
-# ============================================================
 # This initializes all session state ONCE when the app starts
 # Prevents "SessionInfo before it was initialized" errors
 
@@ -212,9 +196,7 @@ def _initialize_session_state():
     st.session_state.setdefault("cached_figures", {})
     st.session_state.setdefault("cached_pdf_bytes", None)
 
-# ============================================================
 # SIMULATION ENGINE - RUN ONLY ON BUTTON PRESS
-# ============================================================
 
 def run_bb84_simulation():
     """
@@ -381,9 +363,7 @@ def render_final_key_download():
                 help="Download the secure key for With Eve scenario"
             )
 
-# ============================================================
 # FRAGMENT FUNCTIONS - UI ONLY, READ FROM SESSION STATE
-# ============================================================
 
 @st.fragment
 def render_metrics_display():
@@ -749,9 +729,7 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
             st.markdown(f"**Bits in X-Basis:** {len(x_bits)} (|+: {x_plus}, |-: {x_minus})")
 
 
-# ============================================================
 # PDF REPORT GENERATION - WITH CACHING
-# ============================================================
 
 @st.cache_data(ttl=3600)
 def generate_pdf_report_bytes(
@@ -877,9 +855,7 @@ def render_report_downloads():
         )
 
 
-# ============================================================
 # MAIN APPLICATION
-# ============================================================
 
 def render_footer():
     """Render professional footer with social media logos and developer links"""
@@ -943,34 +919,26 @@ def render_footer():
         [GitHub](https://github.com/keer999) • [LinkedIn](https://www.linkedin.com/in/keerthan-vs) • [Email](mailto:keerthanroyal8@gmail.com)
         """)
 
-# ============================================================
 # MAIN APPLICATION
-# ============================================================
 
 def main():
     """Main Streamlit application entry point"""
     
-    # ============================================================
     # CRITICAL: INITIALIZE SESSION STATE FIRST
     # This must be the absolute first operation to prevent SessionInfo errors
-    # ============================================================
     _initialize_session_state()
     
-    # ============================================================
     # CRITICAL: CHECK IF SIMULATION IS IN PROGRESS
     # If so, exit early to prevent rerun storms
-    # ============================================================
     if st.session_state.get("simulation_in_progress", False):
         st.warning("⏳ Simulation in progress. Please wait...")
         return
     
     # HEADER SECTION - PURE STREAMLIT COMPONENTS (NO HTML)
-    # ============================================================
     st.title("BB84 Quantum Key Distribution Simulator")
     st.markdown("Interactive Quantum Cryptography Learning & Research Platform", help=None)
     
     # INJECT CSS AFTER HEADER
-    # ============================================================
     inject_custom_css()
     
     # Platform features card - PURE STREAMLIT
@@ -1026,9 +994,7 @@ def main():
     ### Security: Any eavesdropping introduces detectable errors due to quantum no-cloning theorem.
     """)
 
-    # ============================================================
     # SIMULATION PARAMETERS SECTION
-    # ============================================================
     st.header("Simulation Configuration")
     
     # Enhanced parameter description - PURE STREAMLIT
@@ -1103,18 +1069,14 @@ def main():
     except Exception:
         st.info("Configuration parameters loaded successfully")
 
-    # ============================================================
     # SIMULATION EXECUTION
-    # ============================================================
     st.markdown("---")
     if st.button("**Run BB84 Simulation**", type="primary", use_container_width=True):
         # ONLY RUN SIMULATION ON BUTTON PRESS
         st.session_state.simulation_run = True
         run_bb84_simulation()
 
-    # ============================================================
     # RESULTS DISPLAY - Only show if simulation completed
-    # ============================================================
     if st.session_state.simulation_completed:
         st.markdown("---")
         st.success(" Simulation completed! Results below:")
@@ -1286,14 +1248,10 @@ def main():
     else:
         st.info("← Configure parameters above and click **Run BB84 Simulation** to see results.")
 
-    # ============================================================
     # FOOTER SECTION
-    # ============================================================
     render_footer()
 
 
-# ============================================================
 # APP ENTRY POINT
-# ============================================================
 if __name__ == "__main__":
     main()

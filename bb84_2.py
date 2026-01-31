@@ -148,6 +148,10 @@ def run_bb84_simulation():
     Results cached in st.session_state.
     Prevents simultaneous runs with simulation_in_progress flag.
     """
+    # Prevent simultaneous simulation runs (silent return, no message)
+    if st.session_state.get("simulation_in_progress", False):
+        return
+    
     st.session_state.simulation_in_progress = True
     
     try:
@@ -158,52 +162,51 @@ def run_bb84_simulation():
         noise_prob = st.session_state.noise_prob
         window = st.session_state.window
 
-        with st.spinner("Running BB84 Quantum Simulation..."):
-            progress_bar = st.progress(0)
-            progress_bar.progress(25, text="Initializing quantum simulator...")
+        progress_bar = st.progress(0)
+        progress_bar.progress(25, text="Initializing quantum simulator...")
 
-            sim = BB84Simulator()
-            
-            # Generate random bits and bases for Alice and Bob
-            alice_bits = np.random.randint(0, 2, num_bits)
-            alice_bases = np.random.randint(0, 2, num_bits)
-            bob_bases = np.random.randint(0, 2, num_bits)
-            
-            # Store in session state for use in visualizations
-            st.session_state.alice_bits_stored = alice_bits
-            st.session_state.alice_bases_stored = alice_bases
-            st.session_state.bob_bases_stored = bob_bases
+        sim = BB84Simulator()
+        
+        # Generate random bits and bases for Alice and Bob
+        alice_bits = np.random.randint(0, 2, num_bits)
+        alice_bases = np.random.randint(0, 2, num_bits)
+        bob_bases = np.random.randint(0, 2, num_bits)
+        
+        # Store in session state for use in visualizations
+        st.session_state.alice_bits_stored = alice_bits
+        st.session_state.alice_bases_stored = alice_bases
+        st.session_state.bob_bases_stored = bob_bases
 
-            progress_bar.progress(50, text="Simulating quantum transmission...")
-            
-            # Simulate both scenarios
-            bob_no_eve, eve_results_no = sim.simulate_transmission(
-                alice_bits, alice_bases, bob_bases, 
-                eve_present=False, noise_prob=noise_prob
-            )
-            bob_eve, eve_results_eve = sim.simulate_transmission(
-                alice_bits, alice_bases, bob_bases, 
-                eve_present=True, eve_intercept_prob=eve_prob, noise_prob=noise_prob
-            )
-            
-            progress_bar.progress(75, text="Analyzing results...")
+        progress_bar.progress(50, text="Simulating quantum transmission...")
+        
+        # Simulate both scenarios
+        bob_no_eve, eve_results_no = sim.simulate_transmission(
+            alice_bits, alice_bases, bob_bases, 
+            eve_present=False, noise_prob=noise_prob
+        )
+        bob_eve, eve_results_eve = sim.simulate_transmission(
+            alice_bits, alice_bases, bob_bases, 
+            eve_present=True, eve_intercept_prob=eve_prob, noise_prob=noise_prob
+        )
+        
+        progress_bar.progress(75, text="Analyzing results...")
 
-            # Compute timelines and metrics
-            def compute_scenario(bob_results):
-                """Compute metrics for a scenario"""
-                timeline = create_transmission_timeline(alice_bits, alice_bases, bob_bases, bob_results)
-                used = timeline[timeline["Used"] == True]
-                
-                errors = int(np.sum(used["Error"].values))
-                qber = errors / len(used) if len(used) > 0 else 0.0
-                sec = sim.assess_security(float(qber), float(threshold))
-                
-                sifted_key = used["AliceBit"].astype(int).tolist()
-                final_key = sim.privacy_amplification(sifted_key, qber) if sec['status'] == "SECURE" else []
+        # Compute timelines and metrics
+        def compute_scenario(bob_results):
+            """Compute metrics for a scenario"""
+            timeline = create_transmission_timeline(alice_bits, alice_bases, bob_bases, bob_results)
+            used = timeline[timeline["Used"] == True]
+            
+            errors = int(np.sum(used["Error"].values))
+            qber = errors / len(used) if len(used) > 0 else 0.0
+            sec = sim.assess_security(float(qber), float(threshold))
+            
+            sifted_key = used["AliceBit"].astype(int).tolist()
+            final_key = sim.privacy_amplification(sifted_key, qber) if sec['status'] == "SECURE" else []
 
-                return {
-                    'timeline': timeline,
-                    'errors': errors,
+            return {
+                'timeline': timeline,
+                'errors': errors,
                 'qber': qber,
                 'status': sec['status'],
                 'sifted_count': len(used),

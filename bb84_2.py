@@ -98,8 +98,7 @@ from bb84_cliparts import (
     get_security_status_svg,
     get_qber_gauge_svg,
     get_bloch_sphere_svg,
-    get_timeline_comparison_svg,
-    get_spy_agent_svg
+    get_timeline_comparison_svg
 )
 
 # Configure logging
@@ -1657,29 +1656,9 @@ def main():
         """, unsafe_allow_html=True)
     except Exception as e:
         logger.debug(f"Header rendering: {e}")
-    # Advanced interactive header with spy theme
-    col1, col2 = st.columns([4, 1])
-    with col1:
-        st.markdown("""
-        <div style='background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 25px; border-radius: 15px; border: 2px solid #c41e3a; box-shadow: 0 8px 20px rgba(196, 30, 58, 0.3);'>
-            <h1 style='color: #fff; margin: 0 0 5px 0; font-size: 32px; font-weight: 900; text-shadow: 2px 2px 4px rgba(196, 30, 58, 0.5);'>JNTUA BB84 QKD Simulator</h1>
-            <p style='color: #ff6b6b; margin: 0; font-size: 16px; font-weight: 600; letter-spacing: 1px;'>Quantum Key Distribution | Cryptography & Espionage Detection</p>
-            <p style='color: #ffd700; margin: 5px 0 0 0; font-size: 12px; font-weight: 500;'>Team Silicon Intelligence | Advanced Quantum Security</p>
-            <div style='margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(196, 30, 58, 0.3);'>
-                <span style='color: #ffd700; font-size: 11px; font-weight: 600;'>ACTIVE THREAT MONITORING</span>
-                <div style='display: flex; gap: 15px; margin-top: 8px;'>
-                    <span style='color: #00ff00; font-size: 10px;'>QUANTUM SECURE</span>
-                    <span style='color: #00ff00; font-size: 10px;'>EVE DETECTION</span>
-                    <span style='color: #00ff00; font-size: 10px;'>PROTOCOL RUNNING</span>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown("# JNTUA BB84 Quantum Key Distribution Simulator")
     
-    with col2:
-        st.markdown(get_spy_agent_svg(), unsafe_allow_html=True)
-    
-    st.divider()
+    # ADVANCED PLATFORM CAPABILITIES WITH ICONS
     st.markdown("### Platform Capabilities")
     cap_col1, cap_col2, cap_col3 = st.columns(3)
     

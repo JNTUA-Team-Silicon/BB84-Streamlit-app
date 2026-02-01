@@ -12,6 +12,7 @@ runOnSave = false
 
 [browser]
 gatherUsageStats = false
+serverAddress = "localhost"
 
 [logger]
 level = "error"
@@ -23,3 +24,6 @@ backgroundColor = "#ffffff"
 secondaryBackgroundColor = "#f8f9fa"
 textColor = "#1a1a1a"
 font = "sans serif"
+
+[client.toolbarMode]
+shareButtons = true

@@ -4,15 +4,15 @@
 # Department: Electronics and Communication Engineering
 # Project: AQVH FINAL - BB84 QKD Simulator
 
-# SUPPRESS STREAMLIT ERRORS AT THE ENVIRONMENT LEVEL
+# SUPPRESS STREAMLIT ERRORS AT THE ENVIRONMENT LEVEL - MUST BE FIRST
 import os
 os.environ['STREAMLIT_LOGGER_LEVEL'] = 'error'
 os.environ['STREAMLIT_CLIENT_LOGGER_LEVEL'] = 'error'
 os.environ['STREAMLIT_SERVER_LOGGER_LEVEL'] = 'error'
 os.environ['PYTHONWARNINGS'] = 'ignore'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # IMPORTS - ORGANIZED BY CATEGORY (MUST BE FIRST)
-
 import streamlit as st
 import sys
 import io
@@ -26,36 +26,48 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from matplotlib.patches import Patch
 import logging
+import warnings
 
-# CRITICAL: Initialize session state BEFORE importing other modules
-# This prevents "Tried to use SessionInfo before it was initialized" errors
-# CRITICAL: Initialize session state BEFORE importing other modules
-# This prevents "Tried to use SessionInfo before it was initialized" errors
-if hasattr(st, 'session_state'):
-    st.session_state.setdefault('_init_done', False)
-    if not st.session_state._init_done:
-        # Set all defaults
+# Suppress all warnings immediately
+warnings.filterwarnings('ignore')
+logging.getLogger().setLevel(logging.CRITICAL)
+
+# CRITICAL: Initialize session state BEFORE anything else
+# This MUST happen before any st.* calls to prevent SessionInfo errors
+try:
+    if 'num_bits' not in st.session_state:
         st.session_state.num_bits = 200
+    if 'threshold' not in st.session_state:
         st.session_state.threshold = 0.11
+    if 'eve_prob' not in st.session_state:
         st.session_state.eve_prob = 0.5
+    if 'noise_prob' not in st.session_state:
         st.session_state.noise_prob = 0.0
+    if 'eve_attack' not in st.session_state:
         st.session_state.eve_attack = "Intercept-Resend"
+    if 'window' not in st.session_state:
         st.session_state.window = 100
+    if 'pdf_max' not in st.session_state:
         st.session_state.pdf_max = 50
+    if 'sifted_display_size' not in st.session_state:
         st.session_state.sifted_display_size = 50
+    if 'simulation_run' not in st.session_state:
         st.session_state.simulation_run = False
+    if 'simulation_completed' not in st.session_state:
         st.session_state.simulation_completed = False
+    if 'simulation_in_progress' not in st.session_state:
         st.session_state.simulation_in_progress = False
+    if 'sim_results' not in st.session_state:
         st.session_state.sim_results = None
+    if 'alice_bits_stored' not in st.session_state:
         st.session_state.alice_bits_stored = None
+    if 'alice_bases_stored' not in st.session_state:
         st.session_state.alice_bases_stored = None
+    if 'bob_bases_stored' not in st.session_state:
         st.session_state.bob_bases_stored = None
-        st.session_state.bob_results_no_eve = None
-        st.session_state.eve_results = None
+    if 'bloch_single_idx' not in st.session_state:
         st.session_state.bloch_single_idx = 0
-        st.session_state._init_done = True
-else:
-    # Fallback if session_state not available
+except Exception:
     pass
 
 # Optional: ReportLab for PDF generation (graceful fallback)
@@ -243,21 +255,133 @@ try:
     # Add custom CSS for logo header
     st.markdown("""
     <style>
+    * {
+        box-sizing: border-box;
+    }
+    
+    html, body {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden !important;
+    }
+    
+    /* FULL VIEWPORT WIDTH */
+    section[data-testid="stAppViewContainer"] {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    [data-testid="stApp"] {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    [data-testid="stAppViewContainer"] > section {
+        padding: 0 !important;
+    }
+    
+    .block-container {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+        margin: 0 !important;
+    }
+    
+    /* SIDEBAR SIZING */
+    [data-testid="stSidebar"] {
+        width: 280px !important;
+    }
+    
+    /* BLUE COLOR SCHEME FOR ALL ELEMENTS */
+    h1, h2, h3 { 
+        color: #1e40af !important; 
+        font-weight: 800 !important;
+    }
+    
+    /* BOX-LIKE SECTIONS */
+    [data-testid="stMetricDelta"], [data-testid="stMetric"] {
+        background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%) !important;
+        border: 2px solid #2563eb !important;
+        border-radius: 12px !important;
+        padding: 16px !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1) !important;
+    }
+    
+    /* TABS STYLING */
+    [data-baseweb="tab"] {
+        background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%) !important;
+        border: 2px solid #2563eb !important;
+        border-radius: 10px !important;
+        color: #1e40af !important;
+        font-weight: 600 !important;
+    }
+    
+    [data-baseweb="tab"][aria-selected="true"] {
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+        color: white !important;
+        border-color: #1e40af !important;
+    }
+    
+    /* BUTTONS */
+    .stButton > button {
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+    }
+    
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #1a3a7a 100%) !important;
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4) !important;
+    }
+    
+    /* SIDEBARS & BOXES */
+    .stExpander, .stContainer {
+        border: 2px solid #e0e7ff !important;
+        border-radius: 10px !important;
+        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%) !important;
+    }
+    
+    /* COLUMNS */
+    [data-testid="column"] {
+        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%) !important;
+        border: 1px solid #e0e7ff !important;
+        border-radius: 10px !important;
+        padding: 12px !important;
+    }
+    
+    /* ALERTS & INFO BOXES */
+    .stAlert {
+        background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%) !important;
+        border-left: 4px solid #2563eb !important;
+        color: #1e40af !important;
+        border-radius: 6px !important;
+    }
+    
     .logo-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 15px 30px;
+        padding: 20px 30px;
         background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
-        border-bottom: 3px solid #4f46e5;
-        margin: 0 -3rem 30px -3rem;
-        width: calc(100% + 6rem);
+        border-bottom: 3px solid #1e40af;
+        margin: 0 -2rem 30px -2rem;
+        width: calc(100% + 4rem);
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 6px 20px rgba(30, 64, 175, 0.2);
     }
     
     .logo-section {
         display: flex;
         align-items: center;
         gap: 15px;
+
     }
     
     .logo-icon {
@@ -283,9 +407,11 @@ try:
         color: white;
         font-size: 12px;
         padding: 8px 15px;
-        background: rgba(255,255,255,0.1);
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
         border-radius: 20px;
         backdrop-filter: blur(10px);
+        font-weight: 600;
     }
     </style>
     <div class='logo-header'>
@@ -360,12 +486,12 @@ def inject_custom_css():
             padding: 50px 60px;
             border-radius: 0;
             text-align: center;
-            margin: 0 -3rem 30px -3rem;
+            margin: 0 -2rem 30px -2rem;
             margin-bottom: 30px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             position: relative;
             overflow: hidden;
-            width: calc(100% + 6rem);
+            width: calc(100% + 4rem);
         }
         </style>
         """, unsafe_allow_html=True)

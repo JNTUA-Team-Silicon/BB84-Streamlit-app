@@ -904,56 +904,190 @@ Error loading Multi-Qubit Range Analysis. Please refresh and try again.
             """, unsafe_allow_html=True)
         else:
             try:
-                pol_col1, pol_col2 = st.columns(2)
                 bases_array = st.session_state.alice_bases_stored
                 bits_array = st.session_state.alice_bits_stored
                 
+                # Detailed description of polarization
+                st.markdown("""
+### Understanding Quantum Polarization in BB84
+
+In the BB84 protocol, quantum information is encoded in the **polarization states** of photons. Alice encodes bits using two incompatible measurement bases: the **Rectilinear (Z) basis** and the **Diagonal (X) basis**.
+
+#### 1. Rectilinear Basis (Z-Basis) - Vertical/Horizontal Polarization
+
+The Z-basis uses vertical and horizontal polarization states:
+
+**Mathematical Representation:**
+- State |0⟩ (vertical): $|0\\rangle = \\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix}$ (North pole on Bloch sphere)
+- State |1⟩ (horizontal): $|1\\rangle = \\begin{pmatrix} 0 \\\\ 1 \\end{pmatrix}$ (South pole on Bloch sphere)
+
+These states are **orthogonal**, meaning they are perfectly distinguishable: $\\langle 0 | 1 \\rangle = 0$
+
+**Physical Interpretation:**
+- **|0⟩**: Photon polarized vertically (0°)
+- **|1⟩**: Photon polarized horizontally (90°)
+                """)
+                
+                pol_col1, pol_col2 = st.columns([1, 1])
+                
                 with pol_col1:
-                    st.markdown("**Rectilinear Polarization (Z-Basis)**")
-                    st.markdown("• **|0 (North)**: Horizontal\n• **|1 (South)**: Vertical")
+                    st.markdown("**Z-Basis Visualization (Rectilinear)**")
                     try:
                         sv0 = Statevector.from_label('0')
                         sv1 = Statevector.from_label('1')
                         st.plotly_chart(plotly_bloch_sphere([sv0, sv1]), use_container_width=True, key="bloch_z_basis")
                     except Exception as e:
                         logger.error(f"Error displaying Z-basis: {e}")
-                        st.markdown("""
-<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
-Could not render Z-Basis visualization.
-</div>
-                        """, unsafe_allow_html=True)
-                    
+                
+                with pol_col2:
+                    st.markdown("**Z-Basis Statistics**")
                     z_bits = [i for i, b in enumerate(bases_array) if b == 0]
                     z_0 = sum(1 for i in z_bits if bits_array[i] == 0)
                     z_1 = sum(1 for i in z_bits if bits_array[i] == 1)
-                    st.markdown(f"**Bits in Z-Basis:** {len(z_bits)} (|0: {z_0}, |1: {z_1})")
+                    z_total = len(z_bits)
+                    
+                    if z_total > 0:
+                        z_0_percent = (z_0 / z_total) * 100
+                        z_1_percent = (z_1 / z_total) * 100
+                        st.metric("Total Z-Basis Qubits", z_total)
+                        col_z1, col_z2 = st.columns(2)
+                        with col_z1:
+                            st.metric("|0⟩ (Vertical)", f"{z_0} ({z_0_percent:.1f}%)")
+                        with col_z2:
+                            st.metric("|1⟩ (Horizontal)", f"{z_1} ({z_1_percent:.1f}%)")
+                
+                st.divider()
+                
+                st.markdown("""
+#### 2. Diagonal Basis (X-Basis) - Diagonal Polarization
 
-                with pol_col2:
-                    st.markdown("**Diagonal Polarization (X-Basis)**")
-                    st.markdown("• **|+ (East)**: Superposition\n• **|- (West)**: Superposition")
+The X-basis uses diagonal and anti-diagonal polarization states (45° and 135°):
+
+**Mathematical Representation:**
+
+State |+⟩ (diagonal): 
+$$|+\\rangle = \\frac{1}{\\sqrt{2}}(|0\\rangle + |1\\rangle) = \\frac{1}{\\sqrt{2}}\\begin{pmatrix} 1 \\\\ 1 \\end{pmatrix}$$ 
+(East on Bloch sphere)
+
+State |−⟩ (anti-diagonal):
+$$|-\\rangle = \\frac{1}{\\sqrt{2}}(|0\\rangle - |1\\rangle) = \\frac{1}{\\sqrt{2}}\\begin{pmatrix} 1 \\\\ -1 \\end{pmatrix}$$
+(West on Bloch sphere)
+
+These states are also **orthogonal**: $\\langle + | - \\rangle = 0$
+
+**Key Property - Uncertainty Relation:**
+
+The X and Z bases are **mutually unbiased**, meaning:
+- If we measure a |+⟩ state in the Z-basis, we get 50% |0⟩ and 50% |1⟩
+- If we measure a |−⟩ state in the Z-basis, we get 50% |0⟩ and 50% |1⟩
+
+Mathematically:
+$$|\\langle 0 | + \\rangle|^2 = |\\langle 1 | + \\rangle|^2 = \\frac{1}{2}$$
+
+**Physical Interpretation:**
+- **|+⟩**: Photon polarized at 45° diagonal
+- **|−⟩**: Photon polarized at 135° anti-diagonal (perpendicular to |+⟩)
+                """)
+                
+                pol_col3, pol_col4 = st.columns([1, 1])
+                
+                with pol_col3:
+                    st.markdown("**X-Basis Visualization (Diagonal)**")
                     try:
                         sv_plus = Statevector([1/np.sqrt(2), 1/np.sqrt(2)])
                         sv_minus = Statevector([1/np.sqrt(2), -1/np.sqrt(2)])
                         st.plotly_chart(plotly_bloch_sphere([sv_plus, sv_minus]), use_container_width=True, key="bloch_x_basis")
                     except Exception as e:
-                        logger.error(f"Error displaying polarization: {e}")
-                        st.markdown("""
-<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
-Could not render X-Basis visualization.
-</div>
-                        """, unsafe_allow_html=True)
-                    
+                        logger.error(f"Error displaying X-basis: {e}")
+                
+                with pol_col4:
+                    st.markdown("**X-Basis Statistics**")
                     x_bits = [i for i, b in enumerate(bases_array) if b == 1]
                     x_plus = sum(1 for i in x_bits if bits_array[i] == 0)
                     x_minus = sum(1 for i in x_bits if bits_array[i] == 1)
-                    st.markdown(f"**Bits in X-Basis:** {len(x_bits)} (|+: {x_plus}, |-: {x_minus})")
+                    x_total = len(x_bits)
+                    
+                    if x_total > 0:
+                        x_plus_percent = (x_plus / x_total) * 100
+                        x_minus_percent = (x_minus / x_total) * 100
+                        st.metric("Total X-Basis Qubits", x_total)
+                        col_x1, col_x2 = st.columns(2)
+                        with col_x1:
+                            st.metric("|+⟩ (45°)", f"{x_plus} ({x_plus_percent:.1f}%)")
+                        with col_x2:
+                            st.metric("|−⟩ (135°)", f"{x_minus} ({x_minus_percent:.1f}%)")
+                
+                st.divider()
+                
+                st.markdown("""
+#### 3. Security Implications of Basis Incompatibility
+
+**Why BB84 is Secure:**
+
+The security of BB84 relies on the **Heisenberg Uncertainty Principle** applied to quantum measurements:
+
+$$\\Delta A \\cdot \\Delta B \\geq \\frac{|\\langle[\\hat{A}, \\hat{B}]\\rangle|}{2}$$
+
+For incompatible bases (X and Z):
+$$[\\hat{Z}, \\hat{X}] = -2i\\hat{Y} \\neq 0$$
+
+This means:
+1. **Eavesdropper Cannot Know Both Values**: Eve cannot measure a qubit and know both its Z-basis and X-basis measurement outcomes simultaneously
+2. **Eavesdropping Introduces Errors**: If Eve guesses the wrong basis, she will measure a wrong value, and when she re-transmits, Bob will detect an error
+
+**Mathematical Proof of Eavesdropping Detection:**
+
+If a qubit is prepared in basis A and measured in basis B (wrong basis):
+$$P(\\text{correct measurement}) = |\\langle A | B \\rangle|^2$$
+
+For perpendicular bases:
+$$P(\\text{correct measurement}) = \\frac{1}{2}$$
+
+Therefore, eavesdropping introduces a **50% error rate** in the eavesdropped portion.
+
+**QBER Threshold:**
+
+Without eavesdropping: QBER ≈ 1% (from noise)
+With eavesdropping: QBER ≈ 25% (50% errors in wrong measurements)
+
+If QBER > threshold (typically 11%), eavesdropping is detected!
+                """)
+                
+                # Overall statistics
+                st.subheader("Overall Polarization Distribution")
+                total_z = len(z_bits)
+                total_x = len(x_bits)
+                total_qubits = total_z + total_x
+                
+                if total_qubits > 0:
+                    z_percent = (total_z / total_qubits) * 100
+                    x_percent = (total_x / total_qubits) * 100
+                    
+                    col_stat1, col_stat2, col_stat3 = st.columns(3)
+                    with col_stat1:
+                        st.metric("Total Qubits", total_qubits)
+                    with col_stat2:
+                        st.metric("Z-Basis Usage", f"{total_z} ({z_percent:.1f}%)")
+                    with col_stat3:
+                        st.metric("X-Basis Usage", f"{total_x} ({x_percent:.1f}%)")
+                    
+                    # Expected vs Actual
+                    st.markdown("**Expected Distribution Analysis:**")
+                    st.markdown(f"""
+In a perfect BB84 simulation with random basis selection:
+- **Expected Z-basis qubits**: ~50% of total = {total_qubits * 0.5:.0f}
+- **Actual Z-basis qubits**: {total_z} ({z_percent:.1f}%)
+- **Deviation**: {abs(z_percent - 50):.1f}%
+
+- **Expected X-basis qubits**: ~50% of total = {total_qubits * 0.5:.0f}
+- **Actual X-basis qubits**: {total_x} ({x_percent:.1f}%)
+- **Deviation**: {abs(x_percent - 50):.1f}%
+
+The distribution validates the **random basis selection** in the BB84 protocol.
+                    """)
+                    
             except Exception as e:
                 logger.error(f"Error in Polarization Analysis: {e}")
-                st.markdown("""
-<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
-Error loading Polarization Analysis. Please refresh and try again.
-</div>
-                """, unsafe_allow_html=True)
 
 
 # PDF REPORT GENERATION - WITH CACHING

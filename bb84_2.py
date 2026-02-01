@@ -292,14 +292,20 @@ def inject_responsive_css():
     .step-heading {
         color: #ffffff !important;
         background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%) !important;
-        padding: 12px 16px !important;
-        border-radius: 8px !important;
+        padding: 10px 16px !important;
+        border-radius: 6px !important;
         font-weight: 700 !important;
-        font-size: 16px !important;
-        margin-top: 20px !important;
-        margin-bottom: 15px !important;
+        font-size: 15px !important;
+        margin-top: 16px !important;
+        margin-bottom: 10px !important;
         display: inline-block !important;
-        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2) !important;
+        box-shadow: 0 3px 10px rgba(30, 64, 175, 0.25) !important;
+    }
+    
+    .step-heading + p {
+        margin-top: 8px !important;
+        margin-bottom: 16px !important;
+        color: #1a1a1a !important;
     }
     
     /* BOX-LIKE SECTIONS */
@@ -417,14 +423,7 @@ def inject_responsive_css():
     }
     
     .header-status {
-        color: white;
-        font-size: 14px;
-        padding: 10px 20px;
-        background: rgba(255,255,255,0.2);
-        border: 1px solid rgba(255,255,255,0.4);
-        border-radius: 20px;
-        font-weight: 600;
-        margin-top: 15px;
+        display: none;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -1557,7 +1556,8 @@ def render_footer():
             
             <!-- Footer Text -->
             <p style='font-size: 12px; color: #999; margin-top: 15px; border-top: 1px solid #e0e0e0; padding-top: 15px;'>
-            © 2026 BB84 Quantum Key Distribution Simulator | AQVH Final Project | All Rights Reserved
+            © 2026 BB84 Quantum Key Distribution Simulator | AQVH Final Project | All Rights Reserved<br>
+            <strong style='color: #1e40af;'>Team Silicon</strong> | JNTUA ECE Department
             </p>
             </div>
             """,
@@ -1605,7 +1605,6 @@ def main():
                     <p>Quantum Key Distribution | Cryptography & Security</p>
                 </div>
             </div>
-            <div class='header-status'>✓ System Ready</div>
         </div>
         """, unsafe_allow_html=True)
     except Exception as e:

@@ -651,6 +651,9 @@ def run_bb84_simulation():
 
         progress_bar.empty()
         st.session_state.simulation_completed = True
+        
+        # Increment simulation counter
+        st.session_state.simulation_count = st.session_state.get("simulation_count", 0) + 1
     
     finally:
         # Always release the lock, even if error occurs

@@ -707,7 +707,7 @@ def render_sifted_key_display():
             })
             st.dataframe(df_e, key="sifted_df_e", use_container_width=True)
         else:
-            st.info("No sifted bits available", icon="ℹ️")
+            st.info("No sifted bits available")
 
     st.plotly_chart(
         decision_line(eve['qber'], st.session_state.threshold, "**Attack Detection Decision Analysis**"),
@@ -838,7 +838,7 @@ def render_bloch_visualizations():
         if st.session_state.alice_bits_stored is None or st.session_state.alice_bases_stored is None:
             st.markdown("""
 <div style='padding: 20px; background: linear-gradient(135deg, #fff3cd 0%, #fffbea 100%); border-left: 4px solid #ffc107; border-radius: 8px; margin: 20px 0;'>
-    <p style='color: #856404; font-weight: 600; margin: 0;'>ℹ️ No Simulation Data</p>
+    <p style='color: #856404; font-weight: 600; margin: 0;'>No Simulation Data</p>
     <p style='color: #856404; margin: 10px 0 0 0;'>Please run the BB84 simulation first to analyze quantum states.</p>
 </div>
             """, unsafe_allow_html=True)
@@ -915,7 +915,7 @@ Error loading Single Qubit Analysis. Please refresh and try again.
         if st.session_state.alice_bits_stored is None or st.session_state.alice_bases_stored is None:
             st.markdown("""
 <div style='padding: 20px; background: linear-gradient(135deg, #fff3cd 0%, #fffbea 100%); border-left: 4px solid #ffc107; border-radius: 8px; margin: 20px 0;'>
-    <p style='color: #856404; font-weight: 600; margin: 0;'>ℹ️ No Simulation Data</p>
+    <p style='color: #856404; font-weight: 600; margin: 0;'>No Simulation Data</p>
     <p style='color: #856404; margin: 10px 0 0 0;'>Please run the BB84 simulation first to analyze quantum states.</p>
 </div>
             """, unsafe_allow_html=True)
@@ -1005,7 +1005,7 @@ Error loading Multi-Qubit Range Analysis. Please refresh and try again.
         if st.session_state.alice_bits_stored is None or st.session_state.alice_bases_stored is None:
             st.markdown("""
 <div style='padding: 20px; background: linear-gradient(135deg, #fff3cd 0%, #fffbea 100%); border-left: 4px solid #ffc107; border-radius: 8px; margin: 20px 0;'>
-    <p style='color: #856404; font-weight: 600; margin: 0;'>ℹ️ No Simulation Data</p>
+    <p style='color: #856404; font-weight: 600; margin: 0;'>No Simulation Data</p>
     <p style='color: #856404; margin: 10px 0 0 0;'>Please run the BB84 simulation first to analyze polarization states.</p>
 </div>
             """, unsafe_allow_html=True)

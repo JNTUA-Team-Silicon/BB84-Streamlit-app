@@ -1944,48 +1944,48 @@ def main():
     Any eavesdropping introduces detectable errors due to quantum no-cloning theorem.
     """)
     
-    # ENHANCED BB84 PROTOCOL PSEUDOCODE WITH BETTER VISIBILITY
+    # ENHANCED BB84 PROTOCOL PSEUDOCODE WITH PROFESSIONAL STYLING
     st.markdown("""
-    <div style='background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 25px; border-radius: 12px; border-left: 5px solid #3b82f6; margin: 20px 0; box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);'>
-        <h3 style='color: #60a5fa; margin: 0 0 20px 0; font-size: 18px; font-weight: 800; letter-spacing: 0.5px;'>BB84 PROTOCOL PSEUDOCODE</h3>
-        <div style='background: #020617; padding: 20px; border-radius: 8px; font-family: "Courier New", monospace; font-size: 13px; line-height: 1.8; color: #e0e7ff; overflow-x: auto; border: 1px solid rgba(59, 130, 246, 0.3);'>
-            <span style='color: #60a5fa; font-weight: bold;'>1. Alice generates N random bits and N random bases</span><br/>
-            <span style='margin-left: 20px; color: #a5f3fc;'>bits = [random 0/1 for _ in range(N)]</span><br/>
-            <span style='margin-left: 20px; color: #a5f3fc;'>bases = [random Rectilinear/Diagonal for _ in range(N)]</span><br/>
+    <div style='background: #f8fafc; padding: 25px; border-radius: 12px; border-left: 5px solid #1e40af; margin: 20px 0; box-shadow: 0 4px 20px rgba(30, 64, 175, 0.12); border: 1px solid #e0e7ff;'>
+        <h3 style='color: #1e40af; margin: 0 0 20px 0; font-size: 18px; font-weight: 800; letter-spacing: 0.5px;'>BB84 PROTOCOL PSEUDOCODE</h3>
+        <div style='background: #ffffff; padding: 20px; border-radius: 8px; font-family: "Courier New", monospace; font-size: 13px; line-height: 1.9; color: #1a1a1a; overflow-x: auto; border: 1px solid #e0e7ff;'>
+            <span style='color: #1e40af; font-weight: bold;'>1. Alice generates N random bits and N random bases</span><br/>
+            <span style='margin-left: 20px; color: #475569;'>bits = [random 0/1 for _ in range(N)]</span><br/>
+            <span style='margin-left: 20px; color: #475569;'>bases = [random Rectilinear/Diagonal for _ in range(N)]</span><br/>
             <br/>
-            <span style='color: #60a5fa; font-weight: bold;'>2. Alice encodes and transmits qubits to Bob</span><br/>
-            <span style='margin-left: 20px; color: #fbbf24;'>FOR i in range(N):</span><br/>
-            <span style='margin-left: 40px; color: #a5f3fc;'>Encode bits[i] using bases[i]</span><br/>
-            <span style='margin-left: 40px; color: #a5f3fc;'>Send qubit through quantum channel</span><br/>
+            <span style='color: #1e40af; font-weight: bold;'>2. Alice encodes and transmits qubits to Bob</span><br/>
+            <span style='margin-left: 20px; color: #2563eb;'>FOR</span> <span style='color: #475569;'>i in range(N):</span><br/>
+            <span style='margin-left: 40px; color: #475569;'>Encode bits[i] using bases[i]</span><br/>
+            <span style='margin-left: 40px; color: #475569;'>Send qubit through quantum channel</span><br/>
             <br/>
-            <span style='color: #60a5fa; font-weight: bold;'>3. Bob measures received qubits</span><br/>
-            <span style='margin-left: 20px; color: #fbbf24;'>FOR i in range(N):</span><br/>
-            <span style='margin-left: 40px; color: #a5f3fc;'>Choose random basis (Rectilinear/Diagonal)</span><br/>
-            <span style='margin-left: 40px; color: #a5f3fc;'>Measure qubit in chosen basis</span><br/>
-            <span style='margin-left: 40px; color: #a5f3fc;'>Record measurement result</span><br/>
+            <span style='color: #1e40af; font-weight: bold;'>3. Bob measures received qubits</span><br/>
+            <span style='margin-left: 20px; color: #2563eb;'>FOR</span> <span style='color: #475569;'>i in range(N):</span><br/>
+            <span style='margin-left: 40px; color: #475569;'>Choose random basis (Rectilinear/Diagonal)</span><br/>
+            <span style='margin-left: 40px; color: #475569;'>Measure qubit in chosen basis</span><br/>
+            <span style='margin-left: 40px; color: #475569;'>Record measurement result</span><br/>
             <br/>
-            <span style='color: #60a5fa; font-weight: bold;'>4. Alice publicly announces her bases</span><br/>
-            <span style='margin-left: 20px; color: #a5f3fc;'>Announce: bases = [b1, b2, ..., bN]</span><br/>
+            <span style='color: #1e40af; font-weight: bold;'>4. Alice publicly announces her bases</span><br/>
+            <span style='margin-left: 20px; color: #475569;'>Announce: bases = [b1, b2, ..., bN]</span><br/>
             <br/>
-            <span style='color: #60a5fa; font-weight: bold;'>5. Bob publicly announces his bases</span><br/>
-            <span style='margin-left: 20px; color: #a5f3fc;'>Announce: bob_bases = [b1, b2, ..., bN]</span><br/>
+            <span style='color: #1e40af; font-weight: bold;'>5. Bob publicly announces his bases</span><br/>
+            <span style='margin-left: 20px; color: #475569;'>Announce: bob_bases = [b1, b2, ..., bN]</span><br/>
             <br/>
-            <span style='color: #60a5fa; font-weight: bold;'>6. Keep matching basis positions</span><br/>
-            <span style='margin-left: 20px; color: #a5f3fc;'>sifted_key = [bits[i] where bases[i] == bob_bases[i]]</span><br/>
+            <span style='color: #1e40af; font-weight: bold;'>6. Keep matching basis positions</span><br/>
+            <span style='margin-left: 20px; color: #475569;'>sifted_key = [bits[i] where bases[i] == bob_bases[i]]</span><br/>
             <br/>
-            <span style='color: #60a5fa; font-weight: bold;'>7. Estimate Quantum Bit Error Rate (QBER)</span><br/>
-            <span style='margin-left: 20px; color: #a5f3fc;'>Test subset of sifted key against Bob\'s measurements</span><br/>
-            <span style='margin-left: 20px; color: #a5f3fc;'>QBER = (errors / sample_size) × 100</span><br/>
+            <span style='color: #1e40af; font-weight: bold;'>7. Estimate Quantum Bit Error Rate (QBER)</span><br/>
+            <span style='margin-left: 20px; color: #475569;'>Test subset of sifted key against Bob\'s measurements</span><br/>
+            <span style='margin-left: 20px; color: #475569;'>QBER = (errors / sample_size) × 100</span><br/>
             <br/>
-            <span style='color: #60a5fa; font-weight: bold;'>8. Check for eavesdropping</span><br/>
-            <span style='margin-left: 20px; color: #fbbf24;'>IF</span> <span style='color: #f87171;'>QBER > threshold:</span><br/>
-            <span style='margin-left: 40px; color: #f87171;'>Abort protocol (eavesdropping detected)</span><br/>
-            <span style='margin-left: 20px; color: #fbbf24;'>ELSE:</span><br/>
-            <span style='margin-left: 40px; color: #86efac;'>Continue to step 9</span><br/>
+            <span style='color: #1e40af; font-weight: bold;'>8. Check for eavesdropping</span><br/>
+            <span style='margin-left: 20px; color: #2563eb;'>IF</span> <span style='color: #475569;'>QBER > threshold:</span><br/>
+            <span style='margin-left: 40px; color: #7c2d12;'>Abort protocol (eavesdropping detected)</span><br/>
+            <span style='margin-left: 20px; color: #2563eb;'>ELSE:</span><br/>
+            <span style='margin-left: 40px; color: #15803d;'>Continue to step 9</span><br/>
             <br/>
-            <span style='color: #60a5fa; font-weight: bold;'>9. Privacy amplification</span><br/>
-            <span style='margin-left: 20px; color: #a5f3fc;'>Apply hash function to remaining sifted key</span><br/>
-            <span style='margin-left: 20px; color: #86efac;'>Final secure cryptographic key ready for use</span>
+            <span style='color: #1e40af; font-weight: bold;'>9. Privacy amplification</span><br/>
+            <span style='margin-left: 20px; color: #475569;'>Apply hash function to remaining sifted key</span><br/>
+            <span style='margin-left: 20px; color: #15803d;'>Final secure cryptographic key ready for use</span>
         </div>
     </div>
     """, unsafe_allow_html=True)

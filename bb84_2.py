@@ -2078,8 +2078,39 @@ def main():
         render_error_analysis()
         render_sifted_key_display()
 
+        # Enhanced styling for tabs
+        st.markdown("""
+        <style>
+            .stTabs [data-baseweb="tab-list"] {
+                gap: 10px;
+            }
+            .stTabs [data-baseweb="tab"] {
+                height: auto;
+                padding: 12px 20px !important;
+                background-color: #f0f2f6;
+                border: 2px solid #e0e0e0;
+                border-radius: 8px;
+                font-weight: 600;
+                color: #1a1a1a;
+                transition: all 0.3s ease;
+            }
+            .stTabs [data-baseweb="tab"]:hover {
+                background-color: #0052cc;
+                color: white;
+                border-color: #0052cc;
+                box-shadow: 0 4px 12px rgba(0, 82, 204, 0.2);
+            }
+            .stTabs [aria-selected="true"] [data-baseweb="tab"] {
+                background-color: #0052cc !important;
+                color: white !important;
+                border-color: #0052cc !important;
+                box-shadow: 0 6px 16px rgba(0, 82, 204, 0.3);
+            }
+        </style>
+        """, unsafe_allow_html=True)
+
         # Tabs for detailed analysis
-        tab1, tab2, tab3, tab4, tab5 = st.tabs(["Timeline Analysis", "Comparative Analysis", "Quantum Visualization", "Report Generation", "Protocol Guide"])
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Timeline Analysis", "⇄ Comparative Analysis", "🔬 Quantum Visualization", "📄 Report Generation", "📖 Protocol Guide"])
 
         with tab1:
             render_timeline_analysis()

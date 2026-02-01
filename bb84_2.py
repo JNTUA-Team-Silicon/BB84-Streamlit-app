@@ -245,71 +245,28 @@ SilentStreamlitHandler.suppress_errors()
 # PAGE CONFIG - MUST BE FIRST STREAMLIT COMMAND
 try:
     st.set_page_config(
-        page_title=" JNTUA BB84 QKD Simulator",
-        page_icon="jntua_logo.png",
+        page_title="JNTUA BB84 QKD Simulator",
+        page_icon="🔐",
         layout="wide",
-        initial_sidebar_state="expanded",
-        initial_unsupported_session_state=None
+        initial_sidebar_state="expanded"
     )
-    
-    # Add custom CSS for logo header
+except Exception as e:
+    pass
+
+# SAFE CUSTOM CSS - ONLY MODIFYING .block-container
+def inject_responsive_css():
+    """Inject clean CSS for responsive layout - Streamlit Cloud compatible"""
     st.markdown("""
     <style>
-    * {
-        box-sizing: border-box;
-    }
+    /* SAFE CSS: Only modifying .block-container and custom classes */
     
-    html, body {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow-x: hidden !important;
-    }
-    
-    /* STREAMLIT CLOUD OPTIMIZED LAYOUT - FULL WIDTH */
-    [data-testid="stAppViewContainer"] {
-        width: 100vw !important;
-        max-width: none !important;
-        margin-left: calc(-50vw + 50%) !important;
-        padding: 0 !important;
-    }
-    
-    [data-testid="stApp"] {
-        width: 100vw !important;
-        max-width: none !important;
-        margin-left: calc(-50vw + 50%) !important;
-    }
-    
-    section[data-testid="stAppViewContainer"] {
-        width: 100vw !important;
-        max-width: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
+    /* Remove default padding for full-width experience */
     .block-container {
-        max-width: none !important;
-        width: 100vw !important;
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
-        padding-top: 1rem !important;
-        padding-bottom: 1rem !important;
-        margin: 0 !important;
-    }
-    
-    /* SIDEBAR SIZING FOR STREAMLIT CLOUD */
-    [data-testid="stSidebar"] {
-        width: 250px !important;
-        max-width: 250px !important;
-    }
-    
-    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
-        width: 100% !important;
-    }
-    
-    /* SIDEBAR SIZING */
-    [data-testid="stSidebar"] {
-        width: 280px !important;
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        max-width: 100%;
     }
     
     /* BLUE COLOR SCHEME FOR ALL ELEMENTS */
@@ -365,7 +322,7 @@ try:
     }
     
     /* COLUMNS */
-    [data-testid="column"] {
+    .stColumn {
         background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%) !important;
         border: 1px solid #e0e7ff !important;
         border-radius: 10px !important;
@@ -380,15 +337,15 @@ try:
         border-radius: 6px !important;
     }
     
+    /* LOGO HEADER */
     .logo-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 20px 30px;
+        padding: 20px 2rem;
         background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
         border-bottom: 3px solid #1e40af;
-        margin: 0 -2rem 30px -2rem;
-        width: calc(100% + 4rem);
+        margin: -1.5rem -2rem 30px -2rem;
         border-radius: 0 0 12px 12px;
         box-shadow: 0 6px 20px rgba(30, 64, 175, 0.2);
     }
@@ -397,7 +354,6 @@ try:
         display: flex;
         align-items: center;
         gap: 15px;
-
     }
     
     .logo-icon {
@@ -430,35 +386,6 @@ try:
         font-weight: 600;
     }
     </style>
-    <div class='logo-header'>
-        <div class='logo-section'>
-            <div class='logo-icon'>🔐</div>
-            <div class='logo-text'>
-                <h1>JNTUA BB84 QKD Simulator</h1>
-                <p>Quantum Key Distribution | Cryptography & Security</p>
-            </div>
-        </div>
-        <div class='header-status'>✓ System Ready</div>
-    </div>
-    """, unsafe_allow_html=True)
-except Exception as e:
-    # Silently ignore page config errors
-    pass
-
-# Force light theme via CSS - ensures light mode even if user has dark theme set globally
-def force_light_theme():
-    """Force light theme regardless of user's Streamlit theme settings"""
-    st.markdown("""
-    <script>
-    const theme = 'light';
-    const root = document.documentElement;
-    root.setAttribute('data-theme', theme);
-    // Set CSS variables for light theme
-    root.style.setProperty('--primary-color', '#2563eb');
-    root.style.setProperty('--text-color', '#1a1a1a');
-    root.style.setProperty('--background-color', '#ffffff');
-    root.style.setProperty('--secondary-background-color', '#f8f9fa');
-    </script>
     """, unsafe_allow_html=True)
 
 # GPU BACKEND DETECTION (MUST BE BEFORE SESSION INIT)
@@ -1610,44 +1537,37 @@ def main():
     """Main Streamlit application entry point"""
     
     # CRITICAL: INITIALIZE SESSION STATE FIRST
-    # CRITICAL: INITIALIZE SESSION STATE FIRST
     # This must be the absolute first operation to prevent SessionInfo errors
     try:
         _initialize_session_state()
     except Exception as e:
         logger.error(f"Session initialization error: {e}")
-        # Continue anyway - setdefault is idempotent
         pass
     
-    # FORCE LIGHT THEME FOR ALL USERS
+    # INJECT RESPONSIVE CSS FOR STREAMLIT CLOUD COMPATIBILITY
     try:
-        force_light_theme()
+        inject_responsive_css()
     except Exception as e:
-        logger.error(f"Light theme enforcement error: {e}")
+        logger.debug(f"CSS injection: {e}")
         pass
     
-    # INJECT CSS AFTER HEADER (BEFORE ANY STREAMLIT COMPONENTS)
-    try:
-        inject_custom_css()
-    except Exception as e:
-        logger.error(f"CSS injection error: {e}")
-        pass
-    
-    # ANIMATED COLORFUL HEADER - BEAUTIFUL AND VIBRANT
+    # LOGO HEADER WITH PROPER RESPONSIVE STYLING
     try:
         st.markdown("""
-        <div class='animated-header'>
-            <h1>BB84 Quantum Key Distribution Simulator</h1>
-            <div class='divider'></div>
-            <p class='subtitle'>Interactive Quantum Cryptography Platform</p>
-            <p class='subtext'>JNTUA | Department of Electronics and Communication Engineering</p>
+        <div class='logo-header'>
+            <div class='logo-section'>
+                <div class='logo-icon'>🔐</div>
+                <div class='logo-text'>
+                    <h1>JNTUA BB84 QKD Simulator</h1>
+                    <p>Quantum Key Distribution | Cryptography & Security</p>
+                </div>
+            </div>
+            <div class='header-status'>✓ System Ready</div>
         </div>
         """, unsafe_allow_html=True)
     except Exception as e:
-        # Fallback to simple heading if HTML rendering fails
-        logger.error(f"Animated header error (silent): {e}")
+        logger.debug(f"Header rendering: {e}")
         st.markdown("# BB84 Quantum Key Distribution Simulator")
-        st.markdown("*Interactive Quantum Cryptography Platform*")
     
     # Platform features card - PURE STREAMLIT
     st.subheader("Platform Capabilities")

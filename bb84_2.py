@@ -98,7 +98,8 @@ from bb84_cliparts import (
     get_security_status_svg,
     get_qber_gauge_svg,
     get_bloch_sphere_svg,
-    get_timeline_comparison_svg
+    get_timeline_comparison_svg,
+    get_spy_agent_svg
 )
 
 # Configure logging
@@ -404,6 +405,30 @@ def inject_responsive_css():
         object-fit: contain;
     }
     
+    .logo-icon-spy {
+        width: 140px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 15px;
+        background: rgba(196, 30, 58, 0.1);
+        border: 2px solid #c41e3a;
+        border-radius: 12px;
+        animation: spy-pulse 2s ease-in-out infinite;
+    }
+    
+    .logo-icon-spy > svg {
+        width: 100px;
+        height: 100px;
+    }
+    
+    @keyframes spy-pulse {
+        0%, 100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 10px rgba(196, 30, 58, 0.3); }
+        50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 20px rgba(196, 30, 58, 0.6); }
+    }
+    
     .logo-text {
         text-align: center;
     }
@@ -510,9 +535,9 @@ from bb84_visualizations import (
 # Prevents "SessionInfo before it was initialized" errors
 
 def _initialize_session_state():
-    """Initialize ALL session state variables - IDEMPOTENT"""
+    """Initialize ALL session state variables - IDEMPOTENT & ADVANCED"""
     try:
-        # Simulation parameters
+        # SIMULATION PARAMETERS - QUANTUM CONFIGURATION
         st.session_state.setdefault("num_bits", config.DEFAULT_QUBITS)
         st.session_state.setdefault("threshold", config.DEFAULT_QBER_THRESHOLD)
         st.session_state.setdefault("eve_prob", config.DEFAULT_EVE_PROB)
@@ -522,18 +547,21 @@ def _initialize_session_state():
         st.session_state.setdefault("pdf_max", config.DEFAULT_PDF_MAX_BITS)
         st.session_state.setdefault("sifted_display_size", config.DEFAULT_SIFTED_DISPLAY_SIZE)
 
-        # Simulation control flags
+        # SIMULATION CONTROL FLAGS - EXECUTION STATE
         st.session_state.setdefault("simulation_run", False)
         st.session_state.setdefault("simulation_completed", False)
         st.session_state.setdefault("simulation_in_progress", False)
+        st.session_state.setdefault("last_simulation_time", None)
+        st.session_state.setdefault("simulation_count", 0)
 
-        # Simulation results (CACHED - reused across reruns)
+        # SIMULATION RESULTS - CACHED DATA FOR REUSE
         st.session_state.setdefault("sim_results", None)
         st.session_state.setdefault("alice_bits_stored", None)
         st.session_state.setdefault("alice_bases_stored", None)
         st.session_state.setdefault("bob_bases_stored", None)
+        st.session_state.setdefault("previous_sim_params", None)
 
-        # UI state for fragments
+        # UI STATE FOR FRAGMENTS - COMPONENT TRACKING
         st.session_state.setdefault("bloch_single_idx", 0)
         st.session_state.setdefault("bloch_range_start", 0)
         st.session_state.setdefault("bloch_range_end", 10)
@@ -541,10 +569,33 @@ def _initialize_session_state():
         st.session_state.setdefault("timeline_range_no_end", 0)
         st.session_state.setdefault("timeline_range_eve_start", 0)
         st.session_state.setdefault("timeline_range_eve_end", 0)
+        st.session_state.setdefault("active_tab", "Timeline Analysis")
 
-        # Cached visualization objects
+        # CACHED VISUALIZATION OBJECTS - PERFORMANCE OPTIMIZATION
         st.session_state.setdefault("cached_figures", {})
         st.session_state.setdefault("cached_pdf_bytes", None)
+        st.session_state.setdefault("cache_timestamp", None)
+
+        # SESSION METADATA - TRACKING & ANALYTICS
+        st.session_state.setdefault("session_start_time", datetime.now())
+        st.session_state.setdefault("session_id", np.random.randint(100000, 999999))
+        st.session_state.setdefault("user_preferences", {
+            "show_pdf_style": True,
+            "show_plotly": True,
+            "show_detailed_analysis": True,
+            "theme_mode": "light"
+        })
+        st.session_state.setdefault("performance_metrics", {
+            "last_sim_duration": 0,
+            "total_simulations": 0,
+            "avg_simulation_time": 0
+        })
+
+        # SECURITY & VALIDATION STATE
+        st.session_state.setdefault("validation_errors", [])
+        st.session_state.setdefault("warning_messages", [])
+        st.session_state.setdefault("info_messages", [])
+
     except Exception as e:
         # Silently ignore any session state errors
         logger.debug(f"Session state error (ignored): {e}")
@@ -564,6 +615,21 @@ except Exception:
     # Silently ignore any initialization errors at module level
     # The initialization will happen in main() anyway
     pass
+
+# HELPER: Get session summary for debugging/analytics
+def _get_session_summary():
+    """Return comprehensive session state summary"""
+    try:
+        return {
+            "session_id": st.session_state.get("session_id", "unknown"),
+            "uptime_seconds": (datetime.now() - st.session_state.get("session_start_time", datetime.now())).total_seconds(),
+            "simulations_run": st.session_state.get("simulation_count", 0),
+            "last_parameters": st.session_state.get("previous_sim_params", None),
+            "is_simulation_active": st.session_state.get("simulation_in_progress", False),
+            "has_results": st.session_state.get("simulation_completed", False),
+        }
+    except Exception:
+        return {}
 
 # SIMULATION ENGINE - RUN ONLY ON BUTTON PRESS
 
@@ -1592,9 +1658,13 @@ def main():
         logger.debug(f"CSS injection: {e}")
         pass
     
-    # LOGO HEADER WITH PROPER RESPONSIVE STYLING - BIG AND CENTERED
+    # ADVANCED HEADER WITH SESSION TRACKING & SPY THEME WITH TEAM SILICON
     try:
-        st.markdown("""
+        session_info = _get_session_summary()
+        uptime = int(session_info.get("uptime_seconds", 0))
+        sims = session_info.get("simulations_run", 0)
+        
+        st.markdown(f"""
         <div class='logo-header'>
             <div class='logo-section'>
                 <div class='logo-icon'>
@@ -1602,54 +1672,96 @@ def main():
                 </div>
                 <div class='logo-text'>
                     <h1>JNTUA BB84 QKD Simulator</h1>
-                    <p>Quantum Key Distribution | Cryptography & Security</p>
+                    <p>Quantum Key Distribution | Espionage Detection System</p>
+                    <p style='font-size: 11px; color: #cfe2ff; margin-top: 5px;'>Session #{session_info.get("session_id", "N/A")} • {sims} simulations run</p>
+                </div>
+                <div class='logo-icon-spy'>
+                    {get_spy_agent_svg()}
+                    <div style='text-align: center; margin-top: 8px; font-size: 12px; font-weight: 700; color: #ff6b6b; letter-spacing: 1px;'>TEAM SILICON</div>
+                    <div style='text-align: center; font-size: 9px; color: #c41e3a; margin-top: 2px;'>Counter-Intelligence Division</div>
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
     except Exception as e:
         logger.debug(f"Header rendering: {e}")
-        st.markdown("# BB84 Quantum Key Distribution Simulator")
+        st.markdown("# JNTUA BB84 Quantum Key Distribution Simulator")
     
-    # Platform features card - PURE STREAMLIT
-    st.subheader("Platform Capabilities")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("**Simulation:** Complete BB84 protocol execution")
-        st.markdown("**Security:** Eavesdropper detection via QBER")
-        st.markdown("**Analysis:** Timeline & comparative metrics")
-    with col2:
-        st.markdown("**Visualization:** Bloch sphere quantum states")
-        st.markdown("**Reports:** PDF export with full analysis")
-        st.markdown("**Education:** Interactive learning platform")
+    # ADVANCED PLATFORM CAPABILITIES WITH ICONS
+    st.markdown("### Platform Capabilities")
+    cap_col1, cap_col2, cap_col3 = st.columns(3)
     
-    # Status indicator (without pop-up) - using metric instead
-    col_status1, col_status2 = st.columns(2)
-    with col_status1:
-        st.metric("System Status", "Ready", "All Systems Operational")
-    with col_status2:
+    with cap_col1:
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #1e40af;'>
+        <strong style='color: #1e40af;'>Quantum Simulation</strong>
+        <p style='color: #1a1a1a; font-size: 13px; margin: 5px 0 0 0;'>Complete BB84 protocol execution with quantum mechanics</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with cap_col2:
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #1e40af;'>
+        <strong style='color: #1e40af;'>Threat Detection</strong>
+        <p style='color: #1a1a1a; font-size: 13px; margin: 5px 0 0 0;'>Eavesdropper detection via QBER analysis</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with cap_col3:
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #1e40af;'>
+        <strong style='color: #1e40af;'>Intelligence Analytics</strong>
+        <p style='color: #1a1a1a; font-size: 13px; margin: 5px 0 0 0;'>Timeline & metrics with visualizations</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # ADVANCED SYSTEM STATUS CARDS
+    st.markdown("### System Status")
+    status_col1, status_col2, status_col3 = st.columns(3)
+    
+    with status_col1:
         try:
             backend, gpu_available = get_quantum_backend()
-            if gpu_available:
-                st.metric("Backend", "GPU", "CUDA Acceleration Active")
-            else:
-                st.metric("Backend", "CPU", "Standard Processing")
+            backend_name = "GPU (CUDA)" if gpu_available else "CPU"
+            st.metric("Quantum Backend", backend_name, "Operational")
         except Exception:
-            st.metric("Backend", "CPU", "Standard Processing")
+            st.metric("Quantum Backend", "CPU", "Operational")
     
-    # NOTE: DO NOT CALL render_meta_tags_safely() - it causes "Bad message format" errors
-    # Minimal meta tag injection is redundant and triggers frontend message format issues
-
-    left, center = st.columns([2, 8])
-    with left:
-        try:
-            st.image("jntua_logo.png", width=200)
-        except:
-            pass
-
-    with center:
-        st.subheader("JNTUA BB84 Quantum Key Distribution Simulator")
-        st.markdown("**Department of Electronics and Communication Engineering**")
+    with status_col2:
+        st.metric("Security Mode", "Enabled", "QBER Monitoring Active")
+    
+    with status_col3:
+        session_info = _get_session_summary()
+        sim_count = session_info.get("simulations_run", 0)
+        st.metric("Session Stats", f"{sim_count} simulations", f"ID: {session_info.get('session_id', 'N/A')}")
+    
+    st.divider()
+    
+    # ADVANCED SESSION INFORMATION DISPLAY
+    with st.expander("Session & Environment Details", expanded=False):
+        col_info1, col_info2 = st.columns(2)
+        with col_info1:
+            st.markdown("**Session Information:**")
+            session_info = _get_session_summary()
+            st.markdown(f"""
+            - **Session ID:** `{session_info.get('session_id', 'N/A')}`
+            - **Uptime:** {int(session_info.get('uptime_seconds', 0))} seconds
+            - **Simulations:** {session_info.get('simulations_run', 0)}
+            - **Active Simulation:** {'Yes' if session_info.get('is_simulation_active') else 'No'}
+            """)
+        
+        with col_info2:
+            st.markdown("**Current Configuration:**")
+            try:
+                st.markdown(f"""
+                - **Qubits:** {st.session_state.num_bits}
+                - **QBER Threshold:** {st.session_state.threshold:.2f}%
+                - **Eve Probability:** {st.session_state.eve_prob:.0%}
+                - **Noise Level:** {st.session_state.noise_prob:.2%}
+                """)
+            except:
+                st.markdown("Configuration loading...")
+    
     st.header("BB84 Quantum Key Distribution Process")
     st.markdown("""
     **BB84** is the first quantum key distribution protocol. It allows two parties to share a secure key over an insecure channel.

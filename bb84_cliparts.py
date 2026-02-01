@@ -294,3 +294,59 @@ def get_timeline_comparison_svg():
         <text x="30" y="270" font-size="11" font-weight="600" fill="#2563eb">Z = Rectilinear, X = Diagonal</text>
     </svg>
     """
+
+def get_spy_agent_svg():
+    """Espionage agent (Eve) visualization - Spy theme"""
+    return """
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
+        <!-- Background circle with spy theme -->
+        <circle cx="100" cy="100" r="95" fill="#1a1a2e" stroke="#c41e3a" stroke-width="3"/>
+        <circle cx="100" cy="100" r="85" fill="#16213e" stroke="#ff6b6b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+        
+        <!-- Head -->
+        <circle cx="100" cy="60" r="20" fill="#2d3142" stroke="#c41e3a" stroke-width="2"/>
+        
+        <!-- Spy hat/fedora top -->
+        <ellipse cx="100" cy="38" rx="28" ry="12" fill="#1a1a1a" stroke="#ff6b6b" stroke-width="2"/>
+        <path d="M 72 38 Q 72 25, 100 20 Q 128 25, 128 38" fill="#2d2d2d" stroke="#c41e3a" stroke-width="1.5"/>
+        
+        <!-- Eyes with espionage look -->
+        <circle cx="92" cy="58" r="3" fill="#ff6b6b"/>
+        <circle cx="108" cy="58" r="3" fill="#ff6b6b"/>
+        
+        <!-- Spy goggles/glasses glow -->
+        <circle cx="92" cy="58" r="5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.7"/>
+        <circle cx="108" cy="58" r="5" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.7"/>
+        <line x1="97" y1="58" x2="103" y2="58" stroke="#ffd700" stroke-width="1" opacity="0.7"/>
+        
+        <!-- Mouth (sneaky smile) -->
+        <path d="M 95 68 Q 100 70, 105 68" fill="none" stroke="#ff6b6b" stroke-width="1.5"/>
+        
+        <!-- Body/Coat -->
+        <path d="M 82 75 L 75 120 Q 75 130, 85 135 L 115 135 Q 125 130, 125 120 L 118 75 Z" fill="#2d3142" stroke="#c41e3a" stroke-width="2"/>
+        
+        <!-- Spy coat collar -->
+        <path d="M 95 75 L 90 95 M 105 75 L 110 95" stroke="#ff6b6b" stroke-width="1.5" fill="none"/>
+        
+        <!-- Arms -->
+        <line x1="82" y1="85" x2="60" y2="100" stroke="#2d3142" stroke-width="6" stroke-linecap="round"/>
+        <line x1="118" y1="85" x2="140" y2="100" stroke="#2d3142" stroke-width="6" stroke-linecap="round"/>
+        
+        <!-- Hand with interceptor symbol -->
+        <circle cx="55" cy="105" r="7" fill="#c41e3a"/>
+        <text x="55" y="108" font-size="10" font-weight="bold" text-anchor="middle" fill="#fff">✓</text>
+        
+        <!-- Briefcase/Equipment -->
+        <rect x="125" y="105" width="25" height="18" rx="2" fill="#1a1a1a" stroke="#ff6b6b" stroke-width="1.5"/>
+        <line x1="137.5" y1="105" x2="137.5" y2="123" stroke="#ff6b6b" stroke-width="1" opacity="0.6"/>
+        
+        <!-- Surveillance radar waves -->
+        <circle cx="100" cy="100" r="40" fill="none" stroke="#ff6b6b" stroke-width="0.5" opacity="0.4"/>
+        <circle cx="100" cy="100" r="55" fill="none" stroke="#c41e3a" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="100" cy="100" r="70" fill="none" stroke="#ff6b6b" stroke-width="0.5" opacity="0.2"/>
+        
+        <!-- Threat indicator -->
+        <text x="100" y="165" font-size="14" font-weight="bold" text-anchor="middle" fill="#ff6b6b">EVE</text>
+        <text x="100" y="182" font-size="9" font-weight="600" text-anchor="middle" fill="#c41e3a">EAVESDROPPER</text>
+    </svg>
+    """

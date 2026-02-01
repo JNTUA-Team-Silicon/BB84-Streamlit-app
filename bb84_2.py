@@ -712,23 +712,30 @@ def render_bloch_visualizations():
                 bases_array = st.session_state.alice_bases_stored
                 max_idx = len(bits_array) - 1
                 
-                # Use session state directly, no key conflicts
+                # Initialize session state for slider if not present
                 if "bloch_single_idx" not in st.session_state:
                     st.session_state.bloch_single_idx = 0
                 
-                # Ensure slider value is valid
-                current_idx = min(st.session_state.bloch_single_idx, max_idx)
+                # Create a callback function to update session state
+                def update_single_idx():
+                    pass
+                
+                # Ensure slider value is within valid range
+                current_idx = st.session_state.bloch_single_idx
+                if current_idx > max_idx:
+                    current_idx = 0
+                    st.session_state.bloch_single_idx = 0
                 
                 idx = st.slider(
                     "**Select Qubit Index**", 
                     0, max_idx, 
                     value=current_idx,
-                    step=1
+                    step=1,
+                    key="bloch_single_slider"
                 )
                 
-                # Update session state after slider
-                if idx != st.session_state.bloch_single_idx:
-                    st.session_state.bloch_single_idx = idx
+                # Update session state with new value
+                st.session_state.bloch_single_idx = idx
 
                 if idx < len(bits_array):
                     bit = int(bits_array[idx])
@@ -747,11 +754,10 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
                     with state_col2:
                         try:
                             fig = plotly_bloch_sphere([sv])
-                            st.plotly_chart(fig, use_container_width=True)
+                            st.plotly_chart(fig, use_container_width=True, key=f"bloch_single_{idx}")
                         except Exception as e:
                             logger.error(f"Error displaying Bloch sphere: {e}")
-                            # Fallback: show error message in markdown
-                            st.markdown(f"""
+                            st.markdown("""
 <div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
 Could not render Bloch sphere visualization. Please try again.
 </div>
@@ -760,7 +766,7 @@ Could not render Bloch sphere visualization. Please try again.
                     logger.error(f"Index {idx} out of range")
             except Exception as e:
                 logger.error(f"Error in Single Qubit Analysis: {e}")
-                st.markdown(f"""
+                st.markdown("""
 <div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
 Error loading Single Qubit Analysis. Please refresh and try again.
 </div>
@@ -789,17 +795,23 @@ Error loading Single Qubit Analysis. Please refresh and try again.
                 if "bloch_range_end" not in st.session_state:
                     st.session_state.bloch_range_end = min(10, max_idx)
                 
-                # Ensure values are valid
-                default_start = min(st.session_state.bloch_range_start, max_idx)
-                default_end = min(st.session_state.bloch_range_end, max_idx)
-                if default_start > default_end:
-                    default_start, default_end = default_end, default_start
+                # Validate and ensure values are within range
+                current_start = st.session_state.bloch_range_start
+                current_end = st.session_state.bloch_range_end
+                
+                if current_start > max_idx:
+                    current_start = 0
+                if current_end > max_idx:
+                    current_end = max_idx
+                if current_start > current_end:
+                    current_start, current_end = current_end, current_start
                 
                 start, end = st.slider(
                     "**Select Qubit Range**",
                     0, max_idx,
-                    value=(default_start, default_end),
-                    step=1
+                    value=(current_start, current_end),
+                    step=1,
+                    key="bloch_range_slider"
                 )
                 
                 # Ensure start <= end
@@ -828,9 +840,14 @@ Error loading Single Qubit Analysis. Please refresh and try again.
                     try:
                         st.markdown("**3D Bloch Sphere Multi-State View:**")
                         fig = plotly_bloch_sphere(states)
-                        st.plotly_chart(fig, use_container_width=True)
+                        st.plotly_chart(fig, use_container_width=True, key=f"bloch_range_{start}_{end}")
                     except Exception as e:
                         logger.error(f"Error displaying multi-qubit Bloch sphere: {e}")
+                        st.markdown("""
+<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
+Could not render Multi-Qubit Bloch sphere visualization. Please try again.
+</div>
+                        """, unsafe_allow_html=True)
                 else:
                     st.markdown("""
 <div style='padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 5px; color: #856404;'>
@@ -847,39 +864,67 @@ Error loading Multi-Qubit Range Analysis. Please refresh and try again.
 
     with qv_tab3:
         st.subheader("Polarization Analysis")
-        pol_col1, pol_col2 = st.columns(2)
         
-        with pol_col1:
-            st.markdown("**Rectilinear Polarization (Z-Basis)**")
-            st.markdown("• **|0 (North)**: Horizontal\n• **|1 (South)**: Vertical")
+        # Check if simulation has been run
+        if st.session_state.alice_bits_stored is None or st.session_state.alice_bases_stored is None:
+            st.markdown("""
+<div style='padding: 20px; background: linear-gradient(135deg, #fff3cd 0%, #fffbea 100%); border-left: 4px solid #ffc107; border-radius: 8px; margin: 20px 0;'>
+    <p style='color: #856404; font-weight: 600; margin: 0;'>ℹ️ No Simulation Data</p>
+    <p style='color: #856404; margin: 10px 0 0 0;'>Please run the BB84 simulation first to analyze polarization states.</p>
+</div>
+            """, unsafe_allow_html=True)
+        else:
             try:
-                sv0 = Statevector.from_label('0')
-                sv1 = Statevector.from_label('1')
-                st.plotly_chart(plotly_bloch_sphere([sv0, sv1]), use_container_width=True)
-            except Exception as e:
-                logger.error(f"Error displaying Z-basis: {e}")
-            
-            bases_array = st.session_state.alice_bases_stored
-            bits_array = st.session_state.alice_bits_stored
-            z_bits = [i for i, b in enumerate(bases_array) if b == 0]
-            z_0 = sum(1 for i in z_bits if bits_array[i] == 0)
-            z_1 = sum(1 for i in z_bits if bits_array[i] == 1)
-            st.markdown(f"**Bits in Z-Basis:** {len(z_bits)} (|0: {z_0}, |1: {z_1})")
+                pol_col1, pol_col2 = st.columns(2)
+                bases_array = st.session_state.alice_bases_stored
+                bits_array = st.session_state.alice_bits_stored
+                
+                with pol_col1:
+                    st.markdown("**Rectilinear Polarization (Z-Basis)**")
+                    st.markdown("• **|0 (North)**: Horizontal\n• **|1 (South)**: Vertical")
+                    try:
+                        sv0 = Statevector.from_label('0')
+                        sv1 = Statevector.from_label('1')
+                        st.plotly_chart(plotly_bloch_sphere([sv0, sv1]), use_container_width=True, key="bloch_z_basis")
+                    except Exception as e:
+                        logger.error(f"Error displaying Z-basis: {e}")
+                        st.markdown("""
+<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
+Could not render Z-Basis visualization.
+</div>
+                        """, unsafe_allow_html=True)
+                    
+                    z_bits = [i for i, b in enumerate(bases_array) if b == 0]
+                    z_0 = sum(1 for i in z_bits if bits_array[i] == 0)
+                    z_1 = sum(1 for i in z_bits if bits_array[i] == 1)
+                    st.markdown(f"**Bits in Z-Basis:** {len(z_bits)} (|0: {z_0}, |1: {z_1})")
 
-        with pol_col2:
-            st.markdown("**Diagonal Polarization (X-Basis)**")
-            st.markdown("• **|+ (East)**: Superposition\n• **|- (West)**: Superposition")
-            try:
-                sv_plus = Statevector([1/np.sqrt(2), 1/np.sqrt(2)])
-                sv_minus = Statevector([1/np.sqrt(2), -1/np.sqrt(2)])
-                st.plotly_chart(plotly_bloch_sphere([sv_plus, sv_minus]), use_container_width=True)
+                with pol_col2:
+                    st.markdown("**Diagonal Polarization (X-Basis)**")
+                    st.markdown("• **|+ (East)**: Superposition\n• **|- (West)**: Superposition")
+                    try:
+                        sv_plus = Statevector([1/np.sqrt(2), 1/np.sqrt(2)])
+                        sv_minus = Statevector([1/np.sqrt(2), -1/np.sqrt(2)])
+                        st.plotly_chart(plotly_bloch_sphere([sv_plus, sv_minus]), use_container_width=True, key="bloch_x_basis")
+                    except Exception as e:
+                        logger.error(f"Error displaying polarization: {e}")
+                        st.markdown("""
+<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
+Could not render X-Basis visualization.
+</div>
+                        """, unsafe_allow_html=True)
+                    
+                    x_bits = [i for i, b in enumerate(bases_array) if b == 1]
+                    x_plus = sum(1 for i in x_bits if bits_array[i] == 0)
+                    x_minus = sum(1 for i in x_bits if bits_array[i] == 1)
+                    st.markdown(f"**Bits in X-Basis:** {len(x_bits)} (|+: {x_plus}, |-: {x_minus})")
             except Exception as e:
-                logger.error(f"Error displaying polarization: {e}")
-            
-            x_bits = [i for i, b in enumerate(bases_array) if b == 1]
-            x_plus = sum(1 for i in x_bits if bits_array[i] == 0)
-            x_minus = sum(1 for i in x_bits if bits_array[i] == 1)
-            st.markdown(f"**Bits in X-Basis:** {len(x_bits)} (|+: {x_plus}, |-: {x_minus})")
+                logger.error(f"Error in Polarization Analysis: {e}")
+                st.markdown("""
+<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
+Error loading Polarization Analysis. Please refresh and try again.
+</div>
+                """, unsafe_allow_html=True)
 
 
 # PDF REPORT GENERATION - WITH CACHING

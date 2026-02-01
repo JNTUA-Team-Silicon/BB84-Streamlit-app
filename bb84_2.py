@@ -1752,10 +1752,11 @@ def main():
                     padding: 60px 40px; border-radius: 25px; margin: 20px 0 40px 0; 
                     box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
                     border: 2px solid rgba(0, 150, 255, 0.3);
-                    position: relative; overflow: hidden;'>
+                    position: relative; overflow: visible;'>
             <div style='position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
                         background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%); 
                         border-radius: 50%; pointer-events: none;'></div>
+            <div style='display: flex; align-items: center; justify-content: center; gap: 40px; position: relative; z-index: 10;'>
         """, unsafe_allow_html=True)
         
         col1, col2 = st.columns([0.15, 0.85], vertical_alignment="center")
@@ -1786,7 +1787,10 @@ def main():
                 </div>
             """, unsafe_allow_html=True)
         
-        st.markdown("""""", unsafe_allow_html=True)
+        st.markdown("""
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
         # PREMIUM DIVIDER - SEPARATES HERO FROM CONTENT
         st.markdown("""

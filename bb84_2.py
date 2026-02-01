@@ -785,48 +785,6 @@ def render_metrics_display():
     
     st.divider()
     
-    # INFORMATION BOX: Why Bits Lost Might Show Zero
-    eve_prob = st.session_state.sim_results['parameters'].get('eve_prob', 0.5)
-    
-    if (no_eve['sifted_count'] - eve['sifted_count']) == 0:
-        st.info(f"""
-        **Why "Sifted Bits Lost to Eve" shows 0?**
-        
-        This can happen due to:
-        1. **Eve Probability = {eve_prob:.0%}**: Eve doesn't intercept all qubits. Lower probability = fewer bits affected.
-        2. **Statistical Variance**: Eve's random basis choices sometimes align correctly, causing no error introduction.
-        3. **Small Sample Size**: With fewer transmitted bits, random variations make losses less visible.
-        
-        **Tip**: To see Eve's impact clearly:
-        - Increase **Eve Probability** slider (closer to 100%)
-        - Increase **Transmitted Bits** (larger sample size)
-        - Watch the **Eve's Impact on Sift Rate (%)** - this shows the percentage difference even if bit count is similar
-        - Check **QBER** - this shows if Eve was detected through errors
-        """)
-    
-    # CRUCIAL: Explain Detection vs. Bits Lost
-    if (no_eve['sifted_count'] - eve['sifted_count']) == 0 and eve['qber'] > st.session_state.threshold:
-        st.warning(f"""
-        **KEY INSIGHT: Eve Can Be Detected Even With 0 Bits Lost!** 🔍
-        
-        **Why?** Eve is detected through **QBER (error rate)**, NOT through lost bits count.
-        
-        **Difference:**
-        - **Sifted Bits Lost** = Difference in COUNT (200 vs 200 = 0)
-        - **QBER** = Error RATE in sifted bits (% of errors)
-        
-        **What Happened:**
-        - Same number of sifted bits from both scenarios
-        - BUT the "With Eve" sifted bits contain MORE ERRORS
-        - Eve measured in wrong basis → introduced bit flips
-        - Your QBER = {eve['qber']:.4f} > Threshold {st.session_state.threshold:.2f} = **EVE DETECTED** 🚨
-        
-        **Example:**
-        - No Eve: 100 correct sifted bits (0% errors)
-        - With Eve: 100 sifted bits BUT 10 are wrong (10% error rate - QBER detected!)
-        """)
-
-    
     # 2. ERRORS DETECTED
     col1, col2 = st.columns(2)
     with col1:

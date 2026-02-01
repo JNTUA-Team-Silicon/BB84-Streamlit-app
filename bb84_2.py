@@ -773,7 +773,7 @@ def render_final_key_download():
 
 @st.fragment
 def render_metrics_display():
-    """Display main metrics - Sequential side-by-side comparison. UI-only, reads from session_state."""
+    """Display main metrics - Clean sequential layout. UI-only, reads from session_state."""
     # Fragment safety guard
     if not st.session_state.get("simulation_completed", False):
         return
@@ -791,111 +791,111 @@ def render_metrics_display():
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #93c5fd;'>
-            <p style='color: #1e40af; font-size: 12px; margin: 0 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>No Eavesdropper</p>
-            <h2 style='color: #1e40af; margin: 0 0 5px 0; font-size: 32px; font-weight: 900;'>{no_eve['sifted_count']}</h2>
-            <p style='color: #1e40af; font-size: 13px; margin: 0; font-weight: 600;'>Sifted Bits</p>
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>No Eavesdropper</p>
+            <h2 style='color: #1e40af; margin: 0; font-size: 36px; font-weight: 900;'>{no_eve['sifted_count']}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Sifted Bits</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #fca5a5;'>
-            <p style='color: #991b1b; font-size: 12px; margin: 0 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>With Eve</p>
-            <h2 style='color: #991b1b; margin: 0 0 5px 0; font-size: 32px; font-weight: 900;'>{eve['sifted_count']}</h2>
-            <p style='color: #991b1b; font-size: 13px; margin: 0; font-weight: 600;'>Sifted Bits</p>
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>With Eve</p>
+            <h2 style='color: #dc2626; margin: 0; font-size: 36px; font-weight: 900;'>{eve['sifted_count']}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Sifted Bits</p>
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown("")
+    st.divider()
     
     # 2. ERRORS DETECTED
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #fca5a5;'>
-            <p style='color: #991b1b; font-size: 12px; margin: 0 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>No Eavesdropper</p>
-            <h2 style='color: #991b1b; margin: 0 0 5px 0; font-size: 32px; font-weight: 900;'>{no_eve['errors']}</h2>
-            <p style='color: #991b1b; font-size: 13px; margin: 0; font-weight: 600;'>Errors Detected</p>
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>No Eavesdropper</p>
+            <h2 style='color: #16a34a; margin: 0; font-size: 36px; font-weight: 900;'>{no_eve['errors']}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Errors Detected</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #fca5a5;'>
-            <p style='color: #991b1b; font-size: 12px; margin: 0 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>With Eve</p>
-            <h2 style='color: #991b1b; margin: 0 0 5px 0; font-size: 32px; font-weight: 900;'>{eve['errors']}</h2>
-            <p style='color: #991b1b; font-size: 13px; margin: 0; font-weight: 600;'>Errors Detected</p>
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>With Eve</p>
+            <h2 style='color: #dc2626; margin: 0; font-size: 36px; font-weight: 900;'>{eve['errors']}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Errors Detected</p>
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown("")
+    st.divider()
     
     # 3. QBER
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #86efac;'>
-            <p style='color: #166534; font-size: 12px; margin: 0 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>No Eavesdropper</p>
-            <h2 style='color: #166534; margin: 0 0 5px 0; font-size: 32px; font-weight: 900;'>{no_eve['qber']:.4f}</h2>
-            <p style='color: #166534; font-size: 13px; margin: 0; font-weight: 600;'>QBER</p>
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>No Eavesdropper</p>
+            <h2 style='color: #2563eb; margin: 0; font-size: 36px; font-weight: 900;'>{no_eve['qber']:.4f}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>QBER</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #86efac;'>
-            <p style='color: #166534; font-size: 12px; margin: 0 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>With Eve</p>
-            <h2 style='color: #166534; margin: 0 0 5px 0; font-size: 32px; font-weight: 900;'>{eve['qber']:.4f}</h2>
-            <p style='color: #166534; font-size: 13px; margin: 0; font-weight: 600;'>QBER</p>
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>With Eve</p>
+            <h2 style='color: #dc2626; margin: 0; font-size: 36px; font-weight: 900;'>{eve['qber']:.4f}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>QBER</p>
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown("")
+    st.divider()
     
     # 4. FINAL KEY LENGTH
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #c4b5fd;'>
-            <p style='color: #5b21b6; font-size: 12px; margin: 0 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>No Eavesdropper</p>
-            <h2 style='color: #5b21b6; margin: 0 0 5px 0; font-size: 32px; font-weight: 900;'>{no_eve['final_key_length']}</h2>
-            <p style='color: #5b21b6; font-size: 13px; margin: 0; font-weight: 600;'>Final Key Length</p>
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>No Eavesdropper</p>
+            <h2 style='color: #1e40af; margin: 0; font-size: 36px; font-weight: 900;'>{no_eve['final_key_length']}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Final Key Length</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #c4b5fd;'>
-            <p style='color: #5b21b6; font-size: 12px; margin: 0 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>With Eve</p>
-            <h2 style='color: #5b21b6; margin: 0 0 5px 0; font-size: 32px; font-weight: 900;'>{eve['final_key_length']}</h2>
-            <p style='color: #5b21b6; font-size: 13px; margin: 0; font-weight: 600;'>Final Key Length</p>
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>With Eve</p>
+            <h2 style='color: #dc2626; margin: 0; font-size: 36px; font-weight: 900;'>{eve['final_key_length']}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Final Key Length</p>
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown("")
+    st.divider()
     
     # 5. KEY RATE
     col1, col2 = st.columns(2)
     with col1:
         st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #93c5fd;'>
-            <p style='color: #1e3a8a; font-size: 12px; margin: 0 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>No Eavesdropper</p>
-            <h2 style='color: #1e3a8a; margin: 0 0 5px 0; font-size: 32px; font-weight: 900;'>{no_eve['final_key_length'] / num_bits:.4f}</h2>
-            <p style='color: #1e3a8a; font-size: 13px; margin: 0; font-weight: 600;'>Key Rate</p>
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>No Eavesdropper</p>
+            <h2 style='color: #7c3aed; margin: 0; font-size: 36px; font-weight: 900;'>{no_eve['final_key_length'] / num_bits:.4f}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Key Rate</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 20px; border-radius: 10px; text-align: center; border: 1px solid #93c5fd;'>
-            <p style='color: #1e3a8a; font-size: 12px; margin: 0 0 10px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>With Eve</p>
-            <h2 style='color: #1e3a8a; margin: 0 0 5px 0; font-size: 32px; font-weight: 900;'>{eve['final_key_length'] / num_bits:.4f}</h2>
-            <p style='color: #1e3a8a; font-size: 13px; margin: 0; font-weight: 600;'>Key Rate</p>
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>With Eve</p>
+            <h2 style='color: #dc2626; margin: 0; font-size: 36px; font-weight: 900;'>{eve['final_key_length'] / num_bits:.4f}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Key Rate</p>
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown("---")
+    st.divider()
     
     # QBER GAUGE CHARTS BELOW
     st.markdown("### QBER Status Monitoring")

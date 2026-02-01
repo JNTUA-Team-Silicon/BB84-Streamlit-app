@@ -1752,22 +1752,28 @@ def main():
                     padding: 50px 40px; border-radius: 25px; margin: 0 0 40px 0; 
                     box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
                     border: 2px solid rgba(0, 150, 255, 0.3);
-                    position: relative; overflow: hidden;
-                    display: flex; align-items: flex-start; justify-content: flex-start; gap: 40px;'>
+                    position: relative; overflow: hidden;'>
             <div style='position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
                         background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%); 
                         border-radius: 50%; pointer-events: none;'></div>
             
-            <!-- Left Side: Logo and JNTUA Text -->
-            <div style='display: flex; flex-direction: column; align-items: center; min-width: 150px; position: relative; z-index: 10;'>
-                <img src="jntua_logo.png" style='width: 80px; height: auto; margin-bottom: 15px;' alt='JNTUA'>
-                <div style='text-align: center; color: #64b5f6; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; line-height: 1.4;'>
-                    JNTUA CEA<br>Department of ECE
-                </div>
+            <div style='display: flex; align-items: flex-start; justify-content: flex-start; gap: 40px; position: relative; z-index: 10;'>
+        """, unsafe_allow_html=True)
+        
+        # Left side: Logo and JNTUA text
+        left_col, right_col = st.columns([1, 2])
+        
+        with left_col:
+            st.image("jntua_logo.png", use_container_width=True, width=80)
+            st.markdown("""
+            <div style='text-align: center; color: #64b5f6; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; line-height: 1.4;'>
+                JNTUA CEA<br>Department of ECE
             </div>
-            
-            <!-- Right Side: AQVH Project Content -->
-            <div style='flex: 1; padding: 10px 0; position: relative; z-index: 10;'>
+            """, unsafe_allow_html=True)
+        
+        with right_col:
+            st.markdown("""
+            <div style='padding: 0; position: relative; z-index: 10;'>
                 <p style='margin: 0 0 10px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; 
                          letter-spacing: 3px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.3);'>
                     Interactive BB84 QKD Simulator
@@ -1786,6 +1792,10 @@ def main():
                          letter-spacing: 0.3px;'>
                     Real-Time Simulation | Team Silicon
                 </p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("""
             </div>
         </div>
         """, unsafe_allow_html=True)

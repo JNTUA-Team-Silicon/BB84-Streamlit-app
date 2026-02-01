@@ -697,123 +697,153 @@ def render_bloch_visualizations():
 
     with qv_tab1:
         st.subheader("Single Qubit Quantum State Analysis")
-        try:
-            bits_array = st.session_state.alice_bits_stored
-            bases_array = st.session_state.alice_bases_stored
-            
-            if bits_array is None or bases_array is None:
-                logger.error("No simulation data available. Run simulation first.")
-                return
-            
-            max_idx = len(bits_array) - 1
-            
-            # Use session state directly, no key conflicts
-            if "bloch_single_idx" not in st.session_state:
-                st.session_state.bloch_single_idx = 0
-            
-            # Ensure slider value is valid
-            current_idx = min(st.session_state.bloch_single_idx, max_idx)
-            
-            idx = st.slider(
-                "**Select Qubit Index**", 
-                0, max_idx, 
-                value=current_idx,
-                step=1
-            )
-            
-            # Update session state after slider
-            if idx != st.session_state.bloch_single_idx:
-                st.session_state.bloch_single_idx = idx
-
-            if idx < len(bits_array):
-                bit = int(bits_array[idx])
-                basis = int(bases_array[idx])
-                sv = BB84Simulator.get_statevector_from_bit_basis(bit, basis)
+        
+        # Check if simulation has been run
+        if st.session_state.alice_bits_stored is None or st.session_state.alice_bases_stored is None:
+            st.markdown("""
+<div style='padding: 20px; background: linear-gradient(135deg, #fff3cd 0%, #fffbea 100%); border-left: 4px solid #ffc107; border-radius: 8px; margin: 20px 0;'>
+    <p style='color: #856404; font-weight: 600; margin: 0;'>ℹ️ No Simulation Data</p>
+    <p style='color: #856404; margin: 10px 0 0 0;'>Please run the BB84 simulation first to analyze quantum states.</p>
+</div>
+            """, unsafe_allow_html=True)
+        else:
+            try:
+                bits_array = st.session_state.alice_bits_stored
+                bases_array = st.session_state.alice_bases_stored
+                max_idx = len(bits_array) - 1
                 
-                state_col1, state_col2 = st.columns([1, 2])
-                with state_col1:
-                    st.markdown(f"""
+                # Use session state directly, no key conflicts
+                if "bloch_single_idx" not in st.session_state:
+                    st.session_state.bloch_single_idx = 0
+                
+                # Ensure slider value is valid
+                current_idx = min(st.session_state.bloch_single_idx, max_idx)
+                
+                idx = st.slider(
+                    "**Select Qubit Index**", 
+                    0, max_idx, 
+                    value=current_idx,
+                    step=1
+                )
+                
+                # Update session state after slider
+                if idx != st.session_state.bloch_single_idx:
+                    st.session_state.bloch_single_idx = idx
+
+                if idx < len(bits_array):
+                    bit = int(bits_array[idx])
+                    basis = int(bases_array[idx])
+                    sv = BB84Simulator.get_statevector_from_bit_basis(bit, basis)
+                    
+                    state_col1, state_col2 = st.columns([1, 2])
+                    with state_col1:
+                        st.markdown(f"""
 ```
 State: {BB84Simulator.state_label(bit, basis)}
 Bit: {bit}
 Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
 ```
 """)
-                with state_col2:
-                    try:
-                        fig = plotly_bloch_sphere([sv])
-                        st.plotly_chart(fig, use_container_width=True)
-                    except Exception as e:
-                        logger.error(f"Error displaying Bloch sphere: {e}")
-            else:
-                logger.error(f"Index {idx} out of range")
-        except Exception as e:
-            logger.error(f"Error in Single Qubit Analysis: {e}")
+                    with state_col2:
+                        try:
+                            fig = plotly_bloch_sphere([sv])
+                            st.plotly_chart(fig, use_container_width=True)
+                        except Exception as e:
+                            logger.error(f"Error displaying Bloch sphere: {e}")
+                            # Fallback: show error message in markdown
+                            st.markdown(f"""
+<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
+Could not render Bloch sphere visualization. Please try again.
+</div>
+                            """, unsafe_allow_html=True)
+                else:
+                    logger.error(f"Index {idx} out of range")
+            except Exception as e:
+                logger.error(f"Error in Single Qubit Analysis: {e}")
+                st.markdown(f"""
+<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
+Error loading Single Qubit Analysis. Please refresh and try again.
+</div>
+                """, unsafe_allow_html=True)
 
     with qv_tab2:
         st.subheader("Multi-Qubit Range Analysis")
-        try:
-            bits_array = st.session_state.alice_bits_stored
-            bases_array = st.session_state.alice_bases_stored
-            
-            if bits_array is None or bases_array is None:
-                logger.error("No simulation data available. Run simulation first.")
-                return
-            
-            max_idx = len(bits_array) - 1
-            
-            # Initialize range values if not present
-            if "bloch_range_start" not in st.session_state:
-                st.session_state.bloch_range_start = 0
-            if "bloch_range_end" not in st.session_state:
-                st.session_state.bloch_range_end = min(10, max_idx)
-            
-            # Ensure values are valid
-            default_start = min(st.session_state.bloch_range_start, max_idx)
-            default_end = min(st.session_state.bloch_range_end, max_idx)
-            if default_start > default_end:
-                default_start, default_end = default_end, default_start
-            
-            start, end = st.slider(
-                "**Select Qubit Range**",
-                0, max_idx,
-                value=(default_start, default_end),
-                step=1
-            )
-            
-            # Ensure start <= end
-            if start > end:
-                start, end = end, start
-            
-            # Update session state
-            st.session_state.bloch_range_start = start
-            st.session_state.bloch_range_end = end
+        
+        # Check if simulation has been run
+        if st.session_state.alice_bits_stored is None or st.session_state.alice_bases_stored is None:
+            st.markdown("""
+<div style='padding: 20px; background: linear-gradient(135deg, #fff3cd 0%, #fffbea 100%); border-left: 4px solid #ffc107; border-radius: 8px; margin: 20px 0;'>
+    <p style='color: #856404; font-weight: 600; margin: 0;'>ℹ️ No Simulation Data</p>
+    <p style='color: #856404; margin: 10px 0 0 0;'>Please run the BB84 simulation first to analyze quantum states.</p>
+</div>
+            """, unsafe_allow_html=True)
+        else:
+            try:
+                bits_array = st.session_state.alice_bits_stored
+                bases_array = st.session_state.alice_bases_stored
+                max_idx = len(bits_array) - 1
+                
+                # Initialize range values if not present
+                if "bloch_range_start" not in st.session_state:
+                    st.session_state.bloch_range_start = 0
+                if "bloch_range_end" not in st.session_state:
+                    st.session_state.bloch_range_end = min(10, max_idx)
+                
+                # Ensure values are valid
+                default_start = min(st.session_state.bloch_range_start, max_idx)
+                default_end = min(st.session_state.bloch_range_end, max_idx)
+                if default_start > default_end:
+                    default_start, default_end = default_end, default_start
+                
+                start, end = st.slider(
+                    "**Select Qubit Range**",
+                    0, max_idx,
+                    value=(default_start, default_end),
+                    step=1
+                )
+                
+                # Ensure start <= end
+                if start > end:
+                    start, end = end, start
+                
+                # Update session state
+                st.session_state.bloch_range_start = start
+                st.session_state.bloch_range_end = end
 
-            states = []
-            state_info = []
-            for i in range(start, end + 1):
-                if i < len(bits_array):
-                    bit = int(bits_array[i])
-                    basis = int(bases_array[i])
-                    sv = BB84Simulator.get_statevector_from_bit_basis(bit, basis)
-                    states.append(sv)
-                    state_info.append(f"Qubit {i}: {BB84Simulator.state_label(bit, basis)}")
+                states = []
+                state_info = []
+                for i in range(start, end + 1):
+                    if i < len(bits_array):
+                        bit = int(bits_array[i])
+                        basis = int(bases_array[i])
+                        sv = BB84Simulator.get_statevector_from_bit_basis(bit, basis)
+                        states.append(sv)
+                        state_info.append(f"Qubit {i}: {BB84Simulator.state_label(bit, basis)}")
 
-            st.markdown("**Quantum States in Range:**")
-            for info in state_info:
-                st.markdown(f"• {info}")
+                st.markdown("**Quantum States in Range:**")
+                for info in state_info:
+                    st.markdown(f"• {info}")
 
-            if states:
-                try:
-                    st.markdown("**3D Bloch Sphere Multi-State View:**")
-                    fig = plotly_bloch_sphere(states)
-                    st.plotly_chart(fig, use_container_width=True)
-                except Exception as e:
-                    logger.error(f"Error displaying multi-qubit Bloch sphere: {e}")
-            else:
-                logger.error("No states to display in selected range")
-        except Exception as e:
-            logger.error(f"Error in Multi-Qubit Range Analysis: {e}")
+                if states:
+                    try:
+                        st.markdown("**3D Bloch Sphere Multi-State View:**")
+                        fig = plotly_bloch_sphere(states)
+                        st.plotly_chart(fig, use_container_width=True)
+                    except Exception as e:
+                        logger.error(f"Error displaying multi-qubit Bloch sphere: {e}")
+                else:
+                    st.markdown("""
+<div style='padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 5px; color: #856404;'>
+No states to display in selected range.
+</div>
+                    """, unsafe_allow_html=True)
+            except Exception as e:
+                logger.error(f"Error in Multi-Qubit Range Analysis: {e}")
+                st.markdown(f"""
+<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
+Error loading Multi-Qubit Range Analysis. Please refresh and try again.
+</div>
+                """, unsafe_allow_html=True)
 
     with qv_tab3:
         st.subheader("Polarization Analysis")

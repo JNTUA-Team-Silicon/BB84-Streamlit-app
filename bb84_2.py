@@ -42,6 +42,16 @@ from qiskit import transpile
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Suppress specific Streamlit warnings that don't affect functionality
+import warnings
+warnings.filterwarnings('ignore', message='.*Bad message format.*')
+warnings.filterwarnings('ignore', message='.*SessionInfo before it was initialized.*')
+
+# Suppress Streamlit internal logger noise
+logging.getLogger('streamlit').setLevel(logging.ERROR)
+logging.getLogger('streamlit.logger').setLevel(logging.ERROR)
+logging.getLogger('altair').setLevel(logging.ERROR)
+
 # PAGE CONFIG - MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
     page_title="JNTUA BB84 Quantum Key Distribution Simulator - QKD Protocol",
@@ -1124,10 +1134,19 @@ def main():
     # CRITICAL: INITIALIZE SESSION STATE FIRST
     # CRITICAL: INITIALIZE SESSION STATE FIRST
     # This must be the absolute first operation to prevent SessionInfo errors
-    _initialize_session_state()
+    try:
+        _initialize_session_state()
+    except Exception as e:
+        logger.error(f"Session initialization error: {e}")
+        # Continue anyway - setdefault is idempotent
+        pass
     
     # INJECT CSS AFTER HEADER (BEFORE ANY STREAMLIT COMPONENTS)
-    inject_custom_css()
+    try:
+        inject_custom_css()
+    except Exception as e:
+        logger.error(f"CSS injection error: {e}")
+        pass
     
     # ANIMATED COLORFUL HEADER - BEAUTIFUL AND VIBRANT
     try:

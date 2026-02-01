@@ -25,7 +25,10 @@ def plot_pdf_style_timeline(timeline_df, title="BB84 Timeline", max_bits=50, col
     """
     plt.close('all')  # Close any existing figures to avoid caching
     display_df = timeline_df.head(max_bits)
-    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(15, 9))
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(15, 9), facecolor='white')
+    fig.patch.set_facecolor('white')
+    for ax in [ax1, ax2, ax3]:
+        ax.set_facecolor('white')
 
     # Define colors based on scheme
     # Alice's transmitted bits are ALWAYS blue (light cyan for 0, dark blue for 1)
@@ -551,7 +554,8 @@ def create_pdf_report_with_graphs(
     with PdfPages(buf) as pdf:
 
         # -------------------- PAGE 1 (Summary) --------------------
-        fig1 = plt.figure(figsize=(8.27, 11.69))  # A4
+        fig1 = plt.figure(figsize=(8.27, 11.69), facecolor='white')  # A4
+        fig1.patch.set_facecolor('white')
         plt.axis("off")
 
         lines = []
@@ -613,7 +617,10 @@ def create_pdf_report_with_graphs(
         plt.close(fig3)
 
         # -------------------- PAGE 4 (Comparison Bar Chart) --------------------
-        fig4, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.69, 6))  # landscape feel
+        fig4, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.69, 6), facecolor='white')  # landscape feel
+        fig4.patch.set_facecolor('white')
+        ax1.set_facecolor('white')
+        ax2.set_facecolor('white')
 
         # Colors for the bars
         colors_no_eve = ['#5DADE2', '#2E86AB', '#1B4965']  # Blue shades for no eve
@@ -638,7 +645,8 @@ def create_pdf_report_with_graphs(
         plt.close(fig4)
 
         # -------------------- PAGE 5 (Comparison Details) --------------------
-        fig5 = plt.figure(figsize=(8.27, 11.69))  # A4
+        fig5 = plt.figure(figsize=(8.27, 11.69), facecolor='white')  # A4
+        fig5.patch.set_facecolor('white')
         plt.axis("off")
 
         comparison_lines = []

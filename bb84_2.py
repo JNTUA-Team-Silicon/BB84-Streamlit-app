@@ -1746,48 +1746,47 @@ def main():
         sims = session_info.get("simulations_run", 0)
         session_id = session_info.get("session_id", "N/A")
         
-        # PREMIUM HERO SECTION - FIRST IMPRESSION WITH LOGO
+        # PREMIUM HERO SECTION - FIRST IMPRESSION WITH LOGO AND TEXT
         st.markdown("""
         <div style='background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%); 
-                    padding: 80px 40px; border-radius: 25px; margin: 0 0 40px 0; 
+                    padding: 50px 40px; border-radius: 25px; margin: 0 0 40px 0; 
                     box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
                     border: 2px solid rgba(0, 150, 255, 0.3);
                     position: relative; overflow: hidden;
-                    display: flex; align-items: center; justify-content: center;'>
+                    display: flex; align-items: flex-start; justify-content: flex-start; gap: 40px;'>
             <div style='position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
                         background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%); 
                         border-radius: 50%; pointer-events: none;'></div>
-        """, unsafe_allow_html=True)
-        
-        # Logo in hero section
-        logo_col = st.columns([1, 1, 1])[1]
-        with logo_col:
-            st.image("jntua_logo.png", use_container_width=True, width=45)
-        
-        st.markdown("""
-                <div style='padding: 20px 30px; width: 100%; text-align: center; position: relative; z-index: 10;'>
-                    <p style='margin: 0 0 15px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; 
-                             letter-spacing: 3px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.3);'>
-                        Interactive BB84 QKD Simulator
-                    </p>
-                    <h1 style='margin: 0 0 10px 0; background: linear-gradient(90deg, #64b5f6 0%, #ffd700 100%); 
-                              -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 56px; font-weight: 950; 
-                              letter-spacing: -1px; text-shadow: 0 6px 20px rgba(0,0,0,0.4);'>
-                        AQVH PROJECT
-                    </h1>
-                    <h2 style='margin: 0 0 20px 0; background: linear-gradient(90deg, #64b5f6 0%, #bbdefb 100%); 
-                              -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-                              font-size: 32px; font-weight: 850; letter-spacing: 0.5px;'>
-                        BB84 Quantum Key Distribution Simulator
-                    </h2>
-                    <p style='margin: 0; color: #b3e5fc; font-size: 13px; font-weight: 500; 
-                             letter-spacing: 0.3px;'>
-                        Real-Time Simulation | JNTUA CEA Team Silicon ECE Department
-                    </p>
+            
+            <!-- Left Side: Logo and JNTUA Text -->
+            <div style='display: flex; flex-direction: column; align-items: center; min-width: 150px; position: relative; z-index: 10;'>
+                <img src="jntua_logo.png" style='width: 80px; height: auto; margin-bottom: 15px;' alt='JNTUA'>
+                <div style='text-align: center; color: #64b5f6; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; line-height: 1.4;'>
+                    JNTUA CEA<br>Department of ECE
                 </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
+            </div>
+            
+            <!-- Right Side: AQVH Project Content -->
+            <div style='flex: 1; padding: 10px 0; position: relative; z-index: 10;'>
+                <p style='margin: 0 0 10px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; 
+                         letter-spacing: 3px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.3);'>
+                    Interactive BB84 QKD Simulator
+                </p>
+                <h1 style='margin: 0 0 15px 0; background: linear-gradient(90deg, #64b5f6 0%, #ffd700 100%); 
+                          -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 56px; font-weight: 950; 
+                          letter-spacing: -1px; text-shadow: 0 6px 20px rgba(0,0,0,0.4);'>
+                    AQVH PROJECT
+                </h1>
+                <h2 style='margin: 0 0 15px 0; background: linear-gradient(90deg, #64b5f6 0%, #bbdefb 100%); 
+                          -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+                          font-size: 28px; font-weight: 850; letter-spacing: 0.5px;'>
+                    BB84 Quantum Key Distribution Simulator
+                </h2>
+                <p style='margin: 0; color: #b3e5fc; font-size: 13px; font-weight: 500; 
+                         letter-spacing: 0.3px;'>
+                    Real-Time Simulation | Team Silicon
+                </p>
+            </div>
         </div>
         """, unsafe_allow_html=True)
         

@@ -1756,12 +1756,16 @@ def main():
             <div style='position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
                         background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%); 
                         border-radius: 50%; pointer-events: none;'></div>
-            <div style='display: flex; align-items: center; gap: 30px; position: relative; z-index: 10;'>
-                <div style='flex-shrink: 0;'>
-                    <img src='jntua_logo.png' style='width: 120px; height: 120px; border-radius: 15px; 
-                                                      box-shadow: 0 8px 24px rgba(0,0,0,0.3); filter: drop-shadow(0 0 8px rgba(255,255,255,0.1));'>
-                </div>
-                <div style='text-align: center; flex: 1;'>
+            <div style='display: flex; align-items: center; gap: 40px; position: relative; z-index: 10;'>
+        """, unsafe_allow_html=True)
+        
+        col1, col2 = st.columns([0.2, 0.8])
+        with col1:
+            st.image("jntua_logo.png", width=120)
+        
+        with col2:
+            st.markdown("""
+                <div style='text-align: center;'>
                     <p style='margin: 0 0 15px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; 
                              letter-spacing: 3px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.3);'>
                         Advanced Quantum Technology Platform
@@ -1785,6 +1789,9 @@ def main():
                         Post-Quantum Security | Eavesdropping Detection | Real-Time Simulation | JNTUA CEA Team Silicon ECE Department
                     </p>
                 </div>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("""
             </div>
         </div>
         """, unsafe_allow_html=True)

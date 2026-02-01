@@ -1746,21 +1746,7 @@ def main():
         sims = session_info.get("simulations_run", 0)
         session_id = session_info.get("session_id", "N/A")
         
-        # TOP LOGO SECTION - JNTUA ONLY
-        st.markdown("""
-        <div style='display: flex; align-items: center; justify-content: center; margin-bottom: 10px; padding: 5px 0;'>
-        """, unsafe_allow_html=True)
-        
-        logo_col = st.columns([1, 1, 1])[1]
-        
-        with logo_col:
-            st.image("jntua_logo.png", use_container_width=True, width=50)
-        
-        st.markdown("""
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # PREMIUM HERO SECTION - FIRST IMPRESSION
+        # PREMIUM HERO SECTION - FIRST IMPRESSION WITH LOGO
         st.markdown("""
         <div style='background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%); 
                     padding: 80px 40px; border-radius: 25px; margin: 0 0 40px 0; 
@@ -1773,10 +1759,13 @@ def main():
                         border-radius: 50%; pointer-events: none;'></div>
         """, unsafe_allow_html=True)
         
+        # Logo in hero section
+        logo_col = st.columns([1, 1, 1])[1]
+        with logo_col:
+            st.image("jntua_logo.png", use_container_width=True, width=45)
+        
         st.markdown("""
-                <div style='background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%);
-                            padding: 40px 30px; border-radius: 15px; border: 2px solid rgba(100, 181, 246, 0.4);
-                            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); width: 100%; text-align: center; position: relative; z-index: 10;'>
+                <div style='padding: 20px 30px; width: 100%; text-align: center; position: relative; z-index: 10;'>
                     <p style='margin: 0 0 15px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; 
                              letter-spacing: 3px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.3);'>
                         Interactive BB84 QKD Simulator

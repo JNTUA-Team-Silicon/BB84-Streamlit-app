@@ -569,6 +569,9 @@ def run_bb84_simulation():
     st.session_state.simulation_in_progress = True
     
     try:
+        # Start timing the simulation
+        sim_start_time = time.time()
+        
         num_bits = st.session_state.num_bits
         threshold = st.session_state.threshold
         eve_prob = st.session_state.eve_prob
@@ -652,6 +655,9 @@ def run_bb84_simulation():
         progress_bar.empty()
         st.session_state.simulation_completed = True
         
+        # Calculate simulation duration
+        sim_duration = time.time() - sim_start_time
+        
         # Update all session tracking metrics
         st.session_state.simulation_count = st.session_state.get("simulation_count", 0) + 1
         st.session_state.last_simulation_time = datetime.now()
@@ -664,6 +670,21 @@ def run_bb84_simulation():
             'noise_prob': noise_prob,
             'window': window
         }
+        
+        # Update performance metrics
+        perf_metrics = st.session_state.get("performance_metrics", {})
+        perf_metrics["last_sim_duration"] = sim_duration
+        perf_metrics["total_simulations"] = st.session_state.simulation_count
+        # Calculate average simulation time
+        if perf_metrics["total_simulations"] > 0:
+            perf_metrics["avg_simulation_time"] = (
+                (perf_metrics.get("avg_simulation_time", 0) * (perf_metrics["total_simulations"] - 1) + sim_duration) / 
+                perf_metrics["total_simulations"]
+            )
+        st.session_state.performance_metrics = perf_metrics
+        
+        # Clear validation errors on successful simulation
+        st.session_state.validation_errors = []
     
     finally:
         # Always release the lock, even if error occurs
@@ -1978,11 +1999,32 @@ def main():
             """)
         
         with col_info2:
-            st.markdown("**Current Configuration:**")
+            st.markdown("**Performance Metrics:**")
+            perf = st.session_state.get("performance_metrics", {})
+            last_duration = perf.get("last_sim_duration", 0)
+            avg_duration = perf.get("avg_simulation_time", 0)
+            st.markdown(f"""
+            - **Last Simulation Duration:** {last_duration:.3f}s
+            - **Average Simulation Time:** {avg_duration:.3f}s
+            - **Total Simulations:** {perf.get('total_simulations', 0)}
+            - **Status:** {'Running...' if session_info.get('is_simulation_active') else 'Ready'}
+            """)
+        
+        # Current Configuration
+        st.markdown("---")
+        st.markdown("**Current Configuration:**")
+        col_cfg1, col_cfg2 = st.columns(2)
+        with col_cfg1:
             try:
                 st.markdown(f"""
                 - **Qubits:** {st.session_state.num_bits}
                 - **QBER Threshold:** {st.session_state.threshold:.2f}%
+                """)
+            except:
+                st.markdown("Configuration loading...")
+        with col_cfg2:
+            try:
+                st.markdown(f"""
                 - **Eve Probability:** {st.session_state.eve_prob:.0%}
                 - **Noise Level:** {st.session_state.noise_prob:.2%}
                 """)

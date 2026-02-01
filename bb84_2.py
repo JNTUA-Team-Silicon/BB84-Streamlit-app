@@ -11,6 +11,8 @@ os.environ['STREAMLIT_CLIENT_LOGGER_LEVEL'] = 'error'
 os.environ['STREAMLIT_SERVER_LOGGER_LEVEL'] = 'error'
 os.environ['PYTHONWARNINGS'] = 'ignore'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['GRPC_VERBOSITY'] = 'error'
+os.environ['GRPC_GO_LOG_VERBOSITY_LEVEL'] = '99'
 
 # IMPORTS - ORGANIZED BY CATEGORY (MUST BE FIRST)
 import streamlit as st
@@ -118,12 +120,19 @@ class MinimalErrorFilter:
     """Minimal filter for only specific errors - avoids performance issues"""
     def __init__(self, original_stream):
         self.original_stream = original_stream
-        self.suppress_keywords = ['Bad message format', 'SessionInfo before it was initialized', 'Tried to use SessionInfo']
+        self.suppress_keywords = [
+            'Bad message format', 
+            'SessionInfo before it was initialized', 
+            'Tried to use SessionInfo',
+            'protobuf',
+            'grpc'
+        ]
     
     def write(self, text):
         # Only suppress exact error messages, let everything else through
         if not any(keyword in text for keyword in self.suppress_keywords):
             self.original_stream.write(text)
+        return len(text) if text else 0
     
     def flush(self):
         try:
@@ -143,16 +152,17 @@ class MinimalErrorFilter:
     def read(self, n=-1):
         return self.original_stream.read(n) if hasattr(self.original_stream, 'read') else ""
 
-# Apply filter only to stderr
+# Apply filter to both stderr and stdout
 sys.stderr = MinimalErrorFilter(sys.stderr)
+sys.stdout = MinimalErrorFilter(sys.stdout)
 
 # Simple exception handler - only suppress known StreamInfo errors
 _original_excepthook = sys.excepthook
-def _error_handler(type, value, traceback):
-    """Suppress only SessionInfo-related errors"""
-    error_str = str(value)
-    if 'SessionInfo' not in error_str and 'Bad message format' not in error_str:
-        _original_excepthook(type, value, traceback)
+def _error_handler(exc_type, exc_value, exc_traceback):
+    """Suppress only SessionInfo-related and Bad message format errors"""
+    error_str = str(exc_value)
+    if not any(kw in error_str for kw in ['SessionInfo', 'Bad message format', 'protobuf', 'grpc']):
+        _original_excepthook(exc_type, exc_value, exc_traceback)
 
 sys.excepthook = _error_handler
 

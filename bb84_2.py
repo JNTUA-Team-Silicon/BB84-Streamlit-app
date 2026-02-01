@@ -1748,27 +1748,27 @@ def main():
         
         # PREMIUM HERO SECTION - FIRST IMPRESSION WITH LOGO AND TEXT
         st.markdown("""
-        <div style='background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%); 
+        <div style="background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%); 
                     padding: 80px 40px; border-radius: 25px; margin: 0 0 40px 0; 
                     box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
                     border: 2px solid rgba(0, 150, 255, 0.3);
                     position: relative; overflow: hidden;
-                    display: flex; align-items: center; justify-content: center;'>
-            <div style='position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
+                    display: flex; align-items: center; justify-content: center;">
+            <div style="position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
                         background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%); 
-                        border-radius: 50%; pointer-events: none;'></div>
+                        border-radius: 50%; pointer-events: none;"></div>
             
-            <div style='max-width: 800px; padding: 0; position: relative; z-index: 10; text-align: center;'>
-                <p style='margin: 0 0 10px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; font-weight: 900;'>
+            <div style="max-width: 800px; padding: 0; position: relative; z-index: 10; text-align: center;">
+                <p style="margin: 0 0 10px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; font-weight: 900;">
                     Interactive BB84 QKD Simulator
                 </p>
-                <h1 style='margin: 0 0 15px 0; color: #ffd700; font-size: 56px; font-weight: 950; letter-spacing: -1px;'>
+                <h1 style="margin: 0 0 15px 0; color: #ffd700; font-size: 56px; font-weight: 950; letter-spacing: -1px;">
                     AQVH PROJECT
                 </h1>
-                <h2 style='margin: 0 0 15px 0; color: #bbdefb; font-size: 28px; font-weight: 850; letter-spacing: 0.5px;'>
+                <h2 style="margin: 0 0 15px 0; color: #bbdefb; font-size: 28px; font-weight: 850; letter-spacing: 0.5px;">
                     BB84 Quantum Key Distribution Simulator
                 </h2>
-                <p style='margin: 0; color: #b3e5fc; font-size: 13px; font-weight: 500; letter-spacing: 0.3px;'>
+                <p style="margin: 0; color: #b3e5fc; font-size: 13px; font-weight: 500; letter-spacing: 0.3px;">
                     Real-Time Simulation | Team Silicon
                 </p>
             </div>

@@ -773,7 +773,7 @@ def render_final_key_download():
 
 @st.fragment
 def render_metrics_display():
-    """Display main metrics - Vertical layout with gauges. UI-only, reads from session_state."""
+    """Display main metrics - Comparison layout. UI-only, reads from session_state."""
     # Fragment safety guard
     if not st.session_state.get("simulation_completed", False):
         return
@@ -785,111 +785,114 @@ def render_metrics_display():
     eve = st.session_state.sim_results['eve']
     num_bits = st.session_state.sim_results['parameters']['num_bits']
 
-    st.markdown("### Key Metrics")
+    st.markdown("### Key Metrics Comparison")
     
-    # NO EVE SCENARIO - TOP
-    st.markdown("**No Eavesdropper Scenario**")
-    metrics_col1, metrics_col2, metrics_col3, metrics_col4, metrics_col5 = st.columns(5)
+    # SIDE-BY-SIDE COMPARISON LAYOUT
+    col_no_eve, col_eve = st.columns(2)
     
-    with metrics_col1:
-        st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
-            <h2 style='color: #1e40af; margin: 0; font-size: 24px;'>{no_eve['sifted_count']}</h2>
-            <p style='color: #1e40af; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Sifted Bits</p>
-        </div>
-        """, unsafe_allow_html=True)
+    # NO EVE SCENARIO - LEFT
+    with col_no_eve:
+        st.markdown("**No Eavesdropper Scenario**")
+        metrics_col1, metrics_col2, metrics_col3, metrics_col4, metrics_col5 = st.columns(5)
+        
+        with metrics_col1:
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
+                <h2 style='color: #1e40af; margin: 0; font-size: 24px;'>{no_eve['sifted_count']}</h2>
+                <p style='color: #1e40af; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Sifted Bits</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with metrics_col2:
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #fca5a5;'>
+                <h2 style='color: #991b1b; margin: 0; font-size: 24px;'>{no_eve['errors']}</h2>
+                <p style='color: #991b1b; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Errors</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with metrics_col3:
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #86efac;'>
+                <h2 style='color: #166534; margin: 0; font-size: 24px;'>{no_eve['qber']:.4f}</h2>
+                <p style='color: #166534; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>QBER</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with metrics_col4:
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #c4b5fd;'>
+                <h2 style='color: #5b21b6; margin: 0; font-size: 24px;'>{no_eve['final_key_length']}</h2>
+                <p style='color: #5b21b6; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Key</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with metrics_col5:
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
+                <h2 style='color: #1e3a8a; margin: 0; font-size: 24px;'>{no_eve['final_key_length'] / num_bits:.4f}</h2>
+                <p style='color: #1e3a8a; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Rate</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        st.plotly_chart(
+            qber_gauge(no_eve['qber'], st.session_state.threshold),
+            use_container_width=True,
+            key="gauge_no_metric",
+            config={'displayModeBar': False}
+        )
     
-    with metrics_col2:
-        st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #fca5a5;'>
-            <h2 style='color: #991b1b; margin: 0; font-size: 24px;'>{no_eve['errors']}</h2>
-            <p style='color: #991b1b; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Errors</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with metrics_col3:
-        st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #86efac;'>
-            <h2 style='color: #166534; margin: 0; font-size: 24px;'>{no_eve['qber']:.4f}</h2>
-            <p style='color: #166534; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>QBER</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with metrics_col4:
-        st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #c4b5fd;'>
-            <h2 style='color: #5b21b6; margin: 0; font-size: 24px;'>{no_eve['final_key_length']}</h2>
-            <p style='color: #5b21b6; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Key</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with metrics_col5:
-        st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
-            <h2 style='color: #1e3a8a; margin: 0; font-size: 24px;'>{no_eve['final_key_length'] / num_bits:.4f}</h2>
-            <p style='color: #1e3a8a; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Rate</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.plotly_chart(
-        qber_gauge(no_eve['qber'], st.session_state.threshold),
-        use_container_width=True,
-        key="gauge_no_metric",
-        config={'displayModeBar': False}
-    )
-    
-    st.divider()
-    
-    # EVE SCENARIO - BOTTOM
-    st.markdown("**Eavesdropper Present Scenario**")
-    metrics_col1, metrics_col2, metrics_col3, metrics_col4, metrics_col5 = st.columns(5)
-    
-    with metrics_col1:
-        st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
-            <h2 style='color: #1e40af; margin: 0; font-size: 24px;'>{eve['sifted_count']}</h2>
-            <p style='color: #1e40af; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Sifted Bits</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with metrics_col2:
-        st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #fca5a5;'>
-            <h2 style='color: #991b1b; margin: 0; font-size: 24px;'>{eve['errors']}</h2>
-            <p style='color: #991b1b; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Errors</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with metrics_col3:
-        st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #86efac;'>
-            <h2 style='color: #166534; margin: 0; font-size: 24px;'>{eve['qber']:.4f}</h2>
-            <p style='color: #166534; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>QBER</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with metrics_col4:
-        st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #c4b5fd;'>
-            <h2 style='color: #5b21b6; margin: 0; font-size: 24px;'>{eve['final_key_length']}</h2>
-            <p style='color: #5b21b6; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Key</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with metrics_col5:
-        st.markdown(f"""
-        <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
-            <h2 style='color: #1e3a8a; margin: 0; font-size: 24px;'>{eve['final_key_length'] / num_bits:.4f}</h2>
-            <p style='color: #1e3a8a; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Rate</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.plotly_chart(
-        qber_gauge(eve['qber'], st.session_state.threshold),
-        use_container_width=True,
-        key="gauge_e_metric",
-        config={'displayModeBar': False}
-    )
+    # EVE SCENARIO - RIGHT
+    with col_eve:
+        st.markdown("**Eavesdropper Present Scenario**")
+        metrics_col1, metrics_col2, metrics_col3, metrics_col4, metrics_col5 = st.columns(5)
+        
+        with metrics_col1:
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
+                <h2 style='color: #1e40af; margin: 0; font-size: 24px;'>{eve['sifted_count']}</h2>
+                <p style='color: #1e40af; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Sifted Bits</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with metrics_col2:
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #fca5a5;'>
+                <h2 style='color: #991b1b; margin: 0; font-size: 24px;'>{eve['errors']}</h2>
+                <p style='color: #991b1b; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Errors</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with metrics_col3:
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #86efac;'>
+                <h2 style='color: #166534; margin: 0; font-size: 24px;'>{eve['qber']:.4f}</h2>
+                <p style='color: #166534; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>QBER</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with metrics_col4:
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #c4b5fd;'>
+                <h2 style='color: #5b21b6; margin: 0; font-size: 24px;'>{eve['final_key_length']}</h2>
+                <p style='color: #5b21b6; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Key</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with metrics_col5:
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
+                <h2 style='color: #1e3a8a; margin: 0; font-size: 24px;'>{eve['final_key_length'] / num_bits:.4f}</h2>
+                <p style='color: #1e3a8a; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Rate</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        st.plotly_chart(
+            qber_gauge(eve['qber'], st.session_state.threshold),
+            use_container_width=True,
+            key="gauge_e_metric",
+            config={'displayModeBar': False}
+        )
 
 
 @st.fragment
@@ -1713,54 +1716,136 @@ def main():
         logger.debug(f"CSS injection: {e}")
         pass
     
-    # ADVANCED HEADER WITH SESSION TRACKING
+    # ADVANCED HEADER WITH ANIMATED SESSION BOX
     try:
         session_info = _get_session_summary()
         uptime = int(session_info.get("uptime_seconds", 0))
         sims = session_info.get("simulations_run", 0)
+        session_id = session_info.get("session_id", "N/A")
         
-        col_logo, col_text, col_session = st.columns([0.8, 3, 1.5])
+        # ENHANCED HEADER LAYOUT
+        header_col1, header_col2 = st.columns([1, 4])
         
-        with col_logo:
-            st.image("jntua_logo.png", width=80)
+        with header_col1:
+            st.image("jntua_logo.png", width=100)
         
-        with col_text:
+        with header_col2:
             st.markdown("""
-            <div style='padding: 5px 0;'>
-                <h1 style='margin: 0; color: #1e40af; font-size: 26px; font-weight: 900; letter-spacing: -0.5px;'>JNTUA BB84 QKD Simulator</h1>
-                <p style='margin: 3px 0 0 0; color: #2563eb; font-size: 13px; font-weight: 500;'>Quantum Key Distribution | Cryptography & Security</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col_session:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 10px 12px; border-radius: 6px; border-left: 3px solid #1e40af;'>
-                <p style='margin: 0; color: #1e40af; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;'>SESSION</p>
-                <p style='margin: 2px 0 0 0; color: #1e40af; font-size: 10px;'>ID: #{session_info.get("session_id", "N/A")}</p>
-                <p style='margin: 1px 0 0 0; color: #1e40af; font-size: 10px;'>Runs: {sims}</p>
+            <div style='padding: 15px 0;'>
+                <h1 style='margin: 0; color: #1e40af; font-size: 32px; font-weight: 950; letter-spacing: -0.8px; text-shadow: 0 2px 4px rgba(0,0,0,0.05);'>JNTUA BB84 QKD Simulator</h1>
+                <p style='margin: 5px 0 0 0; color: #2563eb; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;'>Quantum Key Distribution | Cryptography & Security Intelligence</p>
             </div>
             """, unsafe_allow_html=True)
         
         st.divider()
         
+        # ADVANCED ANIMATED SESSION BOX - FIRST VISIBLE ELEMENT
+        st.markdown("""
+        <style>
+            @keyframes slideInDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes pulseGlow {
+                0%, 100% {
+                    box-shadow: 0 0 0 0 rgba(30, 64, 175, 0.4);
+                }
+                50% {
+                    box-shadow: 0 0 0 10px rgba(30, 64, 175, 0);
+                }
+            }
+            
+            .session-box {
+                animation: slideInDown 0.8s ease-out;
+            }
+            
+            .session-glow {
+                animation: pulseGlow 3s infinite;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        session_html = f"""
+        <div class='session-box session-glow' style='
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 10px 0;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        '>
+            <div style='display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px;'>
+                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.3);'>
+                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Session ID</p>
+                    <h3 style='margin: 8px 0 0 0; color: #60a5fa; font-size: 20px; font-family: monospace; font-weight: bold;'>#{session_id}</h3>
+                </div>
+                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.3);'>
+                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Simulations</p>
+                    <h3 style='margin: 8px 0 0 0; color: #60a5fa; font-size: 20px; font-weight: bold;'>{sims}</h3>
+                </div>
+                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.3);'>
+                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Uptime</p>
+                    <h3 style='margin: 8px 0 0 0; color: #60a5fa; font-size: 20px; font-weight: bold;'>{uptime}s</h3>
+                </div>
+                <div style='text-align: center;'>
+                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Status</p>
+                    <h3 style='margin: 8px 0 0 0; color: #10b981; font-size: 20px; font-weight: bold;'>ACTIVE</h3>
+                </div>
+            </div>
+        </div>
+        """
+        st.markdown(session_html, unsafe_allow_html=True)
+        
     except Exception as e:
         logger.debug(f"Header rendering: {e}")
     
-    # ADVANCED PLATFORM CAPABILITIES WITH ICONS
+    
+    # PLATFORM CAPABILITIES - COMPACT ANIMATED CARDS
+    st.markdown("""
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .capability-card {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+        
+        .capability-card:nth-child(1) { animation-delay: 0.2s; }
+        .capability-card:nth-child(2) { animation-delay: 0.4s; }
+        .capability-card:nth-child(3) { animation-delay: 0.6s; }
+    </style>
+    """, unsafe_allow_html=True)
+    
     st.markdown("### Platform Capabilities")
     cap_col1, cap_col2, cap_col3 = st.columns(3)
     
     with cap_col1:
         st.markdown("""
-        <div style='background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #1e40af;'>
+        <div class='capability-card' style='background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #3b82f6; border-bottom: 1px solid rgba(59, 130, 246, 0.3); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);'>
         <strong style='color: #1e40af;'>Quantum Simulation</strong>
-        <p style='color: #1a1a1a; font-size: 13px; margin: 5px 0 0 0;'>Complete BB84 protocol execution with quantum mechanics</p>
+        <p style='color: #1a1a1a; font-size: 13px; margin: 5px 0 0 0;'>Complete BB84 protocol with quantum mechanics</p>
         </div>
         """, unsafe_allow_html=True)
     
     with cap_col2:
         st.markdown("""
-        <div style='background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #1e40af;'>
+        <div class='capability-card' style='background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #3b82f6; border-bottom: 1px solid rgba(59, 130, 246, 0.3); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);'>
         <strong style='color: #1e40af;'>Threat Detection</strong>
         <p style='color: #1a1a1a; font-size: 13px; margin: 5px 0 0 0;'>Eavesdropper detection via QBER analysis</p>
         </div>
@@ -1768,7 +1853,7 @@ def main():
     
     with cap_col3:
         st.markdown("""
-        <div style='background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #1e40af;'>
+        <div class='capability-card' style='background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%); padding: 15px; border-radius: 10px; border-left: 4px solid #3b82f6; border-bottom: 1px solid rgba(59, 130, 246, 0.3); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);'>
         <strong style='color: #1e40af;'>Intelligence Analytics</strong>
         <p style='color: #1a1a1a; font-size: 13px; margin: 5px 0 0 0;'>Timeline & metrics with visualizations</p>
         </div>
@@ -1782,17 +1867,39 @@ def main():
         try:
             backend, gpu_available = get_quantum_backend()
             backend_name = "GPU (CUDA)" if gpu_available else "CPU"
-            st.metric("Quantum Backend", backend_name, "Operational")
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); padding: 15px; border-radius: 8px; border-left: 3px solid #0284c7; text-align: center;'>
+                <p style='margin: 0; color: #0c4a6e; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Quantum Backend</p>
+                <p style='margin: 5px 0 0 0; color: #0c4a6e; font-size: 16px; font-weight: bold;'>{backend_name}</p>
+                <p style='margin: 3px 0 0 0; color: #0284c7; font-size: 10px;'>Operational</p>
+            </div>
+            """, unsafe_allow_html=True)
         except Exception:
-            st.metric("Quantum Backend", "CPU", "Operational")
+            st.markdown("""
+            <div style='background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); padding: 15px; border-radius: 8px; border-left: 3px solid #0284c7; text-align: center;'>
+                <p style='margin: 0; color: #0c4a6e; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Quantum Backend</p>
+                <p style='margin: 5px 0 0 0; color: #0c4a6e; font-size: 16px; font-weight: bold;'>CPU</p>
+                <p style='margin: 3px 0 0 0; color: #0284c7; font-size: 10px;'>Operational</p>
+            </div>
+            """, unsafe_allow_html=True)
     
     with status_col2:
-        st.metric("Security Mode", "Enabled", "QBER Monitoring Active")
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 15px; border-radius: 8px; border-left: 3px solid #059669; text-align: center;'>
+            <p style='margin: 0; color: #064e3b; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Security Mode</p>
+            <p style='margin: 5px 0 0 0; color: #064e3b; font-size: 16px; font-weight: bold;'>ENABLED</p>
+            <p style='margin: 3px 0 0 0; color: #059669; font-size: 10px;'>QBER Monitoring</p>
+        </div>
+        """, unsafe_allow_html=True)
     
     with status_col3:
-        session_info = _get_session_summary()
-        sim_count = session_info.get("simulations_run", 0)
-        st.metric("Session Stats", f"{sim_count} simulations", f"ID: {session_info.get('session_id', 'N/A')}")
+        st.markdown(f"""
+        <div style='background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); padding: 15px; border-radius: 8px; border-left: 3px solid #d946ef; text-align: center;'>
+            <p style='margin: 0; color: #500724; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Session Stats</p>
+            <p style='margin: 5px 0 0 0; color: #500724; font-size: 16px; font-weight: bold;'>{sims}</p>
+            <p style='margin: 3px 0 0 0; color: #d946ef; font-size: 10px;'>Simulations</p>
+        </div>
+        """, unsafe_allow_html=True)
     
     st.divider()
     
@@ -1835,50 +1942,53 @@ def main():
 
     ### Security: 
     Any eavesdropping introduces detectable errors due to quantum no-cloning theorem.
-    
-    ### Detailed Protocol Flow:
-    ```
-    BB84 PROTOCOL PSEUDOCODE:
-    
-    1. Alice generates N random bits and N random bases
-       - bits = [random 0/1 for _ in range(N)]
-       - bases = [random Rectilinear/Diagonal for _ in range(N)]
-    
-    2. Alice encodes and transmits qubits to Bob
-       - FOR i in range(N):
-           - Encode bits[i] using bases[i]
-           - Send qubit through quantum channel
-    
-    3. Bob measures received qubits
-       - FOR i in range(N):
-           - Choose random basis (Rectilinear/Diagonal)
-           - Measure qubit in chosen basis
-           - Record measurement result
-    
-    4. Alice publicly announces her bases
-       - Announce: bases = [b1, b2, ..., bN]
-    
-    5. Bob publicly announces his bases
-       - Announce: bob_bases = [b1, b2, ..., bN]
-    
-    6. Keep matching basis positions
-       - sifted_key = [bits[i] where bases[i] == bob_bases[i]]
-    
-    7. Estimate Quantum Bit Error Rate (QBER)
-       - Test subset of sifted key against Bob's measurements
-       - QBER = (errors / sample_size) * 100
-    
-    8. Check for eavesdropping
-       - IF QBER > threshold:
-           - Abort protocol (eavesdropping detected)
-       - ELSE:
-           - Continue to step 9
-    
-    9. Privacy amplification
-       - Apply hash function to remaining sifted key
-       - Final secure cryptographic key ready for use
-    ```
     """)
+    
+    # ENHANCED BB84 PROTOCOL PSEUDOCODE WITH BETTER VISIBILITY
+    st.markdown("""
+    <div style='background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 25px; border-radius: 12px; border-left: 5px solid #3b82f6; margin: 20px 0; box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);'>
+        <h3 style='color: #60a5fa; margin: 0 0 20px 0; font-size: 18px; font-weight: 800; letter-spacing: 0.5px;'>BB84 PROTOCOL PSEUDOCODE</h3>
+        <div style='background: #020617; padding: 20px; border-radius: 8px; font-family: "Courier New", monospace; font-size: 13px; line-height: 1.8; color: #e0e7ff; overflow-x: auto; border: 1px solid rgba(59, 130, 246, 0.3);'>
+            <span style='color: #60a5fa; font-weight: bold;'>1. Alice generates N random bits and N random bases</span><br/>
+            <span style='margin-left: 20px; color: #a5f3fc;'>bits = [random 0/1 for _ in range(N)]</span><br/>
+            <span style='margin-left: 20px; color: #a5f3fc;'>bases = [random Rectilinear/Diagonal for _ in range(N)]</span><br/>
+            <br/>
+            <span style='color: #60a5fa; font-weight: bold;'>2. Alice encodes and transmits qubits to Bob</span><br/>
+            <span style='margin-left: 20px; color: #fbbf24;'>FOR i in range(N):</span><br/>
+            <span style='margin-left: 40px; color: #a5f3fc;'>Encode bits[i] using bases[i]</span><br/>
+            <span style='margin-left: 40px; color: #a5f3fc;'>Send qubit through quantum channel</span><br/>
+            <br/>
+            <span style='color: #60a5fa; font-weight: bold;'>3. Bob measures received qubits</span><br/>
+            <span style='margin-left: 20px; color: #fbbf24;'>FOR i in range(N):</span><br/>
+            <span style='margin-left: 40px; color: #a5f3fc;'>Choose random basis (Rectilinear/Diagonal)</span><br/>
+            <span style='margin-left: 40px; color: #a5f3fc;'>Measure qubit in chosen basis</span><br/>
+            <span style='margin-left: 40px; color: #a5f3fc;'>Record measurement result</span><br/>
+            <br/>
+            <span style='color: #60a5fa; font-weight: bold;'>4. Alice publicly announces her bases</span><br/>
+            <span style='margin-left: 20px; color: #a5f3fc;'>Announce: bases = [b1, b2, ..., bN]</span><br/>
+            <br/>
+            <span style='color: #60a5fa; font-weight: bold;'>5. Bob publicly announces his bases</span><br/>
+            <span style='margin-left: 20px; color: #a5f3fc;'>Announce: bob_bases = [b1, b2, ..., bN]</span><br/>
+            <br/>
+            <span style='color: #60a5fa; font-weight: bold;'>6. Keep matching basis positions</span><br/>
+            <span style='margin-left: 20px; color: #a5f3fc;'>sifted_key = [bits[i] where bases[i] == bob_bases[i]]</span><br/>
+            <br/>
+            <span style='color: #60a5fa; font-weight: bold;'>7. Estimate Quantum Bit Error Rate (QBER)</span><br/>
+            <span style='margin-left: 20px; color: #a5f3fc;'>Test subset of sifted key against Bob\'s measurements</span><br/>
+            <span style='margin-left: 20px; color: #a5f3fc;'>QBER = (errors / sample_size) × 100</span><br/>
+            <br/>
+            <span style='color: #60a5fa; font-weight: bold;'>8. Check for eavesdropping</span><br/>
+            <span style='margin-left: 20px; color: #fbbf24;'>IF</span> <span style='color: #f87171;'>QBER > threshold:</span><br/>
+            <span style='margin-left: 40px; color: #f87171;'>Abort protocol (eavesdropping detected)</span><br/>
+            <span style='margin-left: 20px; color: #fbbf24;'>ELSE:</span><br/>
+            <span style='margin-left: 40px; color: #86efac;'>Continue to step 9</span><br/>
+            <br/>
+            <span style='color: #60a5fa; font-weight: bold;'>9. Privacy amplification</span><br/>
+            <span style='margin-left: 20px; color: #a5f3fc;'>Apply hash function to remaining sifted key</span><br/>
+            <span style='margin-left: 20px; color: #86efac;'>Final secure cryptographic key ready for use</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     # SIMULATION PARAMETERS SECTION
     st.header("Simulation Configuration")

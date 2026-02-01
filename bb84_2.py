@@ -118,6 +118,17 @@ warnings.filterwarnings('ignore')
 
 # Create a custom stderr/stdout handler to suppress specific errors
 import io
+
+def render_svg_safe(svg_content, title=""):
+    """Safely render SVG content with proper encoding for Streamlit cloud deployment"""
+    try:
+        # Ensure SVG is properly formatted
+        if isinstance(svg_content, str):
+            svg_html = f'<div style="text-align: center; margin: 20px 0;">{svg_content}</div>'
+            return st.markdown(svg_html, unsafe_allow_html=True)
+    except Exception as e:
+        logger.debug(f"SVG render error (safe): {e}")
+        pass
 class ErrorFilter:
     """Filter stderr/stdout to remove specific error messages"""
     def __init__(self, original_stream):
@@ -356,269 +367,11 @@ def inject_custom_css():
             overflow: hidden;
             width: calc(100% + 6rem);
         }
-        
-        .animated-header h1 {
-            color: white;
-            font-size: 72px;
-            margin: 0;
-            font-weight: 900;
-            letter-spacing: -2px;
-            animation: slideInDown 0.8s ease-out, titleGlow 3s ease-in-out infinite;
-        }
-        
-        .animated-header .divider {
-            height: 4px;
-            background: rgba(255,255,255,0.8);
-            margin: 20px auto;
-            width: 400px;
-            border-radius: 2px;
-            animation: slideInDown 1s ease-out 0.2s backwards;
-        }
-        
-        .animated-header p {
-            margin: 15px 0 0 0;
-            animation: slideInDown 1s ease-out 0.4s backwards;
-        }
-        
-        .animated-header .subtitle {
-            color: #f0f0f0;
-            font-size: 22px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-        
-        .animated-header .subtext {
-            color: #e0e0e0;
-            font-size: 16px;
-            margin-top: 12px;
-            font-weight: 400;
-            letter-spacing: 0.3px;
-        }
-        
-        h1 { color: #2563eb !important; font-weight: 800 !important; }
-        h2 { color: #1e40af !important; margin-top: 30px !important; font-weight: 700 !important; }
-        h3 { color: #2563eb !important; font-weight: 600 !important; }
-        
-        /* Enhanced Button Styling */
-        .stButton > button { 
-            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important; 
-            color: #ffffff !important; 
-            font-weight: 800 !important;
-            font-size: 16px !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            padding: 12px 24px !important;
-            border: none !important;
-            border-radius: 8px !important;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4) !important;
-            transition: all 0.3s ease !important;
-        }
-        
-        .stButton > button:hover {
-            background: linear-gradient(135deg, #1d4ed8 0%, #6d28d9 100%) !important;
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.6) !important;
-            transform: translateY(-2px) !important;
-        }
-        
-        .stButton > button:active {
-            transform: translateY(0) !important;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4) !important;
-        }
-        
-        /* Enhanced Tab Styling - Make them look like beautiful boxes */
-        @keyframes tabHover {
-            0% { transform: translateY(0px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-            100% { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-        }
-        
-        /* Style the tabs container */
-        [data-baseweb="tab-list"] {
-            gap: 12px !important;
-            padding: 20px 0 !important;
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-            border-radius: 15px;
-            padding: 20px !important;
-            margin-bottom: 30px !important;
-        }
-        
-        /* Style individual tab buttons */
-        [data-baseweb="tab"] {
-            background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%) !important;
-            border: 2px solid #e0e7ff !important;
-            border-radius: 12px !important;
-            padding: 16px 24px !important;
-            font-size: 15px !important;
-            font-weight: 600 !important;
-            color: #1e40af !important;
-            transition: all 0.3s ease !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
-            cursor: pointer !important;
-            letter-spacing: 0.5px !important;
-        }
-        
-        /* Hover effect for tabs */
-        [data-baseweb="tab"]:hover {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
-            color: white !important;
-            border-color: #4f46e5 !important;
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3) !important;
-            animation: tabHover 0.3s ease !important;
-        }
-        
-        /* Active/Selected tab styling */
-        [data-baseweb="tab"][aria-selected="true"] {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
-            color: white !important;
-            border-color: #4f46e5 !important;
-            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4) !important;
-            font-weight: 700 !important;
-        }
-        
-        /* Tab content styling */
-        [data-baseweb="tab-panel"] {
-            padding: 30px 25px !important;
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
-            border-radius: 15px !important;
-            border: 1px solid #e0e7ff !important;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
-            margin-top: 20px !important;
-        }
-        
-        /* Light mode backgrounds for content areas */
-        body, .main, .block-container {
-            background: #ffffff !important;
-            color: #1a1a1a !important;
-        }
-        
-        /* FULL WIDTH LAYOUT - PROFESSIONAL & CLEAN */
-        * {
-            box-sizing: border-box !important;
-        }
-        
-        html, body {
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            overflow-x: hidden !important;
-        }
-        
-        .stApp {
-            max-width: 100vw !important;
-            width: 100vw !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            background: #ffffff !important;
-        }
-        
-        .block-container {
-            max-width: 100% !important;
-            width: 100% !important;
-            padding: 2rem 3rem !important;
-            margin: 0 auto !important;
-            background: #ffffff !important;
-        }
-        
-        [data-testid="stAppViewContainer"] {
-            padding: 0 !important;
-            max-width: 100% !important;
-            width: 100% !important;
-            background: #ffffff !important;
-        }
-        
-        [data-testid="stDecoration"] {
-            display: none !important;
-        }
-        
-        .main {
-            padding: 0 !important;
-            max-width: 100% !important;
-            width: 100% !important;
-        }
-        
-        /* Ensure markdown content is readable */
-        .markdown-text-container, .stMarkdown, p, span, div {
-            color: #1a1a1a !important;
-        }
-        
-        /* Polarization Analysis specific styling */
-        .polarization-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%) !important;
-            padding: 20px !important;
-            border-radius: 12px !important;
-            border: 1px solid #e0e7ff !important;
-        }
-        
-        /* Code blocks with light background */
-        code, pre {
-            background: #f0f4ff !important;
-            color: #1e40af !important;
-            padding: 12px !important;
-            border-radius: 8px !important;
-            border: 1px solid #e0e7ff !important;
-        }
-        
-        /* Information boxes with light background */
-        .stAlert {
-            background: #f8f9fa !important;
-            color: #1a1a1a !important;
-            border-left: 4px solid #2563eb !important;
-            padding: 15px !important;
-            border-radius: 8px !important;
-        }
-        
-        /* Columns with light background */
-        .stColumn {
-            background: #ffffff !important;
-            padding: 15px !important;
-            border-radius: 10px !important;
-            border: 1px solid #e0e7ff !important;
-        }
-        
-        /* Metrics with light backgrounds */
-        .metric-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
-            color: #1a1a1a !important;
-            padding: 20px !important;
-            border-radius: 12px !important;
-            border: 1px solid #e0e7ff !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
-        }
-        
-        /* Text in all elements readable */
-        h1, h2, h3, h4, h5, h6 {
-            color: #0f172a !important;
-        }
-        
-        /* Strong text contrast */
-        strong, b {
-            color: #1e40af !important;
-            font-weight: 700 !important;
-        }
-        
-        /* Ensure dataframes are readable */
-        table, .dataframe {
-            background: #ffffff !important;
-            color: #1a1a1a !important;
-            border: 1px solid #e0e7ff !important;
-        }
-        
-        thead {
-            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%) !important;
-            color: #1e40af !important;
-            font-weight: 600 !important;
-        }
-        
-        tbody tr:nth-child(odd) {
-            background: #f8fafc !important;
-        }
-        
-        tbody tr:nth-child(even) {
-            background: #ffffff !important;
-        }
         </style>
         """, unsafe_allow_html=True)
     except Exception as e:
-        logger.error(f"CSS injection error (silent): {e}")
+        # Silently ignore CSS injection errors in cloud environment
+        logger.debug(f"CSS injection skipped: {e}")
         pass
 
 # Local Modules - Configuration & Utilities

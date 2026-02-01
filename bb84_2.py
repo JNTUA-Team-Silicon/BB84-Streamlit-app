@@ -638,72 +638,127 @@ def render_bloch_visualizations():
 
     with qv_tab1:
         st.subheader("Single Qubit Quantum State Analysis")
-        bits_array = st.session_state.alice_bits_stored
-        bases_array = st.session_state.alice_bases_stored
-        max_idx = len(bits_array) - 1
-        
-        idx = st.slider(
-            "**Select Qubit Index**", 
-            0, max_idx, 
-            value=min(st.session_state.bloch_single_idx, max_idx),
-            key="bloch_single_idx_slider"
-        )
-        st.session_state.bloch_single_idx = idx
+        try:
+            bits_array = st.session_state.alice_bits_stored
+            bases_array = st.session_state.alice_bases_stored
+            
+            if bits_array is None or bases_array is None:
+                st.warning("No simulation data available. Run simulation first.")
+                return
+            
+            max_idx = len(bits_array) - 1
+            
+            # Use session state directly, no key conflicts
+            if "bloch_single_idx" not in st.session_state:
+                st.session_state.bloch_single_idx = 0
+            
+            # Ensure slider value is valid
+            current_idx = min(st.session_state.bloch_single_idx, max_idx)
+            
+            idx = st.slider(
+                "**Select Qubit Index**", 
+                0, max_idx, 
+                value=current_idx,
+                step=1
+            )
+            
+            # Update session state after slider
+            if idx != st.session_state.bloch_single_idx:
+                st.session_state.bloch_single_idx = idx
 
-        bit = int(bits_array[idx])
-        basis = int(bases_array[idx])
-        sv = BB84Simulator.get_statevector_from_bit_basis(bit, basis)
-        
-        state_col1, state_col2 = st.columns([1, 2])
-        with state_col1:
-            st.markdown(f"""
+            if idx < len(bits_array):
+                bit = int(bits_array[idx])
+                basis = int(bases_array[idx])
+                sv = BB84Simulator.get_statevector_from_bit_basis(bit, basis)
+                
+                state_col1, state_col2 = st.columns([1, 2])
+                with state_col1:
+                    st.markdown(f"""
 ```
 State: {BB84Simulator.state_label(bit, basis)}
 Bit: {bit}
 Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
 ```
 """)
-        with state_col2:
-            try:
-                st.plotly_chart(plotly_bloch_sphere([sv]), use_container_width=True)
-            except Exception as e:
-                logger.error(f"Error displaying Bloch sphere: {e}")
+                with state_col2:
+                    try:
+                        fig = plotly_bloch_sphere([sv])
+                        st.plotly_chart(fig, use_container_width=True)
+                    except Exception as e:
+                        logger.error(f"Error displaying Bloch sphere: {e}")
+                        st.error("Could not render Bloch sphere")
+            else:
+                st.error(f"Index {idx} out of range")
+        except Exception as e:
+            logger.error(f"Error in Single Qubit Analysis: {e}")
+            st.error("Error loading Single Qubit Analysis")
 
     with qv_tab2:
         st.subheader("Multi-Qubit Range Analysis")
-        bits_array = st.session_state.alice_bits_stored
-        bases_array = st.session_state.alice_bases_stored
-        max_idx = len(bits_array) - 1
-        
-        start, end = st.slider(
-            "**Select Qubit Range**",
-            0, max_idx,
-            value=(min(st.session_state.bloch_range_start, max_idx), 
-                   min(st.session_state.bloch_range_end, max_idx)),
-            key="bloch_range_slider"
-        )
-        st.session_state.bloch_range_start = start
-        st.session_state.bloch_range_end = end
-
-        states = []
-        state_info = []
-        for i in range(start, end + 1):
-            if i < len(bits_array):
-                bit = int(bits_array[i])
-                basis = int(bases_array[i])
-                sv = BB84Simulator.get_statevector_from_bit_basis(bit, basis)
-                states.append(sv)
-                state_info.append(f"Qubit {i}: {BB84Simulator.state_label(bit, basis)}")
-
-        st.markdown("**Quantum States in Range:**")
-        for info in state_info:
-            st.markdown(f"• {info}")
-
         try:
-            st.markdown("**3D Bloch Sphere Multi-State View:**")
-            st.plotly_chart(plotly_bloch_sphere(states), use_container_width=True)
+            bits_array = st.session_state.alice_bits_stored
+            bases_array = st.session_state.alice_bases_stored
+            
+            if bits_array is None or bases_array is None:
+                st.warning("No simulation data available. Run simulation first.")
+                return
+            
+            max_idx = len(bits_array) - 1
+            
+            # Initialize range values if not present
+            if "bloch_range_start" not in st.session_state:
+                st.session_state.bloch_range_start = 0
+            if "bloch_range_end" not in st.session_state:
+                st.session_state.bloch_range_end = min(10, max_idx)
+            
+            # Ensure values are valid
+            default_start = min(st.session_state.bloch_range_start, max_idx)
+            default_end = min(st.session_state.bloch_range_end, max_idx)
+            if default_start > default_end:
+                default_start, default_end = default_end, default_start
+            
+            start, end = st.slider(
+                "**Select Qubit Range**",
+                0, max_idx,
+                value=(default_start, default_end),
+                step=1
+            )
+            
+            # Ensure start <= end
+            if start > end:
+                start, end = end, start
+            
+            # Update session state
+            st.session_state.bloch_range_start = start
+            st.session_state.bloch_range_end = end
+
+            states = []
+            state_info = []
+            for i in range(start, end + 1):
+                if i < len(bits_array):
+                    bit = int(bits_array[i])
+                    basis = int(bases_array[i])
+                    sv = BB84Simulator.get_statevector_from_bit_basis(bit, basis)
+                    states.append(sv)
+                    state_info.append(f"Qubit {i}: {BB84Simulator.state_label(bit, basis)}")
+
+            st.markdown("**Quantum States in Range:**")
+            for info in state_info:
+                st.markdown(f"• {info}")
+
+            if states:
+                try:
+                    st.markdown("**3D Bloch Sphere Multi-State View:**")
+                    fig = plotly_bloch_sphere(states)
+                    st.plotly_chart(fig, use_container_width=True)
+                except Exception as e:
+                    logger.error(f"Error displaying multi-qubit Bloch sphere: {e}")
+                    st.error("Could not render Multi-Qubit Bloch sphere")
+            else:
+                st.warning("No states to display in selected range")
         except Exception as e:
-            logger.error(f"Error displaying multi-qubit Bloch sphere: {e}")
+            logger.error(f"Error in Multi-Qubit Range Analysis: {e}")
+            st.error("Error loading Multi-Qubit Range Analysis")
 
     with qv_tab3:
         st.subheader("Polarization Analysis")

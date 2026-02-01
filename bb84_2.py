@@ -1780,13 +1780,9 @@ def main():
                               font-size: 32px; font-weight: 850; letter-spacing: 0.5px;'>
                         BB84 Quantum Key Distribution Simulator
                     </h2>
-                    <p style='margin: 0 0 8px 0; color: #e3f2fd; font-size: 16px; font-weight: 600; 
-                             letter-spacing: 0.5px;'>
-                        Interactive Quantum Cryptography Education Platform
-                    </p>
                     <p style='margin: 0; color: #b3e5fc; font-size: 13px; font-weight: 500; 
                              letter-spacing: 0.3px;'>
-                        Post-Quantum Security | Eavesdropping Detection | Real-Time Simulation | JNTUA CEA Team Silicon ECE Department
+                        Real-Time Simulation | JNTUA CEA Team Silicon ECE Department
                     </p>
                 </div>
             """, unsafe_allow_html=True)

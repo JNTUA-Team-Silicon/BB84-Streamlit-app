@@ -1746,23 +1746,33 @@ def main():
         sims = session_info.get("simulations_run", 0)
         session_id = session_info.get("session_id", "N/A")
         
-        # ENHANCED HEADER LAYOUT
-        header_col1, header_col2 = st.columns([1, 4])
+        # ENHANCED HEADER LAYOUT WITH LOGO AND TITLE
+        header_col1, header_col2, header_col3 = st.columns([0.8, 3.5, 1.7])
         
         with header_col1:
-            st.image("jntua_logo.png", width=100)
+            st.image("jntua_logo.png", width=80)
         
         with header_col2:
             st.markdown("""
-            <div style='padding: 15px 0;'>
-                <h1 style='margin: 0; color: #1e40af; font-size: 32px; font-weight: 950; letter-spacing: -0.8px; text-shadow: 0 2px 4px rgba(0,0,0,0.05);'>JNTUA BB84 QKD Simulator</h1>
-                <p style='margin: 5px 0 0 0; color: #2563eb; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;'>Quantum Key Distribution | Cryptography & Security Intelligence</p>
+            <div style='padding: 10px 20px;'>
+                <h1 style='margin: 0; color: #1e40af; font-size: 28px; font-weight: 950; letter-spacing: -0.8px;'>AQVH PROJECT</h1>
+                <p style='margin: 3px 0 0 0; color: #2563eb; font-size: 13px; font-weight: 700; letter-spacing: 0.5px;'>Interactive BB84 QKD Simulator by Team Silicon</p>
+                <p style='margin: 2px 0 0 0; color: #64748b; font-size: 11px; font-weight: 500;'>Quantum Key Distribution | Cryptography & Security</p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with header_col3:
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 10px 12px; border-radius: 6px; border-left: 3px solid #1e40af; text-align: center; height: 100%;'>
+                <p style='margin: 0; color: #1e40af; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Session ID</p>
+                <p style='margin: 2px 0 0 0; color: #1e40af; font-size: 11px; font-family: monospace;'>#{session_id}</p>
+                <p style='margin: 3px 0 0 0; color: #1e40af; font-size: 10px;'>Runs: {sims}</p>
             </div>
             """, unsafe_allow_html=True)
         
         st.divider()
         
-        # ADVANCED ANIMATED SESSION BOX - FIRST VISIBLE ELEMENT
+        # ADVANCED ANIMATED SESSION BOX
         st.markdown("""
         <style>
             @keyframes slideInDown {
@@ -1797,30 +1807,29 @@ def main():
         
         session_html = f"""
         <div class='session-box session-glow' style='
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            background: linear-gradient(135deg, #f0f4ff 0%, #eff6ff 100%);
             border: 2px solid #3b82f6;
             border-radius: 12px;
-            padding: 25px;
-            margin: 10px 0;
-            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
         '>
             <div style='display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px;'>
-                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.3);'>
-                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Session ID</p>
-                    <h3 style='margin: 8px 0 0 0; color: #60a5fa; font-size: 20px; font-family: monospace; font-weight: bold;'>#{session_id}</h3>
+                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.2);'>
+                    <p style='margin: 0; color: #1e40af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Session ID</p>
+                    <h3 style='margin: 8px 0 0 0; color: #1e40af; font-size: 18px; font-family: monospace; font-weight: bold;'>#{session_id}</h3>
                 </div>
-                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.3);'>
-                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Simulations</p>
-                    <h3 style='margin: 8px 0 0 0; color: #60a5fa; font-size: 20px; font-weight: bold;'>{sims}</h3>
+                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.2);'>
+                    <p style='margin: 0; color: #1e40af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Simulations</p>
+                    <h3 style='margin: 8px 0 0 0; color: #1e40af; font-size: 18px; font-weight: bold;'>{sims}</h3>
                 </div>
-                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.3);'>
-                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Uptime</p>
-                    <h3 style='margin: 8px 0 0 0; color: #60a5fa; font-size: 20px; font-weight: bold;'>{uptime}s</h3>
+                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.2);'>
+                    <p style='margin: 0; color: #1e40af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Uptime</p>
+                    <h3 style='margin: 8px 0 0 0; color: #1e40af; font-size: 18px; font-weight: bold;'>{uptime}s</h3>
                 </div>
                 <div style='text-align: center;'>
-                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Status</p>
-                    <h3 style='margin: 8px 0 0 0; color: #10b981; font-size: 20px; font-weight: bold;'>ACTIVE</h3>
+                    <p style='margin: 0; color: #1e40af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Status</p>
+                    <h3 style='margin: 8px 0 0 0; color: #16a34a; font-size: 18px; font-weight: bold;'>ACTIVE</h3>
                 </div>
             </div>
         </div>

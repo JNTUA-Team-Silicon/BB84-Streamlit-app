@@ -1746,9 +1746,15 @@ def main():
         sims = session_info.get("simulations_run", 0)
         session_id = session_info.get("session_id", "N/A")
         
+        # FULL BACKGROUND CONTAINER
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%); 
+                    padding: 40px; border-radius: 20px; margin: 20px 0 40px 0;'>
+        """, unsafe_allow_html=True)
+        
         # TOP LOGOS SECTION
         st.markdown("""
-        <div style='display: flex; align-items: center; justify-content: center; gap: 50px; margin-bottom: 40px; padding: 20px 0;'>
+        <div style='display: flex; align-items: center; justify-content: center; gap: 50px; margin-bottom: 30px; padding: 10px 0;'>
         """, unsafe_allow_html=True)
         
         logo_col1, logo_col2, logo_col3, logo_col4 = st.columns(4)
@@ -1772,7 +1778,7 @@ def main():
         # PREMIUM HERO SECTION - FIRST IMPRESSION
         st.markdown("""
         <div style='background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%); 
-                    padding: 60px 40px; border-radius: 25px; margin: 20px 0 40px 0; 
+                    padding: 60px 40px; border-radius: 25px; margin: 0; 
                     box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
                     border: 2px solid rgba(0, 150, 255, 0.3);
                     position: relative; overflow: hidden;'>
@@ -1809,6 +1815,7 @@ def main():
         
         st.markdown("""
             </div>
+        </div>
         </div>
         """, unsafe_allow_html=True)
         

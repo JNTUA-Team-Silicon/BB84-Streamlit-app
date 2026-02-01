@@ -246,9 +246,12 @@ SilentStreamlitHandler.suppress_errors()
 try:
     st.set_page_config(
         page_title="JNTUA BB84 QKD Simulator",
-        page_icon="🔐",
+        page_icon="jntua_logo.png",
         layout="wide",
-        initial_sidebar_state="expanded"
+        initial_sidebar_state="expanded",
+        initial_state_dict={
+            "theme.base": "light"
+        }
     )
 except Exception as e:
     pass
@@ -258,6 +261,15 @@ def inject_responsive_css():
     """Inject clean CSS for responsive layout - Streamlit Cloud compatible"""
     st.markdown("""
     <style>
+    /* LIGHT THEME FOR VISIBILITY */
+    [data-testid="stApp"] {
+        background-color: #ffffff !important;
+    }
+    
+    .stApp {
+        background-color: #ffffff !important;
+    }
+    
     /* SAFE CSS: Only modifying .block-container and custom classes */
     
     /* Remove default padding for full-width experience */
@@ -267,12 +279,27 @@ def inject_responsive_css():
         padding-left: 2rem;
         padding-right: 2rem;
         max-width: 100%;
+        background-color: #ffffff !important;
     }
     
     /* BLUE COLOR SCHEME FOR ALL ELEMENTS */
     h1, h2, h3 { 
         color: #1e40af !important; 
         font-weight: 800 !important;
+    }
+    
+    /* STEP HEADINGS STYLING - BLUE WITH BACKGROUND */
+    .step-heading {
+        color: #ffffff !important;
+        background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%) !important;
+        padding: 12px 16px !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        font-size: 16px !important;
+        margin-top: 20px !important;
+        margin-bottom: 15px !important;
+        display: inline-block !important;
+        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2) !important;
     }
     
     /* BOX-LIKE SECTIONS */
@@ -337,53 +364,67 @@ def inject_responsive_css():
         border-radius: 6px !important;
     }
     
-    /* LOGO HEADER */
+    /* LOGO HEADER - BIG AND CENTERED */
     .logo-header {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 20px 2rem;
+        justify-content: center;
+        flex-direction: column;
+        padding: 40px 2rem;
         background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
         border-bottom: 3px solid #1e40af;
-        margin: -1.5rem -2rem 30px -2rem;
+        margin: -1.5rem -2rem 40px -2rem;
         border-radius: 0 0 12px 12px;
         box-shadow: 0 6px 20px rgba(30, 64, 175, 0.2);
+        text-align: center;
     }
     
     .logo-section {
         display: flex;
         align-items: center;
-        gap: 15px;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
     }
     
     .logo-icon {
-        font-size: 48px;
-        line-height: 1;
+        width: 80px;
+        height: 80px;
+    }
+    
+    .logo-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    
+    .logo-text {
+        text-align: center;
     }
     
     .logo-text h1 {
         margin: 0;
         color: white;
-        font-size: 28px;
+        font-size: 36px;
         font-weight: 800;
     }
     
     .logo-text p {
-        margin: 5px 0 0 0;
+        margin: 10px 0 0 0;
         color: #e0e7ff;
-        font-size: 13px;
+        font-size: 16px;
         letter-spacing: 0.5px;
     }
     
     .header-status {
         color: white;
-        font-size: 12px;
-        padding: 8px 15px;
-        background: rgba(255,255,255,0.15);
-        border: 1px solid rgba(255,255,255,0.3);
+        font-size: 14px;
+        padding: 10px 20px;
+        background: rgba(255,255,255,0.2);
+        border: 1px solid rgba(255,255,255,0.4);
         border-radius: 20px;
-        backdrop-filter: blur(10px);
         font-weight: 600;
+        margin-top: 15px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -1551,12 +1592,14 @@ def main():
         logger.debug(f"CSS injection: {e}")
         pass
     
-    # LOGO HEADER WITH PROPER RESPONSIVE STYLING
+    # LOGO HEADER WITH PROPER RESPONSIVE STYLING - BIG AND CENTERED
     try:
         st.markdown("""
         <div class='logo-header'>
             <div class='logo-section'>
-                <div class='logo-icon'>🔐</div>
+                <div class='logo-icon'>
+                    <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==' alt='JNTUA Logo'>
+                </div>
                 <div class='logo-text'>
                     <h1>JNTUA BB84 QKD Simulator</h1>
                     <p>Quantum Key Distribution | Cryptography & Security</p>
@@ -1624,15 +1667,33 @@ def main():
     Any eavesdropping introduces detectable errors due to quantum no-cloning theorem.
     
     ### Detailed Protocol Flow:
-    - **Step 1:** Alice randomly generates N bits (0s and 1s) and randomly chooses a basis (Rectilinear or Diagonal) for each bit
-    - **Step 2:** Alice encodes each bit into a qubit using her chosen basis and sends the qubits to Bob through a quantum channel
-    - **Step 3:** Bob independently chooses a random basis for each qubit and measures it, recording his results
-    - **Step 4:** After all qubits are transmitted, Alice publicly announces which bases she used (but NOT the bits)
-    - **Step 5:** Bob publicly announces which bases he used (but NOT his measurement results)
-    - **Step 6:** Both parties compare their bases; they keep only the bits where their bases matched (approximately 50% of the qubits)
-    - **Step 7:** A random subset of the sifted key is publicly compared to estimate the Quantum Bit Error Rate (QBER)
-    - **Step 8:** If QBER exceeds the threshold, eavesdropping is detected and the protocol is aborted
-    - **Step 9:** The remaining sifted key is processed through privacy amplification (hashing) to produce the final secure cryptographic key
+    
+    <div class='step-heading'>Step 1</div>
+    Alice randomly generates N bits (0s and 1s) and randomly chooses a basis (Rectilinear or Diagonal) for each bit
+    
+    <div class='step-heading'>Step 2</div>
+    Alice encodes each bit into a qubit using her chosen basis and sends the qubits to Bob through a quantum channel
+    
+    <div class='step-heading'>Step 3</div>
+    Bob independently chooses a random basis for each qubit and measures it, recording his results
+    
+    <div class='step-heading'>Step 4</div>
+    After all qubits are transmitted, Alice publicly announces which bases she used (but NOT the bits)
+    
+    <div class='step-heading'>Step 5</div>
+    Bob publicly announces which bases he used (but NOT his measurement results)
+    
+    <div class='step-heading'>Step 6</div>
+    Both parties compare their bases; they keep only the bits where their bases matched (approximately 50% of the qubits)
+    
+    <div class='step-heading'>Step 7</div>
+    A random subset of the sifted key is publicly compared to estimate the Quantum Bit Error Rate (QBER)
+    
+    <div class='step-heading'>Step 8</div>
+    If QBER exceeds the threshold, eavesdropping is detected and the protocol is aborted
+    
+    <div class='step-heading'>Step 9</div>
+    The remaining sifted key is processed through privacy amplification (hashing) to produce the final secure cryptographic key
     """)
 
     # SIMULATION PARAMETERS SECTION

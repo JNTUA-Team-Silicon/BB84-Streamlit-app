@@ -98,7 +98,8 @@ from bb84_cliparts import (
     get_security_status_svg,
     get_qber_gauge_svg,
     get_bloch_sphere_svg,
-    get_timeline_comparison_svg
+    get_timeline_comparison_svg,
+    get_spy_agent_svg
 )
 
 # Configure logging
@@ -772,7 +773,7 @@ def render_final_key_download():
 
 @st.fragment
 def render_metrics_display():
-    """Display main metrics. UI-only, reads from session_state."""
+    """Display main metrics - Clean minimalist design. UI-only, reads from session_state."""
     # Fragment safety guard
     if not st.session_state.get("simulation_completed", False):
         return
@@ -784,35 +785,61 @@ def render_metrics_display():
     eve = st.session_state.sim_results['eve']
     num_bits = st.session_state.sim_results['parameters']['num_bits']
 
-    col1, col2 = st.columns(2)
+    st.markdown("### Key Metrics")
     
-    with col1:
-        st.subheader(" **No Eavesdropper Scenario**")
-        st.metric(" Transmitted Qubits", num_bits)
-        st.metric(" Sifted Bits", no_eve['sifted_count'])
-        st.metric(" Errors Detected", no_eve['errors'])
-        st.metric(" QBER", f"{no_eve['qber']:.4f}")
-        st.metric(" Final Secure Key", no_eve['final_key_length'])
-        st.metric("⟱ Key Rate", f"{no_eve['final_key_length'] / num_bits:.4f}")
-        st.plotly_chart(
-            qber_gauge(no_eve['qber'], st.session_state.threshold),
-            use_container_width=True,
-            key="gauge_no_metric"
-        )
-
-    with col2:
-        st.subheader(" **Eavesdropper Present Scenario**")
-        st.metric(" Transmitted Qubits", num_bits)
-        st.metric(" Sifted Bits", eve['sifted_count'])
-        st.metric(" Errors Detected", eve['errors'])
-        st.metric(" QBER", f"{eve['qber']:.4f}")
-        st.metric(" Final Secure Key", eve['final_key_length'])
-        st.metric("⟱ Key Rate", f"{eve['final_key_length'] / num_bits:.4f}")
-        st.plotly_chart(
-            qber_gauge(eve['qber'], st.session_state.threshold),
-            use_container_width=True,
-            key="gauge_e_metric"
-        )
+    # No Eve Scenario
+    st.markdown("**No Eavesdropper Scenario**")
+    metrics_col1, metrics_col2, metrics_col3, metrics_col4, metrics_col5 = st.columns(5)
+    
+    with metrics_col1:
+        st.markdown(f"<div style='text-align: center;'><h3 style='color: #2563eb; margin: 0;'>{no_eve['sifted_count']}</h3><p style='font-size: 12px; color: #666; margin: 0;'>Sifted Bits</p></div>", unsafe_allow_html=True)
+    
+    with metrics_col2:
+        st.markdown(f"<div style='text-align: center;'><h3 style='color: #dc2626; margin: 0;'>{no_eve['errors']}</h3><p style='font-size: 12px; color: #666; margin: 0;'>Errors</p></div>", unsafe_allow_html=True)
+    
+    with metrics_col3:
+        st.markdown(f"<div style='text-align: center;'><h3 style='color: #059669; margin: 0;'>{no_eve['qber']:.4f}</h3><p style='font-size: 12px; color: #666; margin: 0;'>QBER</p></div>", unsafe_allow_html=True)
+    
+    with metrics_col4:
+        st.markdown(f"<div style='text-align: center;'><h3 style='color: #7c3aed; margin: 0;'>{no_eve['final_key_length']}</h3><p style='font-size: 12px; color: #666; margin: 0;'>Secure Key</p></div>", unsafe_allow_html=True)
+    
+    with metrics_col5:
+        st.markdown(f"<div style='text-align: center;'><h3 style='color: #1e40af; margin: 0;'>{no_eve['final_key_length'] / num_bits:.4f}</h3><p style='font-size: 12px; color: #666; margin: 0;'>Key Rate</p></div>", unsafe_allow_html=True)
+    
+    st.plotly_chart(
+        qber_gauge(no_eve['qber'], st.session_state.threshold),
+        use_container_width=True,
+        key="gauge_no_metric",
+        config={'displayModeBar': False}
+    )
+    
+    st.divider()
+    
+    # Eve Scenario
+    st.markdown("**Eavesdropper Present Scenario**")
+    metrics_col1, metrics_col2, metrics_col3, metrics_col4, metrics_col5 = st.columns(5)
+    
+    with metrics_col1:
+        st.markdown(f"<div style='text-align: center;'><h3 style='color: #2563eb; margin: 0;'>{eve['sifted_count']}</h3><p style='font-size: 12px; color: #666; margin: 0;'>Sifted Bits</p></div>", unsafe_allow_html=True)
+    
+    with metrics_col2:
+        st.markdown(f"<div style='text-align: center;'><h3 style='color: #dc2626; margin: 0;'>{eve['errors']}</h3><p style='font-size: 12px; color: #666; margin: 0;'>Errors</p></div>", unsafe_allow_html=True)
+    
+    with metrics_col3:
+        st.markdown(f"<div style='text-align: center;'><h3 style='color: #059669; margin: 0;'>{eve['qber']:.4f}</h3><p style='font-size: 12px; color: #666; margin: 0;'>QBER</p></div>", unsafe_allow_html=True)
+    
+    with metrics_col4:
+        st.markdown(f"<div style='text-align: center;'><h3 style='color: #7c3aed; margin: 0;'>{eve['final_key_length']}</h3><p style='font-size: 12px; color: #666; margin: 0;'>Secure Key</p></div>", unsafe_allow_html=True)
+    
+    with metrics_col5:
+        st.markdown(f"<div style='text-align: center;'><h3 style='color: #1e40af; margin: 0;'>{eve['final_key_length'] / num_bits:.4f}</h3><p style='font-size: 12px; color: #666; margin: 0;'>Key Rate</p></div>", unsafe_allow_html=True)
+    
+    st.plotly_chart(
+        qber_gauge(eve['qber'], st.session_state.threshold),
+        use_container_width=True,
+        key="gauge_e_metric",
+        config={'displayModeBar': False}
+    )
 
 
 @st.fragment
@@ -860,7 +887,7 @@ def render_error_analysis():
 
 @st.fragment
 def render_sifted_key_display():
-    """Display sifted key comparison. UI-only."""
+    """Display sifted key comparison - Clean minimalist design. UI-only."""
     if not st.session_state.simulation_completed or st.session_state.sim_results is None:
         return
 
@@ -872,7 +899,7 @@ def render_sifted_key_display():
     col_no, col_e = st.columns(2)
     
     with col_no:
-        st.markdown(f"**No Eve (First {min(sifted_display_size, no_eve['sifted_count'])} Sifted Bits):**")
+        st.markdown(f"**No Eve - First {min(sifted_display_size, no_eve['sifted_count'])} Sifted Bits**")
         if no_eve['sifted_count'] > 0:
             show_n = min(sifted_display_size, no_eve['sifted_count'])
             used_no = no_eve['timeline'][no_eve['timeline']["Used"] == True]
@@ -881,12 +908,12 @@ def render_sifted_key_display():
                 "Bob": used_no["BobResult"].iloc[:show_n].values,
                 "Match": used_no["Error"].iloc[:show_n].apply(lambda x: not x).values
             })
-            st.dataframe(df_no, key="sifted_df_no", use_container_width=True)
+            st.dataframe(df_no, key="sifted_df_no", use_container_width=True, hide_index=True)
         else:
             st.info("No sifted bits available")
 
     with col_e:
-        st.markdown(f"**With Eve (First {min(sifted_display_size, eve['sifted_count'])} Sifted Bits):**")
+        st.markdown(f"**With Eve - First {min(sifted_display_size, eve['sifted_count'])} Sifted Bits**")
         if eve['sifted_count'] > 0:
             show_n = min(sifted_display_size, eve['sifted_count'])
             used_e = eve['timeline'][eve['timeline']["Used"] == True]
@@ -895,20 +922,22 @@ def render_sifted_key_display():
                 "Bob": used_e["BobResult"].iloc[:show_n].values,
                 "Match": used_e["Error"].iloc[:show_n].apply(lambda x: not x).values
             })
-            st.dataframe(df_e, key="sifted_df_e", use_container_width=True)
+            st.dataframe(df_e, key="sifted_df_e", use_container_width=True, hide_index=True)
         else:
             st.info("No sifted bits available")
 
+    st.divider()
     st.plotly_chart(
-        decision_line(eve['qber'], st.session_state.threshold, "**Attack Detection Decision Analysis**"),
+        decision_line(eve['qber'], st.session_state.threshold, "Attack Detection Decision Analysis"),
         use_container_width=True,
-        key="dec_line_chart"
+        key="dec_line_chart",
+        config={'displayModeBar': False}
     )
 
 
 @st.fragment
 def render_timeline_analysis():
-    """Display timeline visualizations. UI-only."""
+    """Display timeline visualizations - Clean design. UI-only."""
     if not st.session_state.simulation_completed or st.session_state.sim_results is None:
         return
 
@@ -918,93 +947,78 @@ def render_timeline_analysis():
 
     st.markdown("### Timeline Analysis")
     
-    viz_col1, viz_col2 = st.columns(2)
-    with viz_col1:
-        show_pdf = st.checkbox(" **PDF Style Timeline**", value=True)
-    with viz_col2:
-        show_plotly = st.checkbox(" **Interactive Plotly Timeline**", value=True)
-
-    tl_col1, tl_col2 = st.columns(2)
+    # Tabs for clean organization
+    tab_pdf, tab_interactive = st.tabs(["Visual Timeline", "Interactive View"])
     
-    with tl_col1:
-        st.subheader(" **No Eavesdropper Scenario**")
-        if show_pdf:
+    with tab_pdf:
+        tl_col1, tl_col2 = st.columns(2)
+        
+        with tl_col1:
+            st.markdown("**No Eavesdropper Scenario**")
             try:
                 fig_pdf_no = plot_pdf_style_timeline(
                     no_eve['timeline'], 
-                    title="No Eve Scenario", 
+                    title="No Eve", 
                     max_bits=pdf_max, 
                     color_scheme='blue'
                 )
                 st.pyplot(fig_pdf_no, use_container_width=True)
             except Exception as e:
-                logger.error(f"Error displaying timeline: {e}")
+                logger.error(f"Timeline error: {e}")
         
-        if show_plotly:
-            st.markdown("---")
-            st.subheader("Plotly Timeline (Interactive)")
-            max_no = len(no_eve['timeline']) - 1
-            if st.session_state.timeline_range_no_end == 0:
-                st.session_state.timeline_range_no_end = min(max_no, 100)
-            
-            saved_start_no = min(st.session_state.timeline_range_no_start, max_no)
-            saved_end_no = min(st.session_state.timeline_range_no_end, max_no)
-            start_no, end_no = st.slider(
-                "Select range", 0, max_no, 
-                value=(saved_start_no, saved_end_no), 
-                key="range_no_slider_key"
-            )
-
-            st.plotly_chart(
-                plotly_bit_timeline(no_eve['timeline'], start_no, end_no, title="No Eve - Plotly Timeline"),
-                use_container_width=True,
-                key="plotly_timeline_no"
-            )
-            st.plotly_chart(
-                plotly_error_timeline(no_eve['timeline'], start_no, end_no, title="No Eve - Error Timeline"),
-                use_container_width=True,
-                key="plotly_err_no"
-            )
-
-    with tl_col2:
-        st.subheader(" **Eavesdropper Present Scenario**")
-        if show_pdf:
+        with tl_col2:
+            st.markdown("**Eavesdropper Present Scenario**")
             try:
                 fig_pdf_e = plot_pdf_style_timeline(
                     eve['timeline'], 
-                    title="With Eve Scenario", 
+                    title="With Eve", 
                     max_bits=pdf_max, 
                     color_scheme='red'
                 )
                 st.pyplot(fig_pdf_e, use_container_width=True)
             except Exception as e:
-                logger.error(f"Error displaying timeline: {e}")
-        
-        if show_plotly:
-            st.markdown("---")
-            st.subheader("Plotly Timeline (Interactive)")
-            max_e = len(eve['timeline']) - 1
-            if st.session_state.timeline_range_eve_end == 0:
-                st.session_state.timeline_range_eve_end = min(max_e, 100)
-            
-            saved_start_e = min(st.session_state.timeline_range_eve_start, max_e)
-            saved_end_e = min(st.session_state.timeline_range_eve_end, max_e)
-            start_e, end_e = st.slider(
-                "Select range", 0, max_e, 
-                value=(saved_start_e, saved_end_e), 
-                key="range_e_slider_key"
-            )
+                logger.error(f"Timeline error: {e}")
 
-            st.plotly_chart(
-                plotly_bit_timeline(eve['timeline'], start_e, end_e, title="With Eve - Plotly Timeline"),
-                use_container_width=True,
-                key="plotly_timeline_e"
-            )
-            st.plotly_chart(
-                plotly_error_timeline(eve['timeline'], start_e, end_e, title="With Eve - Error Timeline"),
-                use_container_width=True,
-                key="plotly_err_e"
-            )
+    with tab_interactive:
+        st.markdown("**Interactive Timeline - No Eve**")
+        max_no = len(no_eve['timeline']) - 1
+        if st.session_state.timeline_range_no_end == 0:
+            st.session_state.timeline_range_no_end = min(max_no, 100)
+        
+        saved_start_no = min(st.session_state.timeline_range_no_start, max_no)
+        saved_end_no = min(st.session_state.timeline_range_no_end, max_no)
+        start_no, end_no = st.slider(
+            "Select bit range", 0, max_no, 
+            value=(saved_start_no, saved_end_no), 
+            key="range_no_slider_key"
+        )
+
+        st.plotly_chart(
+            plotly_bit_timeline(no_eve['timeline'], start_no, end_no, title="No Eve Timeline"),
+            use_container_width=True,
+            key="plotly_timeline_no",
+            config={'displayModeBar': False}
+        )
+        
+        st.markdown("**Interactive Timeline - With Eve**")
+        max_e = len(eve['timeline']) - 1
+        if st.session_state.timeline_range_e_end == 0:
+            st.session_state.timeline_range_e_end = min(max_e, 100)
+        
+        saved_start_e = min(st.session_state.timeline_range_e_start, max_e)
+        saved_end_e = min(st.session_state.timeline_range_e_end, max_e)
+        start_e, end_e = st.slider(
+            "Select bit range", 0, max_e, 
+            value=(saved_start_e, saved_end_e), 
+            key="range_e_slider_key"
+        )
+
+        st.plotly_chart(
+            plotly_bit_timeline(eve['timeline'], start_e, end_e, title="With Eve Timeline"),
+            use_container_width=True,
+            key="plotly_timeline_e",
+            config={'displayModeBar': False}
+        )
 
 
 @st.fragment
@@ -1643,8 +1657,8 @@ def main():
         st.markdown(f"""
         <div class='logo-header'>
             <div class='logo-section'>
-                <div class='logo-icon'>
-                    <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==' alt='JNTUA Logo'>
+                <div class='logo-icon' style='background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; padding: 10px; border: 2px solid #c41e3a;'>
+                    {get_spy_agent_svg()}
                 </div>
                 <div class='logo-text'>
                     <h1>JNTUA BB84 QKD Simulator</h1>

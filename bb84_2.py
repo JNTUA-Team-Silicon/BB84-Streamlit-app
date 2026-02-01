@@ -111,11 +111,8 @@ import warnings
 warnings.filterwarnings('ignore', message='.*Bad message format.*')
 warnings.filterwarnings('ignore', message='.*SessionInfo before it was initialized.*')
 warnings.filterwarnings('ignore', message='.*SessionInfo.*')
-warnings.filterwarnings('ignore', message='.*message format.*')
-warnings.filterwarnings('ignore', message='.*Uninitialized.*')
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 warnings.filterwarnings('ignore', category=FutureWarning)
-warnings.filterwarnings('ignore', category=RuntimeWarning)
 
 # Suppress Streamlit internal logger noise
 logging.getLogger('streamlit').setLevel(logging.CRITICAL)
@@ -126,55 +123,16 @@ logging.getLogger('altair').setLevel(logging.CRITICAL)
 logging.getLogger('urllib3').setLevel(logging.CRITICAL)
 logging.getLogger('plotly').setLevel(logging.WARNING)
 
-# Suppress all warnings
-warnings.filterwarnings('ignore')
-
-# Create a custom stderr/stdout handler to suppress specific errors
-import io
-
-def render_svg_safe(svg_content, title=""):
-    """Safely render SVG content with proper encoding for Streamlit cloud deployment"""
-    try:
-        # Ensure SVG is properly formatted
-        if isinstance(svg_content, str):
-            svg_html = f'<div style="text-align: center; margin: 20px 0;">{svg_content}</div>'
-            return st.markdown(svg_html, unsafe_allow_html=True)
-    except Exception as e:
-        logger.debug(f"SVG render error (safe): {e}")
-        pass
-class ErrorFilter:
-    """Filter stderr/stdout to remove specific error messages"""
+# Lightweight error suppression - only suppress specific errors
+class MinimalErrorFilter:
+    """Minimal filter for only specific errors - avoids performance issues"""
     def __init__(self, original_stream):
         self.original_stream = original_stream
-        self.buffer = ""
+        self.suppress_keywords = ['Bad message format', 'SessionInfo before it was initialized', 'Tried to use SessionInfo']
     
     def write(self, text):
-        # Suppress these specific error messages - comprehensive pattern matching
-        suppress_patterns = [
-            'Bad message format',
-            'SessionInfo before it was initialized',
-            'Tried to use SessionInfo before it was initialized',
-            'Tried to use SessionInfo',
-            'SessionInfo',
-            'message format',
-            'protobuf',
-            'proto',
-            'delta message',
-            'DELTA_MESSAGE',
-            'DeltaMessage',
-            'error',
-            'Error',
-            'ERROR',
-            'warning',
-            'Warning'
-        ]
-        
-        # Check if text contains any suppressed patterns (case-insensitive)
-        text_lower = text.lower()
-        should_suppress = any(pattern.lower() in text_lower for pattern in suppress_patterns)
-        
-        # Only write non-empty, non-suppressed messages
-        if not should_suppress and text.strip() and 'traceback' not in text_lower:
+        # Only suppress exact error messages, let everything else through
+        if not any(keyword in text for keyword in self.suppress_keywords):
             self.original_stream.write(text)
     
     def flush(self):
@@ -195,53 +153,18 @@ class ErrorFilter:
     def read(self, n=-1):
         return self.original_stream.read(n) if hasattr(self.original_stream, 'read') else ""
 
-# Apply filters to both stderr and stdout
-sys.stderr = ErrorFilter(sys.stderr)
-sys.stdout = ErrorFilter(sys.stdout)
+# Apply filter only to stderr
+sys.stderr = MinimalErrorFilter(sys.stderr)
 
-# Custom exception handler to suppress errors from being displayed
+# Simple exception handler - only suppress known StreamInfo errors
 _original_excepthook = sys.excepthook
-def _silent_excepthook(type, value, traceback):
-    """Silent exception handler - logs but doesn't display"""
-    try:
-        error_msg = str(value).lower()
-        suppress_patterns = [
-            'sessioninfo',
-            'bad message',
-            'tried to use',
-            'message format',
-            'error'
-        ]
-        
-        if not any(pattern in error_msg for pattern in suppress_patterns):
-            logger.error(f"Uncaught exception: {type.__name__}: {str(value)}")
-    except:
-        pass
-    # Don't call the original excepthook to prevent error display
+def _error_handler(type, value, traceback):
+    """Suppress only SessionInfo-related errors"""
+    error_str = str(value)
+    if 'SessionInfo' not in error_str and 'Bad message format' not in error_str:
+        _original_excepthook(type, value, traceback)
 
-sys.excepthook = _silent_excepthook
-
-# Suppress Streamlit's exception display directly
-class SilentStreamlitHandler:
-    """Intercept Streamlit's exception handling"""
-    @staticmethod
-    def suppress_errors():
-        # Patch Streamlit's logger to suppress these messages
-        st_logger = logging.getLogger('streamlit')
-        
-        class SilentFilter(logging.Filter):
-            def filter(self, record):
-                suppress_patterns = [
-                    'Bad message format',
-                    'SessionInfo before it was initialized',
-                    'Tried to use SessionInfo',
-                    'SessionInfo'
-                ]
-                return not any(pattern in str(record.getMessage()) for pattern in suppress_patterns)
-        
-        st_logger.addFilter(SilentFilter())
-
-SilentStreamlitHandler.suppress_errors()
+sys.excepthook = _error_handler
 
 # PAGE CONFIG - MUST BE FIRST STREAMLIT COMMAND
 try:

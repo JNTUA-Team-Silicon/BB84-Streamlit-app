@@ -1746,31 +1746,63 @@ def main():
         sims = session_info.get("simulations_run", 0)
         session_id = session_info.get("session_id", "N/A")
         
-        # ENHANCED HEADER LAYOUT WITH LOGO AND TITLE
-        header_col1, header_col2, header_col3 = st.columns([0.8, 3.5, 1.7])
-        
-        with header_col1:
-            st.image("jntua_logo.png", width=80)
-        
-        with header_col2:
-            st.markdown("""
-            <div style='padding: 10px 20px;'>
-                <h1 style='margin: 0; color: #1e40af; font-size: 28px; font-weight: 950; letter-spacing: -0.8px;'>AQVH PROJECT</h1>
-                <p style='margin: 3px 0 0 0; color: #2563eb; font-size: 13px; font-weight: 700; letter-spacing: 0.5px;'>Interactive BB84 QKD Simulator by Team Silicon</p>
-                <p style='margin: 2px 0 0 0; color: #64748b; font-size: 11px; font-weight: 500;'>Quantum Key Distribution | Cryptography & Security</p>
+        # PREMIUM PROFESSIONAL HEADER WITH GRADIENT BACKGROUND
+        st.markdown("""
+        <div style='
+            background: linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #3b82f6 100%);
+            padding: 40px 30px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 20px 60px rgba(30, 64, 175, 0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+            border: 2px solid rgba(96, 165, 250, 0.4);
+            position: relative;
+            overflow: hidden;
+        '>
+            <div style='position: absolute; top: -50%; right: -10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%); border-radius: 50%; pointer-events: none;'></div>
+            <div style='position: absolute; bottom: -30%; left: -5%; width: 250px; height: 250px; background: radial-gradient(circle, rgba(96, 165, 250, 0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none;'></div>
+            
+            <div style='display: flex; align-items: center; gap: 25px; position: relative; z-index: 10;'>
+                <div style='flex-shrink: 0;'>
+                    <img src="jntua_logo.png" alt="JNTUA Logo" style='width: 95px; height: auto; filter: brightness(1.2) drop-shadow(0 8px 16px rgba(96, 165, 250, 0.3));'>
+                </div>
+                <div style='flex-grow: 1;'>
+                    <div style='display: flex; align-items: baseline; gap: 12px;'>
+                        <h1 style='margin: 0; color: #ffffff; font-size: 46px; font-weight: 950; letter-spacing: -1.5px; text-shadow: 0 6px 20px rgba(0,0,0,0.4);'>AQVH PROJECT</h1>
+                        <span style='color: #06b6d4; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; padding: 4px 10px; background: rgba(6, 182, 212, 0.15); border-radius: 20px; border: 1px solid rgba(6, 182, 212, 0.4);'>Next-Gen Quantum</span>
+                    </div>
+                    <h2 style='margin: 5px 0 8px 0; color: #60a5fa; font-size: 28px; font-weight: 900; letter-spacing: 0.5px; background: linear-gradient(90deg, #60a5fa 0%, #bfdbfe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>BB84 QKD Simulator</h2>
+                    <p style='margin: 0 0 4px 0; color: #e0e7ff; font-size: 15px; font-weight: 700; letter-spacing: 0.3px;'>Cryptographic Security through Quantum Mechanics</p>
+                    <p style='margin: 0 0 6px 0; color: #bfdbfe; font-size: 13px; font-weight: 600;'>Quantum Key Distribution | Post-Quantum Cryptography | Eavesdropping Detection</p>
+                    <p style='margin: 0; color: #93c5fd; font-size: 12px; font-weight: 600;'>Team Silicon | JNTUA ECE Department</p>
+                </div>
+                <div style='flex-shrink: 0; text-align: center; background: rgba(255, 255, 255, 0.08); padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(96, 165, 250, 0.3);'>
+                    <p style='margin: 0 0 8px 0; color: #93c5fd; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;'>Protocol</p>
+                    <p style='margin: 0 0 8px 0; color: #60a5fa; font-size: 20px; font-weight: 950;'>BB84</p>
+                    <p style='margin: 0 0 8px 0; color: #bfdbfe; font-size: 10px; border-top: 1px solid rgba(96, 165, 250, 0.3); padding-top: 8px;'>Bennett & Brassard</p>
+                    <p style='margin: 0; color: #93c5fd; font-size: 10px; font-weight: 600;'>Proven Secure</p>
+                </div>
             </div>
-            """, unsafe_allow_html=True)
-        
-        with header_col3:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 10px 12px; border-radius: 6px; border-left: 3px solid #1e40af; text-align: center; height: 100%;'>
-                <p style='margin: 0; color: #1e40af; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Session ID</p>
-                <p style='margin: 2px 0 0 0; color: #1e40af; font-size: 11px; font-family: monospace;'>#{session_id}</p>
-                <p style='margin: 3px 0 0 0; color: #1e40af; font-size: 10px;'>Runs: {sims}</p>
+            
+            <div style='margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(96, 165, 250, 0.25); display: flex; gap: 20px; justify-content: space-around; position: relative; z-index: 10;'>
+                <div style='text-align: center;'>
+                    <p style='margin: 0; color: #60a5fa; font-size: 16px; font-weight: 900; letter-spacing: 2px;'>[ ]</p>
+                    <p style='margin: 4px 0 0 0; color: #bfdbfe; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Secure Keys</p>
+                </div>
+                <div style='text-align: center;'>
+                    <p style='margin: 0; color: #60a5fa; font-size: 16px; font-weight: 900; letter-spacing: 2px;'>{ }</p>
+                    <p style='margin: 4px 0 0 0; color: #bfdbfe; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Eve Detection</p>
+                </div>
+                <div style='text-align: center;'>
+                    <p style='margin: 0; color: #60a5fa; font-size: 16px; font-weight: 900; letter-spacing: 2px;'>< ></p>
+                    <p style='margin: 4px 0 0 0; color: #bfdbfe; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Real-Time</p>
+                </div>
+                <div style='text-align: center;'>
+                    <p style='margin: 0; color: #60a5fa; font-size: 16px; font-weight: 900; letter-spacing: 2px;'>| |</p>
+                    <p style='margin: 4px 0 0 0; color: #bfdbfe; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Analytics</p>
+                </div>
             </div>
-            """, unsafe_allow_html=True)
-        
-        st.divider()
+        </div>
+        """, unsafe_allow_html=True)
         
         # ADVANCED ANIMATED SESSION BOX
         st.markdown("""

@@ -1781,20 +1781,6 @@ def main():
         
         st.markdown("")
         
-        # FEATURE SHOWCASE
-        feature_html = """
-        <div style='background: linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #3b82f6 100%); padding: 20px; border-radius: 18px; margin-bottom: 25px; box-shadow: 0 20px 60px rgba(30, 64, 175, 0.35), inset 0 1px 0 rgba(255,255,255,0.15); border: 2px solid rgba(96, 165, 250, 0.4);'>
-            <div style='display: flex; gap: 20px; justify-content: space-around;'>
-                <div style='text-align: center;'><p style='margin: 0; color: #60a5fa; font-size: 16px; font-weight: 900; letter-spacing: 2px;'>[ ]</p><p style='margin: 4px 0 0 0; color: #bfdbfe; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Secure Keys</p></div>
-                <div style='text-align: center;'><p style='margin: 0; color: #60a5fa; font-size: 16px; font-weight: 900; letter-spacing: 2px;'>{ }</p><p style='margin: 4px 0 0 0; color: #bfdbfe; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Eve Detection</p></div>
-                <div style='text-align: center;'><p style='margin: 0; color: #60a5fa; font-size: 16px; font-weight: 900; letter-spacing: 2px;'>< ></p><p style='margin: 4px 0 0 0; color: #bfdbfe; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Real-Time</p></div>
-                <div style='text-align: center;'><p style='margin: 0; color: #60a5fa; font-size: 16px; font-weight: 900; letter-spacing: 2px;'>| |</p><p style='margin: 4px 0 0 0; color: #bfdbfe; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Analytics</p></div>
-            </div>
-        </div>
-        """
-        st.markdown(feature_html, unsafe_allow_html=True)
-        
-        # ADVANCED ANIMATED SESSION BOX
         st.markdown("""
         <style>
             @keyframes slideInDown {
@@ -1829,29 +1815,29 @@ def main():
         
         session_html = f"""
         <div class='session-box session-glow' style='
-            background: linear-gradient(135deg, #f0f4ff 0%, #eff6ff 100%);
-            border: 2px solid #3b82f6;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 15px 0;
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+            background: linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #3b82f6 100%);
+            border: 2px solid rgba(96, 165, 250, 0.5);
+            border-radius: 18px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 40px rgba(30, 64, 175, 0.3), inset 0 1px 0 rgba(255,255,255,0.1);
         '>
-            <div style='display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px;'>
-                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.2);'>
-                    <p style='margin: 0; color: #1e40af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Session ID</p>
-                    <h3 style='margin: 8px 0 0 0; color: #1e40af; font-size: 18px; font-family: monospace; font-weight: bold;'>#{session_id}</h3>
+            <div style='display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 30px;'>
+                <div style='text-align: center; padding-right: 20px; border-right: 2px solid rgba(255,255,255,0.1);'>
+                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Session ID</p>
+                    <h3 style='margin: 12px 0 0 0; color: #60a5fa; font-size: 20px; font-family: monospace; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.2);'>#{session_id}</h3>
                 </div>
-                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.2);'>
-                    <p style='margin: 0; color: #1e40af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Simulations</p>
-                    <h3 style='margin: 8px 0 0 0; color: #1e40af; font-size: 18px; font-weight: bold;'>{sims}</h3>
+                <div style='text-align: center; padding-right: 20px; border-right: 2px solid rgba(255,255,255,0.1);'>
+                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Simulations</p>
+                    <h3 style='margin: 12px 0 0 0; color: #60a5fa; font-size: 20px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.2);'>{sims}</h3>
                 </div>
-                <div style='text-align: center; border-right: 1px solid rgba(59, 130, 246, 0.2);'>
-                    <p style='margin: 0; color: #1e40af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Uptime</p>
-                    <h3 style='margin: 8px 0 0 0; color: #1e40af; font-size: 18px; font-weight: bold;'>{uptime}s</h3>
+                <div style='text-align: center; padding-right: 20px; border-right: 2px solid rgba(255,255,255,0.1);'>
+                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Uptime</p>
+                    <h3 style='margin: 12px 0 0 0; color: #60a5fa; font-size: 20px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.2);'>{uptime}s</h3>
                 </div>
                 <div style='text-align: center;'>
-                    <p style='margin: 0; color: #1e40af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;'>Status</p>
-                    <h3 style='margin: 8px 0 0 0; color: #16a34a; font-size: 18px; font-weight: bold;'>ACTIVE</h3>
+                    <p style='margin: 0; color: #93c5fd; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Status</p>
+                    <h3 style='margin: 12px 0 0 0; color: #34d399; font-size: 20px; font-weight: 900; text-shadow: 0 2px 8px rgba(52, 211, 153, 0.3);'>ACTIVE</h3>
                 </div>
             </div>
         </div>

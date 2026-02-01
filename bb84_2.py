@@ -652,8 +652,18 @@ def run_bb84_simulation():
         progress_bar.empty()
         st.session_state.simulation_completed = True
         
-        # Increment simulation counter
+        # Update all session tracking metrics
         st.session_state.simulation_count = st.session_state.get("simulation_count", 0) + 1
+        st.session_state.last_simulation_time = datetime.now()
+        st.session_state.simulation_run = True
+        st.session_state.previous_sim_params = {
+            'num_bits': num_bits,
+            'threshold': threshold,
+            'eve_prob': eve_prob,
+            'eve_attack': eve_attack,
+            'noise_prob': noise_prob,
+            'window': window
+        }
     
     finally:
         # Always release the lock, even if error occurs
@@ -1957,10 +1967,13 @@ def main():
         with col_info1:
             st.markdown("**Session Information:**")
             session_info = _get_session_summary()
+            last_sim_time = st.session_state.get("last_simulation_time")
+            last_sim_display = last_sim_time.strftime("%Y-%m-%d %H:%M:%S") if last_sim_time else "Never"
             st.markdown(f"""
             - **Session ID:** `{session_info.get('session_id', 'N/A')}`
             - **Uptime:** {int(session_info.get('uptime_seconds', 0))} seconds
-            - **Simulations:** {session_info.get('simulations_run', 0)}
+            - **Simulations Run:** {session_info.get('simulations_run', 0)}
+            - **Last Simulation:** {last_sim_display}
             - **Active Simulation:** {'Yes' if session_info.get('is_simulation_active') else 'No'}
             """)
         
@@ -1975,6 +1988,23 @@ def main():
                 """)
             except:
                 st.markdown("Configuration loading...")
+        
+        # Last simulation parameters
+        if st.session_state.get("previous_sim_params"):
+            st.markdown("---")
+            st.markdown("**Last Simulation Parameters:**")
+            params = st.session_state.previous_sim_params
+            col_last1, col_last2 = st.columns(2)
+            with col_last1:
+                st.markdown(f"""
+                - **Qubits:** {params.get('num_bits', 'N/A')}
+                - **QBER Threshold:** {params.get('threshold', 'N/A')}
+                """)
+            with col_last2:
+                st.markdown(f"""
+                - **Eve Probability:** {params.get('eve_prob', 'N/A')}
+                - **Noise Level:** {params.get('noise_prob', 'N/A')}
+                """)
     
     st.header("BB84 Quantum Key Distribution Process")
     st.markdown("""

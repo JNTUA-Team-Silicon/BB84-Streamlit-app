@@ -1747,7 +1747,9 @@ def main():
         session_id = session_info.get("session_id", "N/A")
         
         # PREMIUM HERO SECTION - FIRST IMPRESSION WITH LOGO AND TEXT
-        st.write("""
+        import streamlit.components.v1 as components
+        
+        hero_html = """
         <div style="background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%); 
                     padding: 80px 40px; border-radius: 25px; margin: 0 0 40px 0; 
                     box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
@@ -1773,7 +1775,8 @@ def main():
                 </p>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """
+        components.html(hero_html, height=400)
         
         # PREMIUM DIVIDER - SEPARATES HERO FROM CONTENT
         st.markdown("""

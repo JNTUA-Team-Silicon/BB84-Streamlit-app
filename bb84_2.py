@@ -833,13 +833,6 @@ def render_metrics_display():
                 <p style='color: #1e3a8a; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Rate</p>
             </div>
             """, unsafe_allow_html=True)
-        
-        st.plotly_chart(
-            qber_gauge(no_eve['qber'], st.session_state.threshold),
-            use_container_width=True,
-            key="gauge_no_metric",
-            config={'displayModeBar': False}
-        )
     
     with col_eve:
         st.markdown("**Eavesdropper Present Scenario**")
@@ -884,13 +877,6 @@ def render_metrics_display():
                 <p style='color: #1e3a8a; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Rate</p>
             </div>
             """, unsafe_allow_html=True)
-        
-        st.plotly_chart(
-            qber_gauge(eve['qber'], st.session_state.threshold),
-            use_container_width=True,
-            key="gauge_e_metric",
-            config={'displayModeBar': False}
-        )
 
 
 @st.fragment

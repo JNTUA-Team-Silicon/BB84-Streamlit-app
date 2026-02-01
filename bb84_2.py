@@ -1750,6 +1750,19 @@ def main():
         import streamlit.components.v1 as components
         
         hero_html = """
+        <style>
+            @keyframes colorShift {
+                0% { color: #ffd700; }
+                25% { color: #64b5f6; }
+                50% { color: #ff6b9d; }
+                75% { color: #c084fc; }
+                100% { color: #ffd700; }
+            }
+            .aqvh-title {
+                animation: colorShift 4s ease-in-out infinite;
+            }
+        </style>
+        
         <div style="background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%); 
                     padding: 80px 40px; border-radius: 25px; margin: 0 0 40px 0; 
                     box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
@@ -1764,7 +1777,7 @@ def main():
                 <p style="margin: 0 0 10px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; font-weight: 900;">
                     Interactive BB84 QKD Simulator
                 </p>
-                <h1 style="margin: 0 0 15px 0; color: #ffd700; font-size: 56px; font-weight: 950; letter-spacing: -1px;">
+                <h1 class="aqvh-title" style="margin: 0 0 15px 0; font-size: 56px; font-weight: 950; letter-spacing: -1px;">
                     AQVH PROJECT
                 </h1>
                 <h2 style="margin: 0 0 15px 0; color: #bbdefb; font-size: 28px; font-weight: 850; letter-spacing: 0.5px;">

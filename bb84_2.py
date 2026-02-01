@@ -89,24 +89,14 @@ from qiskit.visualization import plot_bloch_multivector
 from qiskit_aer import AerSimulator
 from qiskit import transpile
 
-# Import professional cliparts
-from bb84_cliparts import (
-    get_quantum_bit_svg,
-    get_encryption_lock_svg,
-    get_key_exchange_svg,
-    get_protocol_steps_svg,
-    get_security_status_svg,
-    get_qber_gauge_svg,
-    get_bloch_sphere_svg,
-    get_timeline_comparison_svg,
-    get_spy_agent_svg
-)
+# Cliparts available in bb84_cliparts.py but not used in current UI design
+# Can be imported for future enhancements if needed
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Suppress specific Streamlit warnings that don't affect functionality
+# Suppress specific Streamlit warnings
 import warnings
 warnings.filterwarnings('ignore', message='.*Bad message format.*')
 warnings.filterwarnings('ignore', message='.*SessionInfo before it was initialized.*')
@@ -365,48 +355,7 @@ def get_quantum_backend():
         logger.info("🟡 GPU Backend Not Available - Using CPU")
         return AerSimulator(), False
 
-# CUSTOM STYLING - PROFESSIONAL THEME WITH VIBRANT COLORS AND ANIMATIONS
-def inject_custom_css():
-    """Inject custom CSS for professional styling with animations"""
-    try:
-        st.markdown("""
-        <style>
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes titleGlow {
-            0%, 100% { text-shadow: 0 0 10px rgba(255,255,255,0.3), 0 4px 20px rgba(0,0,0,0.3); }
-            50% { text-shadow: 0 0 30px rgba(255,255,255,0.6), 0 4px 20px rgba(0,0,0,0.3); }
-        }
-        
-        @keyframes slideInDown {
-            0% { opacity: 0; transform: translateY(-30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animated-header {
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            padding: 50px 60px;
-            border-radius: 0;
-            text-align: center;
-            margin: 0 -2rem 30px -2rem;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
-            width: calc(100% + 4rem);
-        }
-        </style>
-        """, unsafe_allow_html=True)
-    except Exception as e:
-        # Silently ignore CSS injection errors in cloud environment
-        logger.debug(f"CSS injection skipped: {e}")
-        pass
+# Custom CSS is fully integrated into inject_responsive_css() - removed redundant function
 
 # Local Modules - Configuration & Utilities
 import bb84_config as config

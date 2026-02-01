@@ -1760,13 +1760,8 @@ def main():
             
             <!-- Left Side: Logo Column -->
             <div style='flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; min-width: 120px;'>
-        """, unsafe_allow_html=True)
-        
-        # Logo image
-        st.image("jntua_logo.png", use_container_width=True, width=80)
-        
-        st.markdown("""
-                <div style='text-align: center; color: #64b5f6; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; line-height: 1.4; margin-top: 15px;'>
+                <img src="jntua_logo.png" style='width: 80px; height: auto; margin-bottom: 10px;' alt='JNTUA Logo'>
+                <div style='text-align: center; color: #64b5f6; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; line-height: 1.4;'>
                     JNTUA CEA<br>Department of ECE
                 </div>
             </div>

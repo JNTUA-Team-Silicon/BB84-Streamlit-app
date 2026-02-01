@@ -1751,8 +1751,11 @@ def main():
         <div style='background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%); padding: 30px; border-radius: 18px; margin-bottom: 25px; box-shadow: 0 12px 40px rgba(135, 206, 250, 0.15);'>
         """, unsafe_allow_html=True)
         
-        # PREMIUM PROFESSIONAL UNIFIED HEADER - LOGO IN MIDDLE
-        col_text, col_logo, col_proto = st.columns([0.45, 0.35, 0.2])
+        # PREMIUM PROFESSIONAL UNIFIED HEADER - LOGO ON LEFT
+        col_logo, col_text, col_proto = st.columns([0.15, 0.65, 0.2])
+        
+        with col_logo:
+            st.image("jntua_logo.png", width=100)
         
         with col_text:
             header_text = """
@@ -1767,9 +1770,6 @@ def main():
             </div>
             """
             st.markdown(header_text, unsafe_allow_html=True)
-        
-        with col_logo:
-            st.image("jntua_logo.png", width=140, use_container_width=True)
         
         with col_proto:
             proto_text = """

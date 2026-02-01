@@ -1752,42 +1752,33 @@ def main():
                     padding: 60px 40px; border-radius: 25px; margin: 20px 0 40px 0; 
                     box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
                     border: 2px solid rgba(0, 150, 255, 0.3);
-                    position: relative; overflow: visible;'>
+                    position: relative; overflow: hidden;
+                    display: flex; align-items: center; justify-content: center; gap: 40px;'>
             <div style='position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
                         background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%); 
                         border-radius: 50%; pointer-events: none;'></div>
-            <div style='display: flex; align-items: center; justify-content: center; gap: 40px; position: relative; z-index: 10;'>
-        """, unsafe_allow_html=True)
-        
-        col1, col2 = st.columns([0.15, 0.85], vertical_alignment="center")
-        with col1:
-            st.image("jntua_logo.png", width=100)
-        
-        with col2:
-            st.markdown("""
-                <div style='text-align: center;'>
-                    <p style='margin: 0 0 15px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; 
-                             letter-spacing: 3px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.3);'>
-                        Advanced Quantum Technology Platform
-                    </p>
-                    <h1 style='margin: 0 0 10px 0; background: linear-gradient(90deg, #64b5f6 0%, #ffd700 100%); 
-                              -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 56px; font-weight: 950; 
-                              letter-spacing: -1px; text-shadow: 0 6px 20px rgba(0,0,0,0.4);'>
-                        AQVH PROJECT
-                    </h1>
-                    <h2 style='margin: 0 0 20px 0; background: linear-gradient(90deg, #64b5f6 0%, #bbdefb 100%); 
-                              -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-                              font-size: 32px; font-weight: 850; letter-spacing: 0.5px;'>
-                        BB84 Quantum Key Distribution Simulator
-                    </h2>
-                    <p style='margin: 0; color: #b3e5fc; font-size: 13px; font-weight: 500; 
-                             letter-spacing: 0.3px;'>
-                        Real-Time Simulation | JNTUA CEA Team Silicon ECE Department
-                    </p>
-                </div>
-            """, unsafe_allow_html=True)
-        
-        st.markdown("""
+            <div style='position: relative; z-index: 10; flex-shrink: 0;'>
+                <img src='jntua_logo.png' style='width: 100px; height: 100px;' />
+            </div>
+            <div style='position: relative; z-index: 10; text-align: center;'>
+                <p style='margin: 0 0 15px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; 
+                         letter-spacing: 3px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.3);'>
+                    Advanced Quantum Technology Platform
+                </p>
+                <h1 style='margin: 0 0 10px 0; background: linear-gradient(90deg, #64b5f6 0%, #ffd700 100%); 
+                          -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 56px; font-weight: 950; 
+                          letter-spacing: -1px; text-shadow: 0 6px 20px rgba(0,0,0,0.4);'>
+                    AQVH PROJECT
+                </h1>
+                <h2 style='margin: 0 0 20px 0; background: linear-gradient(90deg, #64b5f6 0%, #bbdefb 100%); 
+                          -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+                          font-size: 32px; font-weight: 850; letter-spacing: 0.5px;'>
+                    BB84 Quantum Key Distribution Simulator
+                </h2>
+                <p style='margin: 0; color: #b3e5fc; font-size: 13px; font-weight: 500; 
+                         letter-spacing: 0.3px;'>
+                    Real-Time Simulation | JNTUA CEA Team Silicon ECE Department
+                </p>
             </div>
         </div>
         """, unsafe_allow_html=True)

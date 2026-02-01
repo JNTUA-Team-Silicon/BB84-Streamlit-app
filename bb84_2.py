@@ -1746,9 +1746,52 @@ def main():
         sims = session_info.get("simulations_run", 0)
         session_id = session_info.get("session_id", "N/A")
         
+        # HEADER BACKGROUND CONTAINER
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%); padding: 30px; border-radius: 18px; margin-bottom: 25px; box-shadow: 0 12px 40px rgba(135, 206, 250, 0.15);'>
+        """, unsafe_allow_html=True)
+        
         # PREMIUM PROFESSIONAL UNIFIED HEADER IN ONE BOX
-        unified_header_html = f"""<div style='background: linear-gradient(135deg, #1a2a4a 0%, #2d5a8c 50%, #4a7ba7 100%); padding: 35px 40px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 15px 50px rgba(45, 90, 140, 0.25), inset 0 1px 0 rgba(255,255,255,0.15); border: 2px solid rgba(74, 123, 167, 0.5); position: relative; overflow: hidden;'><div style='position: absolute; top: -50%; right: -10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(74, 123, 167, 0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none;'></div><div style='position: absolute; bottom: -30%; left: -5%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(100, 150, 200, 0.06) 0%, transparent 70%); border-radius: 50%; pointer-events: none;'></div><div style='display: flex; align-items: center; gap: 35px; position: relative; z-index: 10;'><div style='flex-shrink: 0; padding: 12px; background: rgba(255,255,255,0.08); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);'><img src='jntua_logo.png' style='width: 85px; height: 85px; display: block; filter: brightness(1.15);' alt='JNTUA Logo'></div><div style='flex-grow: 1;'><div style='display: flex; align-items: baseline; gap: 15px; margin-bottom: 5px;'><h1 style='margin: 0; color: #ffffff; font-size: 44px; font-weight: 900; letter-spacing: -0.5px; text-shadow: 0 4px 16px rgba(0,0,0,0.3);'>AQVH PROJECT</h1><span style='color: #e0f2ff; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; padding: 4px 12px; background: rgba(224, 242, 255, 0.12); border-radius: 20px; border: 1px solid rgba(224, 242, 255, 0.25);'>Quantum Cryptography</span></div><h2 style='margin: 0 0 8px 0; color: #b3d9ff; font-size: 24px; font-weight: 800; letter-spacing: 0.3px;'>BB84 QKD Simulator</h2><p style='margin: 0 0 4px 0; color: #d4e4f7; font-size: 13px; font-weight: 600; letter-spacing: 0.2px;'>Secure Quantum Key Distribution & Eavesdropping Detection</p><p style='margin: 0; color: #c1d9f0; font-size: 11px; font-weight: 500; letter-spacing: 0.1px;'>Team Silicon | JNTUA ECE Department | Bennett & Brassard Protocol</p></div><div style='flex-shrink: 0; padding: 20px 25px; background: rgba(255,255,255,0.1); border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); text-align: center; min-width: 140px;'><p style='margin: 0 0 6px 0; color: #c1d9f0; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;'>Protocol</p><p style='margin: 0 0 6px 0; color: #b3d9ff; font-size: 22px; font-weight: 900; font-family: monospace;'>BB84</p><p style='margin: 0; color: #a0d0ff; font-size: 9px; font-weight: 600;'>Proven Secure</p></div></div></div>"""
-        st.markdown(unified_header_html, unsafe_allow_html=True)
+        col_logo, col_main, col_proto = st.columns([0.12, 0.7, 0.18])
+        
+        with col_logo:
+            st.image("jntua_logo.png", width=85)
+        
+        with col_main:
+            header_text = """
+            <div style='padding: 8px 0;'>
+                <div style='display: flex; align-items: baseline; gap: 12px; margin-bottom: 3px;'>
+                    <h1 style='margin: 0; color: #0d47a1; font-size: 42px; font-weight: 900;'>AQVH PROJECT</h1>
+                    <span style='color: #1565c0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; padding: 3px 10px; background: rgba(21, 101, 192, 0.12); border-radius: 20px; border: 1px solid rgba(21, 101, 192, 0.3);'>Quantum Security</span>
+                </div>
+                <h2 style='margin: 3px 0 6px 0; color: #1976d2; font-size: 22px; font-weight: 800;'>BB84 QKD Simulator</h2>
+                <p style='margin: 0 0 3px 0; color: #1565c0; font-size: 12px; font-weight: 600;'>Interactive QKD Simulator for Education</p>
+                <p style='margin: 0; color: #2196f3; font-size: 10px; font-weight: 500;'>Quantum Cryptography | Post-Quantum Security | Eavesdropping Detection</p>
+            </div>
+            """
+            st.markdown(header_text, unsafe_allow_html=True)
+        
+        with col_proto:
+            proto_text = """
+            <div style='padding: 8px 15px; background: rgba(25, 118, 210, 0.08); border-radius: 12px; border: 1px solid rgba(25, 118, 210, 0.25); text-align: center; height: 100%;'>
+                <p style='margin: 0 0 4px 0; color: #1565c0; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;'>Protocol</p>
+                <p style='margin: 0 0 4px 0; color: #0d47a1; font-size: 20px; font-weight: 900; font-family: monospace;'>BB84</p>
+                <p style='margin: 0; color: #1976d2; font-size: 8px; font-weight: 600;'>Bennett & Brassard</p>
+            </div>
+            """
+            st.markdown(proto_text, unsafe_allow_html=True)
+        
+        st.markdown("""
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # SUBTITLE SECTION
+        subtitle_html = """
+        <div style='background: linear-gradient(90deg, rgba(33, 150, 243, 0.1) 0%, rgba(21, 101, 192, 0.1) 100%); padding: 15px 20px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #2196f3;'>
+            <p style='margin: 0; color: #1565c0; font-size: 13px; font-weight: 600; letter-spacing: 0.5px;'>Team Silicon | JNTUA ECE Department | Educational Quantum Cryptography Platform</p>
+        </div>
+        """
+        st.markdown(subtitle_html, unsafe_allow_html=True)
         
         st.markdown("")
         

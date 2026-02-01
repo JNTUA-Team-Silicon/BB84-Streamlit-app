@@ -98,8 +98,7 @@ from bb84_cliparts import (
     get_security_status_svg,
     get_qber_gauge_svg,
     get_bloch_sphere_svg,
-    get_timeline_comparison_svg,
-    get_spy_agent_svg
+    get_timeline_comparison_svg
 )
 
 # Configure logging
@@ -405,29 +404,6 @@ def inject_responsive_css():
         object-fit: contain;
     }
     
-    .logo-icon-spy {
-        width: 140px;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 12px 15px;
-        background: rgba(196, 30, 58, 0.1);
-        border: 2px solid #c41e3a;
-        border-radius: 12px;
-        animation: spy-pulse 2s ease-in-out infinite;
-    }
-    
-    .logo-icon-spy > svg {
-        width: 100px;
-        height: 100px;
-    }
-    
-    @keyframes spy-pulse {
-        0%, 100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 10px rgba(196, 30, 58, 0.3); }
-        50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 20px rgba(196, 30, 58, 0.6); }
-    }
     
     .logo-text {
         text-align: center;
@@ -1658,7 +1634,7 @@ def main():
         logger.debug(f"CSS injection: {e}")
         pass
     
-    # ADVANCED HEADER WITH SESSION TRACKING & SPY THEME WITH TEAM SILICON
+    # ADVANCED HEADER WITH SESSION TRACKING
     try:
         session_info = _get_session_summary()
         uptime = int(session_info.get("uptime_seconds", 0))
@@ -1672,13 +1648,8 @@ def main():
                 </div>
                 <div class='logo-text'>
                     <h1>JNTUA BB84 QKD Simulator</h1>
-                    <p>Quantum Key Distribution | Espionage Detection System</p>
-                    <p style='font-size: 11px; color: #cfe2ff; margin-top: 5px;'>Session #{session_info.get("session_id", "N/A")} • {sims} simulations run</p>
-                </div>
-                <div class='logo-icon-spy'>
-                    {get_spy_agent_svg()}
-                    <div style='text-align: center; margin-top: 8px; font-size: 12px; font-weight: 700; color: #ff6b6b; letter-spacing: 1px;'>TEAM SILICON</div>
-                    <div style='text-align: center; font-size: 9px; color: #c41e3a; margin-top: 2px;'>Counter-Intelligence Division</div>
+                    <p>Quantum Key Distribution | Cryptography & Security</p>
+                    <p style='font-size: 11px; color: #cfe2ff; margin-top: 5px;'>Session #{session_info.get("session_id", "N/A")} | {sims} simulations run</p>
                 </div>
             </div>
         </div>

@@ -659,6 +659,28 @@ def render_metrics_display():
 
     st.markdown("### Key Metrics Comparison")
     
+    # 0. TRANSMITTED BITS (Total transmitted)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown(f"""
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>Protocol</p>
+            <h2 style='color: #0891b2; margin: 0; font-size: 36px; font-weight: 900;'>{num_bits}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Transmitted Bits</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>Sift Rate</p>
+            <h2 style='color: #0891b2; margin: 0; font-size: 36px; font-weight: 900;'>{(no_eve['sifted_count'] / num_bits * 100):.1f}%</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Success Rate</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.divider()
+    
     # 1. SIFTED BITS
     col1, col2 = st.columns(2)
     with col1:

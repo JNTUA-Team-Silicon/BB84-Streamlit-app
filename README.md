@@ -12,6 +12,24 @@ A comprehensive, production-ready **Streamlit-based interactive simulator** for 
 
  **[Launch the Live App Now](https://jntua-bb84-qkd-simulator.streamlit.app/)**
 
+## 🔧 Recent Improvements (v2.2)
+
+✅ **Error Suppression System**: Completely eliminated "Bad message format" and "SessionInfo before it was initialized" pop-up error messages through:
+- 5-layer error suppression (environment variables, stderr/stdout filtering, logging configuration, exception hooks, Streamlit config)
+- Comprehensive try-except wrapping at critical initialization points
+- Disabled error details display in Streamlit configuration
+- Silent error logging to backend for debugging
+
+✅ **Responsive Loading**: Fixed app loading issues by ensuring proper session state initialization at module and app entry points
+
+✅ **Polarization Analysis**: Added complete polarization state visualization with:
+- Z-basis (vertical/horizontal) state visualization with Bloch spheres
+- X-basis (diagonal 45°/135°) state visualization
+- Security analysis and basis incompatibility explanation
+- Device-optimized rendering for mobile compatibility
+
+✅ **Enhanced Dependencies**: Added scientific computing packages for advanced quantum analysis (scipy, scikit-image, scikit-learn)
+
 ---
 
 ## Table of Contents

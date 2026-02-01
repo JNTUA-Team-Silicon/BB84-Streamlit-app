@@ -1748,13 +1748,13 @@ def main():
         
         # PREMIUM HERO SECTION - FIRST IMPRESSION
         st.markdown("""
-        <div style='background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%); 
+        <div style='background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%); 
                     padding: 60px 40px; border-radius: 25px; margin: 20px 0 40px 0; 
-                    box-shadow: 0 12px 40px rgba(135, 206, 250, 0.15);
-                    border: 2px solid rgba(21, 101, 192, 0.4);
+                    box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+                    border: 2px solid rgba(0, 150, 255, 0.3);
                     position: relative; overflow: hidden;'>
             <div style='position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
-                        background: radial-gradient(circle, rgba(33, 150, 243, 0.1) 0%, transparent 70%); 
+                        background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%); 
                         border-radius: 50%; pointer-events: none;'></div>
             <div style='display: flex; align-items: center; gap: 40px; position: relative; z-index: 10;'>
         """, unsafe_allow_html=True)

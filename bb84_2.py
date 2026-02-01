@@ -2110,7 +2110,7 @@ def main():
         """, unsafe_allow_html=True)
 
         # Tabs for detailed analysis
-        tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Timeline Analysis", "⇄ Comparative Analysis", "🔬 Quantum Visualization", "📄 Report Generation", "📖 Protocol Guide"])
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(["Timeline Analysis", "Comparative Analysis", "Quantum Visualization", "Report Generation", "Protocol Guide"])
 
         with tab1:
             render_timeline_analysis()

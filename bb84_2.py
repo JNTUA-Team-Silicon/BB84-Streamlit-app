@@ -1756,12 +1756,11 @@ def main():
             <div style='position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
                         background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%); 
                         border-radius: 50%; pointer-events: none;'></div>
-            <div style='display: flex; align-items: center; gap: 40px; position: relative; z-index: 10;'>
         """, unsafe_allow_html=True)
         
-        col1, col2 = st.columns([0.2, 0.8])
+        col1, col2 = st.columns([0.15, 0.85], vertical_alignment="center")
         with col1:
-            st.image("jntua_logo.png", width=120)
+            st.image("jntua_logo.png", width=100)
         
         with col2:
             st.markdown("""
@@ -1787,69 +1786,11 @@ def main():
                 </div>
             """, unsafe_allow_html=True)
         
-        st.markdown("""
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # PREMIUM SESSION ANALYTICS BOX
-        st.markdown("""
-        <style>
-            @keyframes slideInUp {
-                from { opacity: 0; transform: translateY(30px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            @keyframes pulseGlow {
-                0%, 100% { box-shadow: 0 0 0 0 rgba(0, 150, 255, 0.3); }
-                50% { box-shadow: 0 0 0 12px rgba(0, 150, 255, 0); }
-            }
-            .session-card { animation: slideInUp 1s ease-out; }
-            .session-glow { animation: pulseGlow 3s infinite; }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        session_html = f"""
-        <div class='session-card session-glow' style='
-            background: linear-gradient(135deg, #e1f5ff 0%, #b3e5fc 50%, #81d4fa 100%);
-            border: 2px solid rgba(0, 150, 255, 0.35);
-            border-radius: 22px;
-            padding: 35px 40px;
-            margin: 30px 0 50px 0;
-            box-shadow: 0 15px 50px rgba(0, 150, 255, 0.15), inset 0 1px 0 rgba(255,255,255,0.4);
-        '>
-            <div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; align-items: center;'>
-                <div style='text-align: center; padding-right: 25px; border-right: 3px solid rgba(0, 82, 204, 0.2);'>
-                    <p style='margin: 0 0 8px 0; color: #00467f; font-size: 11px; text-transform: uppercase; 
-                             letter-spacing: 2.5px; font-weight: 900;'>Session ID</p>
-                    <h3 style='margin: 0; color: #0052cc; font-size: 22px; font-family: monospace; 
-                              font-weight: 950; letter-spacing: 1px;'>#{session_id}</h3>
-                </div>
-                <div style='text-align: center; padding-right: 25px; border-right: 3px solid rgba(0, 82, 204, 0.2);'>
-                    <p style='margin: 0 0 8px 0; color: #00467f; font-size: 11px; text-transform: uppercase; 
-                             letter-spacing: 2.5px; font-weight: 900;'>Simulations</p>
-                    <h3 style='margin: 0; color: #0052cc; font-size: 22px; font-weight: 950; 
-                              letter-spacing: 1px;'>{sims}</h3>
-                </div>
-                <div style='text-align: center; padding-right: 25px; border-right: 3px solid rgba(0, 82, 204, 0.2);'>
-                    <p style='margin: 0 0 8px 0; color: #00467f; font-size: 11px; text-transform: uppercase; 
-                             letter-spacing: 2.5px; font-weight: 900;'>Uptime</p>
-                    <h3 style='margin: 0; color: #0052cc; font-size: 22px; font-weight: 950; 
-                              letter-spacing: 1px;'>{uptime}s</h3>
-                </div>
-                <div style='text-align: center;'>
-                    <p style='margin: 0 0 8px 0; color: #00467f; font-size: 11px; text-transform: uppercase; 
-                             letter-spacing: 2.5px; font-weight: 900;'>Status</p>
-                    <h3 style='margin: 0; color: #00c853; font-size: 22px; font-weight: 950; 
-                              letter-spacing: 1px;'>ACTIVE</h3>
-                </div>
-            </div>
-        </div>
-        """
-        st.markdown(session_html, unsafe_allow_html=True)
+        st.markdown("""""", unsafe_allow_html=True)
         
         # PREMIUM DIVIDER - SEPARATES HERO FROM CONTENT
         st.markdown("""
-        <div style='height: 60px;'></div>
+        <div style='height: 80px;'></div>
         <div style='height: 2px; background: linear-gradient(90deg, transparent, rgba(0, 150, 255, 0.3), transparent); margin: 0 0 50px 0;'></div>
         """, unsafe_allow_html=True)
         

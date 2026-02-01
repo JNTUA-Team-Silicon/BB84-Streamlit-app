@@ -907,31 +907,35 @@ Error loading Multi-Qubit Range Analysis. Please refresh and try again.
                 bases_array = st.session_state.alice_bases_stored
                 bits_array = st.session_state.alice_bits_stored
                 
-                # Detailed description of polarization
-                st.markdown("""
-### Understanding Quantum Polarization in BB84
-
-In the BB84 protocol, quantum information is encoded in the **polarization states** of photons. Alice encodes bits using two incompatible measurement bases: the **Rectilinear (Z) basis** and the **Diagonal (X) basis**.
-
-#### 1. Rectilinear Basis (Z-Basis) - Vertical/Horizontal Polarization
-
-The Z-basis uses vertical and horizontal polarization states:
-
-**Mathematical Representation:**
-- State |0⟩ (vertical): $|0\\rangle = \\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix}$ (North pole on Bloch sphere)
-- State |1⟩ (horizontal): $|1\\rangle = \\begin{pmatrix} 0 \\\\ 1 \\end{pmatrix}$ (South pole on Bloch sphere)
-
-These states are **orthogonal**, meaning they are perfectly distinguishable: $\\langle 0 | 1 \\rangle = 0$
-
-**Physical Interpretation:**
-- **|0⟩**: Photon polarized vertically (0°)
-- **|1⟩**: Photon polarized horizontally (90°)
-                """)
+                # Section 1: Z-Basis
+                st.markdown("## 1. Rectilinear Basis (Z-Basis)")
+                st.markdown("The Z-basis uses **vertical and horizontal** polarization states for encoding quantum information.")
+                
+                col_z_intro1, col_z_intro2 = st.columns([1, 1])
+                with col_z_intro1:
+                    st.markdown("""
+**State |0⟩ (Vertical)**
+- Mathematical: Vector [1, 0]
+- Physical: Vertical polarization (0°)
+- Bloch Sphere: North pole
+- Represents bit value: 0
+                    """)
+                
+                with col_z_intro2:
+                    st.markdown("""
+**State |1⟩ (Horizontal)**
+- Mathematical: Vector [0, 1]
+- Physical: Horizontal polarization (90°)
+- Bloch Sphere: South pole
+- Represents bit value: 1
+                    """)
+                
+                st.markdown("**Key Property**: These states are **orthogonal** (perfectly distinguishable)")
                 
                 pol_col1, pol_col2 = st.columns([1, 1])
                 
                 with pol_col1:
-                    st.markdown("**Z-Basis Visualization (Rectilinear)**")
+                    st.markdown("**Z-Basis Bloch Sphere**")
                     try:
                         sv0 = Statevector.from_label('0')
                         sv1 = Statevector.from_label('1')
@@ -940,7 +944,7 @@ These states are **orthogonal**, meaning they are perfectly distinguishable: $\\
                         logger.error(f"Error displaying Z-basis: {e}")
                 
                 with pol_col2:
-                    st.markdown("**Z-Basis Statistics**")
+                    st.markdown("**Z-Basis Distribution**")
                     z_bits = [i for i, b in enumerate(bases_array) if b == 0]
                     z_0 = sum(1 for i in z_bits if bits_array[i] == 0)
                     z_1 = sum(1 for i in z_bits if bits_array[i] == 1)
@@ -952,47 +956,41 @@ These states are **orthogonal**, meaning they are perfectly distinguishable: $\\
                         st.metric("Total Z-Basis Qubits", z_total)
                         col_z1, col_z2 = st.columns(2)
                         with col_z1:
-                            st.metric("|0⟩ (Vertical)", f"{z_0} ({z_0_percent:.1f}%)")
+                            st.metric("|0⟩ Vertical", f"{z_0} ({z_0_percent:.1f}%)")
                         with col_z2:
-                            st.metric("|1⟩ (Horizontal)", f"{z_1} ({z_1_percent:.1f}%)")
+                            st.metric("|1⟩ Horizontal", f"{z_1} ({z_1_percent:.1f}%)")
                 
                 st.divider()
                 
-                st.markdown("""
-#### 2. Diagonal Basis (X-Basis) - Diagonal Polarization
-
-The X-basis uses diagonal and anti-diagonal polarization states (45° and 135°):
-
-**Mathematical Representation:**
-
-State |+⟩ (diagonal): 
-$$|+\\rangle = \\frac{1}{\\sqrt{2}}(|0\\rangle + |1\\rangle) = \\frac{1}{\\sqrt{2}}\\begin{pmatrix} 1 \\\\ 1 \\end{pmatrix}$$ 
-(East on Bloch sphere)
-
-State |−⟩ (anti-diagonal):
-$$|-\\rangle = \\frac{1}{\\sqrt{2}}(|0\\rangle - |1\\rangle) = \\frac{1}{\\sqrt{2}}\\begin{pmatrix} 1 \\\\ -1 \\end{pmatrix}$$
-(West on Bloch sphere)
-
-These states are also **orthogonal**: $\\langle + | - \\rangle = 0$
-
-**Key Property - Uncertainty Relation:**
-
-The X and Z bases are **mutually unbiased**, meaning:
-- If we measure a |+⟩ state in the Z-basis, we get 50% |0⟩ and 50% |1⟩
-- If we measure a |−⟩ state in the Z-basis, we get 50% |0⟩ and 50% |1⟩
-
-Mathematically:
-$$|\\langle 0 | + \\rangle|^2 = |\\langle 1 | + \\rangle|^2 = \\frac{1}{2}$$
-
-**Physical Interpretation:**
-- **|+⟩**: Photon polarized at 45° diagonal
-- **|−⟩**: Photon polarized at 135° anti-diagonal (perpendicular to |+⟩)
-                """)
+                # Section 2: X-Basis
+                st.markdown("## 2. Diagonal Basis (X-Basis)")
+                st.markdown("The X-basis uses **diagonal and anti-diagonal** polarization states (45° and 135°) for encoding quantum information.")
+                
+                col_x_intro1, col_x_intro2 = st.columns([1, 1])
+                with col_x_intro1:
+                    st.markdown("""
+**State |+⟩ (Diagonal)**
+- Mathematical: (|0⟩ + |1⟩) / √2
+- Physical: 45° diagonal polarization
+- Bloch Sphere: East pole
+- Represents bit value: 0 (in X-basis)
+                    """)
+                
+                with col_x_intro2:
+                    st.markdown("""
+**State |−⟩ (Anti-Diagonal)**
+- Mathematical: (|0⟩ − |1⟩) / √2
+- Physical: 135° anti-diagonal polarization
+- Bloch Sphere: West pole
+- Represents bit value: 1 (in X-basis)
+                    """)
+                
+                st.markdown("**Key Property**: Also **orthogonal** (perfectly distinguishable)")
                 
                 pol_col3, pol_col4 = st.columns([1, 1])
                 
                 with pol_col3:
-                    st.markdown("**X-Basis Visualization (Diagonal)**")
+                    st.markdown("**X-Basis Bloch Sphere**")
                     try:
                         sv_plus = Statevector([1/np.sqrt(2), 1/np.sqrt(2)])
                         sv_minus = Statevector([1/np.sqrt(2), -1/np.sqrt(2)])
@@ -1001,7 +999,7 @@ $$|\\langle 0 | + \\rangle|^2 = |\\langle 1 | + \\rangle|^2 = \\frac{1}{2}$$
                         logger.error(f"Error displaying X-basis: {e}")
                 
                 with pol_col4:
-                    st.markdown("**X-Basis Statistics**")
+                    st.markdown("**X-Basis Distribution**")
                     x_bits = [i for i, b in enumerate(bases_array) if b == 1]
                     x_plus = sum(1 for i in x_bits if bits_array[i] == 0)
                     x_minus = sum(1 for i in x_bits if bits_array[i] == 1)
@@ -1013,48 +1011,59 @@ $$|\\langle 0 | + \\rangle|^2 = |\\langle 1 | + \\rangle|^2 = \\frac{1}{2}$$
                         st.metric("Total X-Basis Qubits", x_total)
                         col_x1, col_x2 = st.columns(2)
                         with col_x1:
-                            st.metric("|+⟩ (45°)", f"{x_plus} ({x_plus_percent:.1f}%)")
+                            st.metric("|+⟩ 45°", f"{x_plus} ({x_plus_percent:.1f}%)")
                         with col_x2:
-                            st.metric("|−⟩ (135°)", f"{x_minus} ({x_minus_percent:.1f}%)")
+                            st.metric("|−⟩ 135°", f"{x_minus} ({x_minus_percent:.1f}%)")
                 
                 st.divider()
                 
+                # Section 3: Why This Matters for Security
+                st.markdown("## 3. Basis Incompatibility - The Core of BB84 Security")
+                
                 st.markdown("""
-#### 3. Security Implications of Basis Incompatibility
-
-**Why BB84 is Secure:**
-
-The security of BB84 relies on the **Heisenberg Uncertainty Principle** applied to quantum measurements:
-
-$$\\Delta A \\cdot \\Delta B \\geq \\frac{|\\langle[\\hat{A}, \\hat{B}]\\rangle|}{2}$$
-
-For incompatible bases (X and Z):
-$$[\\hat{Z}, \\hat{X}] = -2i\\hat{Y} \\neq 0$$
+**Critical Insight**: The Z and X bases are **mutually unbiased** (incompatible).
 
 This means:
-1. **Eavesdropper Cannot Know Both Values**: Eve cannot measure a qubit and know both its Z-basis and X-basis measurement outcomes simultaneously
-2. **Eavesdropping Introduces Errors**: If Eve guesses the wrong basis, she will measure a wrong value, and when she re-transmits, Bob will detect an error
+- You cannot measure both Z and X simultaneously with perfect accuracy
+- If you guess the wrong basis to measure, you get a random result
+- **Measurement in wrong basis = 50% chance of error**
 
-**Mathematical Proof of Eavesdropping Detection:**
-
-If a qubit is prepared in basis A and measured in basis B (wrong basis):
-$$P(\\text{correct measurement}) = |\\langle A | B \\rangle|^2$$
-
-For perpendicular bases:
-$$P(\\text{correct measurement}) = \\frac{1}{2}$$
-
-Therefore, eavesdropping introduces a **50% error rate** in the eavesdropped portion.
-
-**QBER Threshold:**
-
-Without eavesdropping: QBER ≈ 1% (from noise)
-With eavesdropping: QBER ≈ 25% (50% errors in wrong measurements)
-
-If QBER > threshold (typically 11%), eavesdropping is detected!
+**Example:**
+- Qubit prepared in Z-basis as |0⟩ (vertical)
+- If you measure in X-basis: 50% chance to get |+⟩, 50% chance to get |−⟩
+- The quantum state collapses unpredictably!
                 """)
                 
-                # Overall statistics
-                st.subheader("Overall Polarization Distribution")
+                st.markdown("### How Eavesdropping is Detected")
+                
+                col_sec1, col_sec2 = st.columns([1, 1])
+                
+                with col_sec1:
+                    st.markdown("""
+**Without Eavesdropping:**
+- Alice sends qubits in random bases
+- Bob measures in random bases
+- 50% of time bases match → correct bits
+- 50% of time bases differ → discarded
+- QBER ≈ 1% (only quantum noise)
+                    """)
+                
+                with col_sec2:
+                    st.markdown("""
+**With Eavesdropping (Eve):**
+- Eve intercepts and measures in random bases
+- If Eve guesses wrong basis (50% chance):
+  - She measures wrong value
+  - She retransmits wrong qubit state
+  - Bob detects error with 25% probability
+- Result: QBER ≈ 25% (detectable!)
+                    """)
+                
+                st.divider()
+                
+                # Overall Statistics
+                st.markdown("## 4. Overall Polarization Statistics")
+                
                 total_z = len(z_bits)
                 total_x = len(x_bits)
                 total_qubits = total_z + total_x
@@ -1065,27 +1074,28 @@ If QBER > threshold (typically 11%), eavesdropping is detected!
                     
                     col_stat1, col_stat2, col_stat3 = st.columns(3)
                     with col_stat1:
-                        st.metric("Total Qubits", total_qubits)
+                        st.metric("Total Qubits Sent", total_qubits)
                     with col_stat2:
-                        st.metric("Z-Basis Usage", f"{total_z} ({z_percent:.1f}%)")
+                        st.metric("Z-Basis Qubits", f"{total_z} ({z_percent:.1f}%)")
                     with col_stat3:
-                        st.metric("X-Basis Usage", f"{total_x} ({x_percent:.1f}%)")
+                        st.metric("X-Basis Qubits", f"{total_x} ({x_percent:.1f}%)")
                     
-                    # Expected vs Actual
-                    st.markdown("**Expected Distribution Analysis:**")
+                    st.markdown("### Expected vs Actual Distribution")
                     st.markdown(f"""
-In a perfect BB84 simulation with random basis selection:
-- **Expected Z-basis qubits**: ~50% of total = {total_qubits * 0.5:.0f}
-- **Actual Z-basis qubits**: {total_z} ({z_percent:.1f}%)
-- **Deviation**: {abs(z_percent - 50):.1f}%
+In a proper BB84 protocol with **truly random basis selection**:
 
-- **Expected X-basis qubits**: ~50% of total = {total_qubits * 0.5:.0f}
-- **Actual X-basis qubits**: {total_x} ({x_percent:.1f}%)
-- **Deviation**: {abs(x_percent - 50):.1f}%
+**Expected:**
+- Each basis should be chosen ~50% of the time
+- Expected Z-basis: {total_qubits * 0.5:.0f} qubits
+- Expected X-basis: {total_qubits * 0.5:.0f} qubits
 
-The distribution validates the **random basis selection** in the BB84 protocol.
+**Actual:**
+- Actual Z-basis: {total_z} qubits ({z_percent:.1f}%)
+- Actual X-basis: {total_x} qubits ({x_percent:.1f}%)
+
+**Analysis**: The distribution {'confirms' if abs(z_percent - 50) < 5 else 'shows'} {'proper' if abs(z_percent - 50) < 5 else 'non-uniform'} random basis selection in the simulation.
                     """)
-                    
+                
             except Exception as e:
                 logger.error(f"Error in Polarization Analysis: {e}")
 

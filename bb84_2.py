@@ -679,6 +679,27 @@ def render_metrics_display():
         </div>
         """, unsafe_allow_html=True)
     
+    # Color Legend for Transmitted & Success Rate
+    st.markdown("""
+    <div style='display: flex; gap: 15px; justify-content: center; margin-top: 15px; flex-wrap: wrap;'>
+        <div style='text-align: center;'>
+            <p style='margin: 0; font-size: 11px; color: #64748b; font-weight: 700;'>TRANSMITTED BITS</p>
+            <div style='width: 30px; height: 30px; background-color: #0891b2; border-radius: 5px; margin: 8px auto;'></div>
+            <p style='margin: 5px 0 0 0; font-size: 10px; color: #475569;'>Total Qubits Sent</p>
+        </div>
+        <div style='text-align: center;'>
+            <p style='margin: 0; font-size: 11px; color: #64748b; font-weight: 700;'>SUCCESS RATE</p>
+            <div style='width: 30px; height: 30px; background-color: #0891b2; border-radius: 5px; margin: 8px auto;'></div>
+            <p style='margin: 5px 0 0 0; font-size: 10px; color: #475569;'>~50% Normal</p>
+        </div>
+        <div style='text-align: center;'>
+            <p style='margin: 0; font-size: 11px; color: #64748b; font-weight: 700;'>WITH EVE</p>
+            <div style='width: 30px; height: 30px; background-color: #dc2626; border-radius: 5px; margin: 8px auto;'></div>
+            <p style='margin: 5px 0 0 0; font-size: 10px; color: #475569;'>Rate Decreases</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
     st.divider()
     
     # 1. SIFTED BITS

@@ -785,6 +785,25 @@ def render_metrics_display():
     
     st.divider()
     
+    # INFORMATION BOX: Why Bits Lost Might Show Zero
+    eve_prob = st.session_state.sim_results['parameters'].get('eve_prob', 0.5)
+    
+    if (no_eve['sifted_count'] - eve['sifted_count']) == 0:
+        st.info(f"""
+        **Why "Sifted Bits Lost to Eve" shows 0?**
+        
+        This can happen due to:
+        1. **Eve Probability = {eve_prob:.0%}**: Eve doesn't intercept all qubits. Lower probability = fewer bits affected.
+        2. **Statistical Variance**: Eve's random basis choices sometimes align correctly, causing no error introduction.
+        3. **Small Sample Size**: With fewer transmitted bits, random variations make losses less visible.
+        
+        **Tip**: To see Eve's impact clearly:
+        - Increase **Eve Probability** slider (closer to 100%)
+        - Increase **Transmitted Bits** (larger sample size)
+        - Watch the **Eve's Impact on Sift Rate (%)** - this shows the percentage difference even if bit count is similar
+        - Check **QBER** - this shows if Eve was detected through errors
+        """)
+    
     # 2. ERRORS DETECTED
     col1, col2 = st.columns(2)
     with col1:

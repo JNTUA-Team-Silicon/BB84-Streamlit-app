@@ -368,6 +368,93 @@ def inject_custom_css():
             box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
             margin-top: 20px !important;
         }
+        
+        /* Light mode backgrounds for content areas */
+        body, .main, .block-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%) !important;
+            color: #1a1a1a !important;
+        }
+        
+        /* Ensure markdown content is readable */
+        .markdown-text-container, .stMarkdown, p, span, div {
+            color: #1a1a1a !important;
+        }
+        
+        /* Polarization Analysis specific styling */
+        .polarization-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%) !important;
+            padding: 20px !important;
+            border-radius: 12px !important;
+            border: 1px solid #e0e7ff !important;
+        }
+        
+        /* Code blocks with light background */
+        code, pre {
+            background: #f0f4ff !important;
+            color: #1e40af !important;
+            padding: 12px !important;
+            border-radius: 8px !important;
+            border: 1px solid #e0e7ff !important;
+        }
+        
+        /* Information boxes with light background */
+        .stAlert {
+            background: #f8f9fa !important;
+            color: #1a1a1a !important;
+            border-left: 4px solid #2563eb !important;
+            padding: 15px !important;
+            border-radius: 8px !important;
+        }
+        
+        /* Columns with light background */
+        .stColumn {
+            background: #ffffff !important;
+            padding: 15px !important;
+            border-radius: 10px !important;
+            border: 1px solid #e0e7ff !important;
+        }
+        
+        /* Metrics with light backgrounds */
+        .metric-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+            color: #1a1a1a !important;
+            padding: 20px !important;
+            border-radius: 12px !important;
+            border: 1px solid #e0e7ff !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+        }
+        
+        /* Text in all elements readable */
+        h1, h2, h3, h4, h5, h6 {
+            color: #0f172a !important;
+        }
+        
+        /* Strong text contrast */
+        strong, b {
+            color: #1e40af !important;
+            font-weight: 700 !important;
+        }
+        
+        /* Ensure dataframes are readable */
+        table, .dataframe {
+            background: #ffffff !important;
+            color: #1a1a1a !important;
+            border: 1px solid #e0e7ff !important;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%) !important;
+            color: #1e40af !important;
+            font-weight: 600 !important;
+        }
+        
+        tbody tr:nth-child(odd) {
+            background: #f8fafc !important;
+        }
+        
+        tbody tr:nth-child(even) {
+            background: #ffffff !important;
+        }
         </style>
         """, unsafe_allow_html=True)
     except Exception as e:
@@ -1054,29 +1141,41 @@ Error loading Multi-Qubit Range Analysis. Please refresh and try again.
                 bits_array = st.session_state.alice_bits_stored
                 
                 # Section 1: Z-Basis
-                st.markdown("## 1. Rectilinear Basis (Z-Basis)")
-                st.markdown("The Z-basis uses **vertical and horizontal** polarization states for encoding quantum information.")
+                st.markdown("""
+<div style='background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 20px; border-radius: 12px; border: 1px solid #e0e7ff; margin: 20px 0;'>
+<h3 style='color: #1e40af; margin-top: 0;'>1. Rectilinear Basis (Z-Basis)</h3>
+<p style='color: #1a1a1a;'>The Z-basis uses <strong style='color: #1e40af;'>vertical and horizontal</strong> polarization states for encoding quantum information.</p>
+</div>
+                """, unsafe_allow_html=True)
                 
                 col_z_intro1, col_z_intro2 = st.columns([1, 1])
                 with col_z_intro1:
                     st.markdown("""
-**State |0⟩ (Vertical)**
-- Mathematical: Vector [1, 0]
-- Physical: Vertical polarization (0°)
-- Bloch Sphere: North pole
-- Represents bit value: 0
-                    """)
+<div style='background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid #2563eb;'>
+<strong style='color: #1e40af;'>State |0⟩ (Vertical)</strong>
+<ul style='color: #1a1a1a; margin: 10px 0;'>
+<li>Mathematical: Vector [1, 0]</li>
+<li>Physical: Vertical polarization (0°)</li>
+<li>Bloch Sphere: North pole</li>
+<li>Represents bit value: 0</li>
+</ul>
+</div>
+                    """, unsafe_allow_html=True)
                 
                 with col_z_intro2:
                     st.markdown("""
-**State |1⟩ (Horizontal)**
-- Mathematical: Vector [0, 1]
-- Physical: Horizontal polarization (90°)
-- Bloch Sphere: South pole
-- Represents bit value: 1
-                    """)
+<div style='background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid #2563eb;'>
+<strong style='color: #1e40af;'>State |1⟩ (Horizontal)</strong>
+<ul style='color: #1a1a1a; margin: 10px 0;'>
+<li>Mathematical: Vector [0, 1]</li>
+<li>Physical: Horizontal polarization (90°)</li>
+<li>Bloch Sphere: South pole</li>
+<li>Represents bit value: 1</li>
+</ul>
+</div>
+                    """, unsafe_allow_html=True)
                 
-                st.markdown("**Key Property**: These states are **orthogonal** (perfectly distinguishable)")
+                st.markdown("<div style='color: #1a1a1a; font-weight: 600; margin: 20px 0;'>Key Property: These states are orthogonal (perfectly distinguishable)</div>", unsafe_allow_html=True)
                 
                 pol_col1, pol_col2 = st.columns([1, 1])
                 
@@ -1109,29 +1208,41 @@ Error loading Multi-Qubit Range Analysis. Please refresh and try again.
                 st.divider()
                 
                 # Section 2: X-Basis
-                st.markdown("## 2. Diagonal Basis (X-Basis)")
-                st.markdown("The X-basis uses **diagonal and anti-diagonal** polarization states (45° and 135°) for encoding quantum information.")
+                st.markdown("""
+<div style='background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 20px; border-radius: 12px; border: 1px solid #e0e7ff; margin: 20px 0;'>
+<h3 style='color: #1e40af; margin-top: 0;'>2. Diagonal Basis (X-Basis)</h3>
+<p style='color: #1a1a1a;'>The X-basis uses <strong style='color: #1e40af;'>diagonal and anti-diagonal</strong> polarization states (45° and 135°) for encoding quantum information.</p>
+</div>
+                """, unsafe_allow_html=True)
                 
                 col_x_intro1, col_x_intro2 = st.columns([1, 1])
                 with col_x_intro1:
                     st.markdown("""
-**State |+⟩ (Diagonal)**
-- Mathematical: (|0⟩ + |1⟩) / √2
-- Physical: 45° diagonal polarization
-- Bloch Sphere: East pole
-- Represents bit value: 0 (in X-basis)
-                    """)
+<div style='background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid #7c3aed;'>
+<strong style='color: #1e40af;'>State |+⟩ (Diagonal)</strong>
+<ul style='color: #1a1a1a; margin: 10px 0;'>
+<li>Mathematical: (|0⟩ + |1⟩) / √2</li>
+<li>Physical: 45° diagonal polarization</li>
+<li>Bloch Sphere: East pole</li>
+<li>Represents bit value: 0 (in X-basis)</li>
+</ul>
+</div>
+                    """, unsafe_allow_html=True)
                 
                 with col_x_intro2:
                     st.markdown("""
-**State |−⟩ (Anti-Diagonal)**
-- Mathematical: (|0⟩ − |1⟩) / √2
-- Physical: 135° anti-diagonal polarization
-- Bloch Sphere: West pole
-- Represents bit value: 1 (in X-basis)
-                    """)
+<div style='background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid #7c3aed;'>
+<strong style='color: #1e40af;'>State |−⟩ (Anti-Diagonal)</strong>
+<ul style='color: #1a1a1a; margin: 10px 0;'>
+<li>Mathematical: (|0⟩ − |1⟩) / √2</li>
+<li>Physical: 135° anti-diagonal polarization</li>
+<li>Bloch Sphere: West pole</li>
+<li>Represents bit value: 1 (in X-basis)</li>
+</ul>
+</div>
+                    """, unsafe_allow_html=True)
                 
-                st.markdown("**Key Property**: Also **orthogonal** (perfectly distinguishable)")
+                st.markdown("<div style='color: #1a1a1a; font-weight: 600; margin: 20px 0;'>Key Property: Also orthogonal (perfectly distinguishable)</div>", unsafe_allow_html=True)
                 
                 pol_col3, pol_col4 = st.columns([1, 1])
                 

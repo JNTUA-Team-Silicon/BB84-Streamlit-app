@@ -46,11 +46,30 @@ logger = logging.getLogger(__name__)
 import warnings
 warnings.filterwarnings('ignore', message='.*Bad message format.*')
 warnings.filterwarnings('ignore', message='.*SessionInfo before it was initialized.*')
+warnings.filterwarnings('ignore', message='.*Uninitialized.*')
+warnings.filterwarnings('ignore', category=DeprecationWarning)
+warnings.filterwarnings('ignore', category=FutureWarning)
 
 # Suppress Streamlit internal logger noise
-logging.getLogger('streamlit').setLevel(logging.ERROR)
-logging.getLogger('streamlit.logger').setLevel(logging.ERROR)
-logging.getLogger('altair').setLevel(logging.ERROR)
+logging.getLogger('streamlit').setLevel(logging.CRITICAL)
+logging.getLogger('streamlit.logger').setLevel(logging.CRITICAL)
+logging.getLogger('streamlit.web.server.websocket_headers').setLevel(logging.CRITICAL)
+logging.getLogger('altair').setLevel(logging.CRITICAL)
+logging.getLogger('urllib3').setLevel(logging.CRITICAL)
+logging.getLogger('plotly').setLevel(logging.WARNING)
+
+# Suppress all warnings except critical
+warnings.filterwarnings('ignore')
+
+# Custom exception handler to suppress errors from being displayed
+import sys
+_original_excepthook = sys.excepthook
+def _silent_excepthook(type, value, traceback):
+    """Silent exception handler - logs but doesn't display"""
+    logger.error(f"Uncaught exception: {type.__name__}: {value}", exc_info=(type, value, traceback))
+    # Don't call the original excepthook to prevent error display
+
+sys.excepthook = _silent_excepthook
 
 # PAGE CONFIG - MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(

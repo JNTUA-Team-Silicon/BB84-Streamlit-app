@@ -139,6 +139,65 @@ def inject_custom_css():
         h2 { color: #1e40af !important; margin-top: 30px !important; font-weight: 700 !important; }
         h3 { color: #2563eb !important; font-weight: 600 !important; }
         .stButton > button { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important; color: white !important; font-weight: 700; text-transform: uppercase; }
+        
+        /* Enhanced Tab Styling - Make them look like beautiful boxes */
+        @keyframes tabHover {
+            0% { transform: translateY(0px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+            100% { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        }
+        
+        /* Style the tabs container */
+        [data-baseweb="tab-list"] {
+            gap: 12px !important;
+            padding: 20px 0 !important;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 15px;
+            padding: 20px !important;
+            margin-bottom: 30px !important;
+        }
+        
+        /* Style individual tab buttons */
+        [data-baseweb="tab"] {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%) !important;
+            border: 2px solid #e0e7ff !important;
+            border-radius: 12px !important;
+            padding: 16px 24px !important;
+            font-size: 15px !important;
+            font-weight: 600 !important;
+            color: #1e40af !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+            cursor: pointer !important;
+            letter-spacing: 0.5px !important;
+        }
+        
+        /* Hover effect for tabs */
+        [data-baseweb="tab"]:hover {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+            color: white !important;
+            border-color: #4f46e5 !important;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3) !important;
+            animation: tabHover 0.3s ease !important;
+        }
+        
+        /* Active/Selected tab styling */
+        [data-baseweb="tab"][aria-selected="true"] {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+            color: white !important;
+            border-color: #4f46e5 !important;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4) !important;
+            font-weight: 700 !important;
+        }
+        
+        /* Tab content styling */
+        [data-baseweb="tab-panel"] {
+            padding: 30px 25px !important;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+            border-radius: 15px !important;
+            border: 1px solid #e0e7ff !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+            margin-top: 20px !important;
+        }
         </style>
         """, unsafe_allow_html=True)
     except Exception as e:
@@ -643,7 +702,7 @@ def render_bloch_visualizations():
             bases_array = st.session_state.alice_bases_stored
             
             if bits_array is None or bases_array is None:
-                st.warning("No simulation data available. Run simulation first.")
+                logger.error("No simulation data available. Run simulation first.")
                 return
             
             max_idx = len(bits_array) - 1
@@ -686,12 +745,10 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
                         st.plotly_chart(fig, use_container_width=True)
                     except Exception as e:
                         logger.error(f"Error displaying Bloch sphere: {e}")
-                        st.error("Could not render Bloch sphere")
             else:
-                st.error(f"Index {idx} out of range")
+                logger.error(f"Index {idx} out of range")
         except Exception as e:
             logger.error(f"Error in Single Qubit Analysis: {e}")
-            st.error("Error loading Single Qubit Analysis")
 
     with qv_tab2:
         st.subheader("Multi-Qubit Range Analysis")
@@ -700,7 +757,7 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
             bases_array = st.session_state.alice_bases_stored
             
             if bits_array is None or bases_array is None:
-                st.warning("No simulation data available. Run simulation first.")
+                logger.error("No simulation data available. Run simulation first.")
                 return
             
             max_idx = len(bits_array) - 1
@@ -753,12 +810,10 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
                     st.plotly_chart(fig, use_container_width=True)
                 except Exception as e:
                     logger.error(f"Error displaying multi-qubit Bloch sphere: {e}")
-                    st.error("Could not render Multi-Qubit Bloch sphere")
             else:
-                st.warning("No states to display in selected range")
+                logger.error("No states to display in selected range")
         except Exception as e:
             logger.error(f"Error in Multi-Qubit Range Analysis: {e}")
-            st.error("Error loading Multi-Qubit Range Analysis")
 
     with qv_tab3:
         st.subheader("Polarization Analysis")

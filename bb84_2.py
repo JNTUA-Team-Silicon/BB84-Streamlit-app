@@ -266,32 +266,34 @@ try:
         overflow-x: hidden !important;
     }
     
-    /* CENTERED LAYOUT WITH MAX WIDTH */
+    /* RESPONSIVE CENTERED LAYOUT */
     section[data-testid="stAppViewContainer"] {
-        max-width: 1400px !important;
-        width: 100% !important;
+        max-width: 95% !important;
+        width: 95vw !important;
         margin: 0 auto !important;
         padding: 0 !important;
     }
     
     [data-testid="stApp"] {
         width: 100% !important;
-        max-width: 1400px !important;
-        margin: 0 auto !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     [data-testid="stAppViewContainer"] > section {
         padding: 0 !important;
-        max-width: 1400px !important;
-        margin: 0 auto !important;
+        width: 100% !important;
+        margin: 0 !important;
+        max-width: unset !important;
     }
     
     .block-container {
-        max-width: 1400px !important;
+        max-width: 100% !important;
         width: 100% !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
-        margin: 0 auto !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        margin: 0 !important;
     }
     
     /* SIDEBAR SIZING */

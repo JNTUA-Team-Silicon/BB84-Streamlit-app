@@ -98,7 +98,8 @@ from bb84_cliparts import (
     get_security_status_svg,
     get_qber_gauge_svg,
     get_bloch_sphere_svg,
-    get_timeline_comparison_svg
+    get_timeline_comparison_svg,
+    get_spy_agent_svg
 )
 
 # Configure logging
@@ -1656,9 +1657,29 @@ def main():
         """, unsafe_allow_html=True)
     except Exception as e:
         logger.debug(f"Header rendering: {e}")
-        st.markdown("# JNTUA BB84 Quantum Key Distribution Simulator")
+    # Advanced interactive header with spy theme
+    col1, col2 = st.columns([4, 1])
+    with col1:
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 25px; border-radius: 15px; border: 2px solid #c41e3a; box-shadow: 0 8px 20px rgba(196, 30, 58, 0.3);'>
+            <h1 style='color: #fff; margin: 0 0 5px 0; font-size: 32px; font-weight: 900; text-shadow: 2px 2px 4px rgba(196, 30, 58, 0.5);'>JNTUA BB84 QKD Simulator</h1>
+            <p style='color: #ff6b6b; margin: 0; font-size: 16px; font-weight: 600; letter-spacing: 1px;'>Quantum Key Distribution | Cryptography & Espionage Detection</p>
+            <p style='color: #ffd700; margin: 5px 0 0 0; font-size: 12px; font-weight: 500;'>Team Silicon Intelligence | Advanced Quantum Security</p>
+            <div style='margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(196, 30, 58, 0.3);'>
+                <span style='color: #ffd700; font-size: 11px; font-weight: 600;'>ACTIVE THREAT MONITORING</span>
+                <div style='display: flex; gap: 15px; margin-top: 8px;'>
+                    <span style='color: #00ff00; font-size: 10px;'>QUANTUM SECURE</span>
+                    <span style='color: #00ff00; font-size: 10px;'>EVE DETECTION</span>
+                    <span style='color: #00ff00; font-size: 10px;'>PROTOCOL RUNNING</span>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
-    # ADVANCED PLATFORM CAPABILITIES WITH ICONS
+    with col2:
+        st.markdown(get_spy_agent_svg(), unsafe_allow_html=True)
+    
+    st.divider()
     st.markdown("### Platform Capabilities")
     cap_col1, cap_col2, cap_col3 = st.columns(3)
     
@@ -1749,33 +1770,47 @@ def main():
     Any eavesdropping introduces detectable errors due to quantum no-cloning theorem.
     
     ### Detailed Protocol Flow:
+    ```
+    BB84 PROTOCOL PSEUDOCODE:
     
-    <div class='step-heading'>Step 1</div>
-    Alice randomly generates N bits (0s and 1s) and randomly chooses a basis (Rectilinear or Diagonal) for each bit
+    1. Alice generates N random bits and N random bases
+       - bits = [random 0/1 for _ in range(N)]
+       - bases = [random Rectilinear/Diagonal for _ in range(N)]
     
-    <div class='step-heading'>Step 2</div>
-    Alice encodes each bit into a qubit using her chosen basis and sends the qubits to Bob through a quantum channel
+    2. Alice encodes and transmits qubits to Bob
+       - FOR i in range(N):
+           - Encode bits[i] using bases[i]
+           - Send qubit through quantum channel
     
-    <div class='step-heading'>Step 3</div>
-    Bob independently chooses a random basis for each qubit and measures it, recording his results
+    3. Bob measures received qubits
+       - FOR i in range(N):
+           - Choose random basis (Rectilinear/Diagonal)
+           - Measure qubit in chosen basis
+           - Record measurement result
     
-    <div class='step-heading'>Step 4</div>
-    After all qubits are transmitted, Alice publicly announces which bases she used (but NOT the bits)
+    4. Alice publicly announces her bases
+       - Announce: bases = [b1, b2, ..., bN]
     
-    <div class='step-heading'>Step 5</div>
-    Bob publicly announces which bases he used (but NOT his measurement results)
+    5. Bob publicly announces his bases
+       - Announce: bob_bases = [b1, b2, ..., bN]
     
-    <div class='step-heading'>Step 6</div>
-    Both parties compare their bases; they keep only the bits where their bases matched (approximately 50% of the qubits)
+    6. Keep matching basis positions
+       - sifted_key = [bits[i] where bases[i] == bob_bases[i]]
     
-    <div class='step-heading'>Step 7</div>
-    A random subset of the sifted key is publicly compared to estimate the Quantum Bit Error Rate (QBER)
+    7. Estimate Quantum Bit Error Rate (QBER)
+       - Test subset of sifted key against Bob's measurements
+       - QBER = (errors / sample_size) * 100
     
-    <div class='step-heading'>Step 8</div>
-    If QBER exceeds the threshold, eavesdropping is detected and the protocol is aborted
+    8. Check for eavesdropping
+       - IF QBER > threshold:
+           - Abort protocol (eavesdropping detected)
+       - ELSE:
+           - Continue to step 9
     
-    <div class='step-heading'>Step 9</div>
-    The remaining sifted key is processed through privacy amplification (hashing) to produce the final secure cryptographic key
+    9. Privacy amplification
+       - Apply hash function to remaining sifted key
+       - Final secure cryptographic key ready for use
+    ```
     """)
 
     # SIMULATION PARAMETERS SECTION

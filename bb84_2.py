@@ -237,6 +237,35 @@ except Exception as e:
 def inject_responsive_css():
     """Inject clean CSS for responsive layout - Streamlit Cloud compatible"""
     st.markdown("""
+    <script>
+    // Suppress specific JavaScript console errors without affecting functionality
+    (function() {
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        const suppressPatterns = [
+            'Bad message format',
+            'SessionInfo',
+            'setIn',
+            'protobuf',
+            'grpc',
+            'Cannot read properties of undefined'
+        ];
+        
+        console.error = function(...args) {
+            const message = args.join(' ');
+            if (!suppressPatterns.some(pattern => message.includes(pattern))) {
+                originalError.apply(console, args);
+            }
+        };
+        
+        console.warn = function(...args) {
+            const message = args.join(' ');
+            if (!suppressPatterns.some(pattern => message.includes(pattern))) {
+                originalWarn.apply(console, args);
+            }
+        };
+    })();
+    </script>
     <style>
     /* LIGHT THEME FOR VISIBILITY */
     [data-testid="stApp"] {

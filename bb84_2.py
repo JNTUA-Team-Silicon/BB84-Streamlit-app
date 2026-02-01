@@ -1766,7 +1766,9 @@ def main():
         
         with col2:
             st.markdown("""
-                <div style='text-align: center;'>
+                <div style='background: linear-gradient(135deg, rgba(100, 181, 246, 0.15) 0%, rgba(187, 222, 251, 0.15) 100%);
+                            padding: 30px 25px; border-radius: 15px; border: 1px solid rgba(100, 181, 246, 0.3);
+                            backdrop-filter: blur(10px);'>
                     <p style='margin: 0 0 15px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; 
                              letter-spacing: 3px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.3);'>
                         Interactive BB84 QKD Simulator

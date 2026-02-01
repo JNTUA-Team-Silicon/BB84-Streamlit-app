@@ -103,6 +103,8 @@ import warnings
 warnings.filterwarnings('ignore', message='.*Bad message format.*')
 warnings.filterwarnings('ignore', message='.*SessionInfo before it was initialized.*')
 warnings.filterwarnings('ignore', message='.*SessionInfo.*')
+warnings.filterwarnings('ignore', message='.*Cannot read properties of undefined.*')
+warnings.filterwarnings('ignore', message='.*setIn.*')
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 warnings.filterwarnings('ignore', category=FutureWarning)
 
@@ -124,6 +126,8 @@ class MinimalErrorFilter:
             'Bad message format', 
             'SessionInfo before it was initialized', 
             'Tried to use SessionInfo',
+            'Cannot read properties of undefined',
+            'reading \'setIn\'',
             'protobuf',
             'grpc'
         ]
@@ -161,7 +165,8 @@ _original_excepthook = sys.excepthook
 def _error_handler(exc_type, exc_value, exc_traceback):
     """Suppress only SessionInfo-related and Bad message format errors"""
     error_str = str(exc_value)
-    if not any(kw in error_str for kw in ['SessionInfo', 'Bad message format', 'protobuf', 'grpc']):
+    suppress_list = ['SessionInfo', 'Bad message format', 'protobuf', 'grpc', 'Cannot read properties of undefined', 'setIn']
+    if not any(kw in error_str for kw in suppress_list):
         _original_excepthook(exc_type, exc_value, exc_traceback)
 
 sys.excepthook = _error_handler

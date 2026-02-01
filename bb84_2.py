@@ -1751,25 +1751,25 @@ def main():
         <div style='background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%); padding: 30px; border-radius: 18px; margin-bottom: 25px; box-shadow: 0 12px 40px rgba(135, 206, 250, 0.15);'>
         """, unsafe_allow_html=True)
         
-        # PREMIUM PROFESSIONAL UNIFIED HEADER IN ONE BOX
-        col_logo, col_main, col_proto = st.columns([0.12, 0.7, 0.18])
+        # PREMIUM PROFESSIONAL UNIFIED HEADER - LOGO IN MIDDLE
+        col_text, col_logo, col_proto = st.columns([0.45, 0.35, 0.2])
         
-        with col_logo:
-            st.image("jntua_logo.png", width=85)
-        
-        with col_main:
+        with col_text:
             header_text = """
             <div style='padding: 8px 0;'>
                 <div style='display: flex; align-items: baseline; gap: 12px; margin-bottom: 3px;'>
                     <h1 style='margin: 0; color: #0d47a1; font-size: 42px; font-weight: 900;'>AQVH PROJECT</h1>
-                    <span style='color: #1565c0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; padding: 3px 10px; background: rgba(21, 101, 192, 0.12); border-radius: 20px; border: 1px solid rgba(21, 101, 192, 0.3);'>Quantum Security</span>
                 </div>
-                <h2 style='margin: 3px 0 6px 0; color: #1976d2; font-size: 22px; font-weight: 800;'>BB84 QKD Simulator</h2>
+                <span style='color: #1565c0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; padding: 3px 10px; background: rgba(21, 101, 192, 0.12); border-radius: 20px; border: 1px solid rgba(21, 101, 192, 0.3);'>Quantum Security</span>
+                <h2 style='margin: 8px 0 6px 0; color: #1976d2; font-size: 22px; font-weight: 800;'>BB84 QKD Simulator</h2>
                 <p style='margin: 0 0 3px 0; color: #1565c0; font-size: 12px; font-weight: 600;'>Interactive QKD Simulator for Education</p>
                 <p style='margin: 0; color: #2196f3; font-size: 10px; font-weight: 500;'>Quantum Cryptography | Post-Quantum Security | Eavesdropping Detection</p>
             </div>
             """
             st.markdown(header_text, unsafe_allow_html=True)
+        
+        with col_logo:
+            st.image("jntua_logo.png", width=140, use_container_width=True)
         
         with col_proto:
             proto_text = """

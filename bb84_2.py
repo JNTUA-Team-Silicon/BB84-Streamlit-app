@@ -1746,117 +1746,102 @@ def main():
         sims = session_info.get("simulations_run", 0)
         session_id = session_info.get("session_id", "N/A")
         
-        # HEADER BACKGROUND CONTAINER
+        # PREMIUM HERO SECTION - FIRST IMPRESSION
         st.markdown("""
-        <div style='background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%); padding: 30px; border-radius: 18px; margin-bottom: 25px; box-shadow: 0 12px 40px rgba(135, 206, 250, 0.15);'>
-        """, unsafe_allow_html=True)
-        
-        # PREMIUM PROFESSIONAL UNIFIED HEADER - LOGO ON LEFT
-        col_logo, col_text, col_proto = st.columns([0.15, 0.65, 0.2])
-        
-        with col_logo:
-            st.image("jntua_logo.png", width=100)
-        
-        with col_text:
-            header_text = """
-            <div style='padding: 8px 0;'>
-                <div style='display: flex; align-items: baseline; gap: 12px; margin-bottom: 3px;'>
-                    <h1 style='margin: 0; color: #0d47a1; font-size: 42px; font-weight: 900;'>AQVH PROJECT</h1>
-                </div>
-                <span style='color: #1565c0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; padding: 3px 10px; background: rgba(21, 101, 192, 0.12); border-radius: 20px; border: 1px solid rgba(21, 101, 192, 0.3);'>Quantum Security</span>
-                <h2 style='margin: 8px 0 6px 0; color: #1976d2; font-size: 22px; font-weight: 800;'>BB84 QKD Simulator</h2>
-                <p style='margin: 0 0 3px 0; color: #1565c0; font-size: 12px; font-weight: 600;'>Interactive QKD Simulator for Education</p>
-                <p style='margin: 0; color: #2196f3; font-size: 10px; font-weight: 500;'>Quantum Cryptography | Post-Quantum Security | Eavesdropping Detection</p>
+        <div style='background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%); 
+                    padding: 60px 40px; border-radius: 25px; margin: 20px 0 40px 0; 
+                    box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+                    border: 2px solid rgba(0, 150, 255, 0.3);
+                    position: relative; overflow: hidden;'>
+            <div style='position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
+                        background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%); 
+                        border-radius: 50%; pointer-events: none;'></div>
+            <div style='position: relative; z-index: 10; text-align: center;'>
+                <p style='margin: 0 0 15px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; 
+                         letter-spacing: 3px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.3);'>
+                    Advanced Quantum Technology Platform
+                </p>
+                <h1 style='margin: 0 0 10px 0; color: #ffffff; font-size: 56px; font-weight: 950; 
+                          letter-spacing: -1px; text-shadow: 0 6px 20px rgba(0,0,0,0.4);'>
+                    AQVH PROJECT
+                </h1>
+                <h2 style='margin: 0 0 20px 0; background: linear-gradient(90deg, #64b5f6 0%, #bbdefb 100%); 
+                          -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+                          font-size: 32px; font-weight: 850; letter-spacing: 0.5px;'>
+                    BB84 Quantum Key Distribution Simulator
+                </h2>
+                <p style='margin: 0 0 8px 0; color: #e3f2fd; font-size: 16px; font-weight: 600; 
+                         letter-spacing: 0.5px;'>
+                    Next-Generation Quantum Cryptography Education Platform
+                </p>
+                <p style='margin: 0; color: #b3e5fc; font-size: 13px; font-weight: 500; 
+                         letter-spacing: 0.3px;'>
+                    Post-Quantum Security | Eavesdropping Detection | Real-Time Simulation
+                </p>
             </div>
-            """
-            st.markdown(header_text, unsafe_allow_html=True)
-        
-        with col_proto:
-            proto_text = """
-            <div style='padding: 8px 15px; background: rgba(25, 118, 210, 0.08); border-radius: 12px; border: 1px solid rgba(25, 118, 210, 0.25); text-align: center; height: 100%;'>
-                <p style='margin: 0 0 4px 0; color: #1565c0; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;'>Protocol</p>
-                <p style='margin: 0 0 4px 0; color: #0d47a1; font-size: 20px; font-weight: 900; font-family: monospace;'>BB84</p>
-                <p style='margin: 0; color: #1976d2; font-size: 8px; font-weight: 600;'>Bennett & Brassard</p>
-            </div>
-            """
-            st.markdown(proto_text, unsafe_allow_html=True)
-        
-        st.markdown("""
         </div>
         """, unsafe_allow_html=True)
         
-        # SUBTITLE SECTION
-        subtitle_html = """
-        <div style='background: linear-gradient(90deg, rgba(33, 150, 243, 0.1) 0%, rgba(21, 101, 192, 0.1) 100%); padding: 15px 20px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #2196f3;'>
-            <p style='margin: 0; color: #1565c0; font-size: 13px; font-weight: 600; letter-spacing: 0.5px;'>Team Silicon | JNTUA ECE Department | Educational Quantum Cryptography Platform</p>
-        </div>
-        """
-        st.markdown(subtitle_html, unsafe_allow_html=True)
-        
-        st.markdown("")
-        
+        # PREMIUM SESSION ANALYTICS BOX
         st.markdown("""
         <style>
-            @keyframes slideInDown {
-                from {
-                    opacity: 0;
-                    transform: translateY(-30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+            @keyframes slideInUp {
+                from { opacity: 0; transform: translateY(30px); }
+                to { opacity: 1; transform: translateY(0); }
             }
-            
             @keyframes pulseGlow {
-                0%, 100% {
-                    box-shadow: 0 0 0 0 rgba(45, 90, 140, 0.3);
-                }
-                50% {
-                    box-shadow: 0 0 0 8px rgba(45, 90, 140, 0);
-                }
+                0%, 100% { box-shadow: 0 0 0 0 rgba(0, 150, 255, 0.3); }
+                50% { box-shadow: 0 0 0 12px rgba(0, 150, 255, 0); }
             }
-            
-            .session-box {
-                animation: slideInDown 0.8s ease-out;
-            }
-            
-            .session-glow {
-                animation: pulseGlow 3s infinite;
-            }
+            .session-card { animation: slideInUp 1s ease-out; }
+            .session-glow { animation: pulseGlow 3s infinite; }
         </style>
         """, unsafe_allow_html=True)
         
         session_html = f"""
-        <div class='session-box session-glow' style='
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
-            border: 2px solid rgba(21, 101, 192, 0.4);
-            border-radius: 20px;
-            padding: 28px 35px;
-            margin: 25px 0;
-            box-shadow: 0 10px 40px rgba(135, 206, 250, 0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+        <div class='session-card session-glow' style='
+            background: linear-gradient(135deg, #e1f5ff 0%, #b3e5fc 50%, #81d4fa 100%);
+            border: 2px solid rgba(0, 150, 255, 0.35);
+            border-radius: 22px;
+            padding: 35px 40px;
+            margin: 30px 0 50px 0;
+            box-shadow: 0 15px 50px rgba(0, 150, 255, 0.15), inset 0 1px 0 rgba(255,255,255,0.4);
         '>
-            <div style='display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 30px;'>
-                <div style='text-align: center; padding-right: 20px; border-right: 2px solid rgba(21, 101, 192, 0.2);'>
-                    <p style='margin: 0; color: #0d47a1; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Session ID</p>
-                    <h3 style='margin: 10px 0 0 0; color: #1565c0; font-size: 18px; font-family: monospace; font-weight: 900;'>#{session_id}</h3>
+            <div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; align-items: center;'>
+                <div style='text-align: center; padding-right: 25px; border-right: 3px solid rgba(0, 82, 204, 0.2);'>
+                    <p style='margin: 0 0 8px 0; color: #00467f; font-size: 11px; text-transform: uppercase; 
+                             letter-spacing: 2.5px; font-weight: 900;'>Session ID</p>
+                    <h3 style='margin: 0; color: #0052cc; font-size: 22px; font-family: monospace; 
+                              font-weight: 950; letter-spacing: 1px;'>#{session_id}</h3>
                 </div>
-                <div style='text-align: center; padding-right: 20px; border-right: 2px solid rgba(21, 101, 192, 0.2);'>
-                    <p style='margin: 0; color: #0d47a1; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Simulations Run</p>
-                    <h3 style='margin: 10px 0 0 0; color: #1565c0; font-size: 18px; font-weight: 900;'>{sims}</h3>
+                <div style='text-align: center; padding-right: 25px; border-right: 3px solid rgba(0, 82, 204, 0.2);'>
+                    <p style='margin: 0 0 8px 0; color: #00467f; font-size: 11px; text-transform: uppercase; 
+                             letter-spacing: 2.5px; font-weight: 900;'>Simulations</p>
+                    <h3 style='margin: 0; color: #0052cc; font-size: 22px; font-weight: 950; 
+                              letter-spacing: 1px;'>{sims}</h3>
                 </div>
-                <div style='text-align: center; padding-right: 20px; border-right: 2px solid rgba(21, 101, 192, 0.2);'>
-                    <p style='margin: 0; color: #0d47a1; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Uptime</p>
-                    <h3 style='margin: 10px 0 0 0; color: #1565c0; font-size: 18px; font-weight: 900;'>{uptime}s</h3>
+                <div style='text-align: center; padding-right: 25px; border-right: 3px solid rgba(0, 82, 204, 0.2);'>
+                    <p style='margin: 0 0 8px 0; color: #00467f; font-size: 11px; text-transform: uppercase; 
+                             letter-spacing: 2.5px; font-weight: 900;'>Uptime</p>
+                    <h3 style='margin: 0; color: #0052cc; font-size: 22px; font-weight: 950; 
+                              letter-spacing: 1px;'>{uptime}s</h3>
                 </div>
                 <div style='text-align: center;'>
-                    <p style='margin: 0; color: #0d47a1; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Status</p>
-                    <h3 style='margin: 10px 0 0 0; color: #2e7d32; font-size: 18px; font-weight: 900;'>ACTIVE</h3>
+                    <p style='margin: 0 0 8px 0; color: #00467f; font-size: 11px; text-transform: uppercase; 
+                             letter-spacing: 2.5px; font-weight: 900;'>Status</p>
+                    <h3 style='margin: 0; color: #00c853; font-size: 22px; font-weight: 950; 
+                              letter-spacing: 1px;'>ACTIVE</h3>
                 </div>
             </div>
         </div>
         """
         st.markdown(session_html, unsafe_allow_html=True)
+        
+        # PREMIUM DIVIDER - SEPARATES HERO FROM CONTENT
+        st.markdown("""
+        <div style='height: 60px;'></div>
+        <div style='height: 2px; background: linear-gradient(90deg, transparent, rgba(0, 150, 255, 0.3), transparent); margin: 0 0 50px 0;'></div>
+        """, unsafe_allow_html=True)
         
     except Exception as e:
         logger.debug(f"Header rendering: {e}")

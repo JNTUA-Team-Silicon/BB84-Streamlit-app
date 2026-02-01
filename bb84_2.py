@@ -1747,22 +1747,44 @@ def main():
         session_id = session_info.get("session_id", "N/A")
         
         # PREMIUM PROFESSIONAL HEADER WITH GRADIENT BACKGROUND
-        header_html = """
-        <div style='background: linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #3b82f6 100%); padding: 40px 30px; border-radius: 18px; margin-bottom: 25px; box-shadow: 0 20px 60px rgba(30, 64, 175, 0.35), inset 0 1px 0 rgba(255,255,255,0.15); border: 2px solid rgba(96, 165, 250, 0.4); position: relative; overflow: hidden;'>
-            <div style='position: absolute; top: -50%; right: -10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%); border-radius: 50%; pointer-events: none;'></div>
-            <div style='position: absolute; bottom: -30%; left: -5%; width: 250px; height: 250px; background: radial-gradient(circle, rgba(96, 165, 250, 0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none;'></div>
-            <div style='display: flex; align-items: center; gap: 25px; position: relative; z-index: 10;'>
-                <div style='flex-shrink: 0;'><img src="jntua_logo.png" alt="JNTUA Logo" style='width: 95px; height: auto; filter: brightness(1.2) drop-shadow(0 8px 16px rgba(96, 165, 250, 0.3));'></div>
-                <div style='flex-grow: 1;'>
-                    <div style='display: flex; align-items: baseline; gap: 12px;'><h1 style='margin: 0; color: #ffffff; font-size: 46px; font-weight: 950; letter-spacing: -1.5px; text-shadow: 0 6px 20px rgba(0,0,0,0.4);'>AQVH PROJECT</h1><span style='color: #06b6d4; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; padding: 4px 10px; background: rgba(6, 182, 212, 0.15); border-radius: 20px; border: 1px solid rgba(6, 182, 212, 0.4);'>Next-Gen Quantum</span></div>
-                    <h2 style='margin: 5px 0 8px 0; color: #60a5fa; font-size: 28px; font-weight: 900; letter-spacing: 0.5px;'>BB84 QKD Simulator</h2>
-                    <p style='margin: 0 0 4px 0; color: #e0e7ff; font-size: 15px; font-weight: 700; letter-spacing: 0.3px;'>Cryptographic Security through Quantum Mechanics</p>
-                    <p style='margin: 0 0 6px 0; color: #bfdbfe; font-size: 13px; font-weight: 600;'>Quantum Key Distribution | Post-Quantum Cryptography | Eavesdropping Detection</p>
-                    <p style='margin: 0; color: #93c5fd; font-size: 12px; font-weight: 600;'>Team Silicon | JNTUA ECE Department</p>
+        col1, col2, col3 = st.columns([0.15, 0.7, 0.15])
+        
+        with col1:
+            st.image("jntua_logo.png", width=95, use_column_width=False)
+        
+        with col2:
+            header_html = """
+            <div style='background: linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #3b82f6 100%); padding: 30px 25px; border-radius: 18px; box-shadow: 0 20px 60px rgba(30, 64, 175, 0.35), inset 0 1px 0 rgba(255,255,255,0.15); border: 2px solid rgba(96, 165, 250, 0.4); position: relative; overflow: hidden;'>
+                <div style='position: absolute; top: -50%; right: -10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%); border-radius: 50%; pointer-events: none;'></div>
+                <div style='position: absolute; bottom: -30%; left: -5%; width: 250px; height: 250px; background: radial-gradient(circle, rgba(96, 165, 250, 0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none;'></div>
+                <div style='position: relative; z-index: 10;'>
+                    <div style='display: flex; align-items: baseline; gap: 12px;'><h1 style='margin: 0; color: #ffffff; font-size: 42px; font-weight: 950; letter-spacing: -1.5px; text-shadow: 0 6px 20px rgba(0,0,0,0.4);'>AQVH PROJECT</h1><span style='color: #06b6d4; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; padding: 3px 8px; background: rgba(6, 182, 212, 0.15); border-radius: 20px; border: 1px solid rgba(6, 182, 212, 0.4);'>Next-Gen Quantum</span></div>
+                    <h2 style='margin: 5px 0 8px 0; color: #60a5fa; font-size: 26px; font-weight: 900; letter-spacing: 0.5px;'>BB84 QKD Simulator</h2>
+                    <p style='margin: 0 0 4px 0; color: #e0e7ff; font-size: 14px; font-weight: 700; letter-spacing: 0.3px;'>Cryptographic Security through Quantum Mechanics</p>
+                    <p style='margin: 0 0 6px 0; color: #bfdbfe; font-size: 12px; font-weight: 600;'>Quantum Key Distribution | Post-Quantum Cryptography | Eavesdropping Detection</p>
+                    <p style='margin: 0; color: #93c5fd; font-size: 11px; font-weight: 600;'>Team Silicon | JNTUA ECE Department</p>
                 </div>
-                <div style='flex-shrink: 0; text-align: center; background: rgba(255, 255, 255, 0.08); padding: 16px 20px; border-radius: 12px; border: 1px solid rgba(96, 165, 250, 0.3);'><p style='margin: 0 0 8px 0; color: #93c5fd; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;'>Protocol</p><p style='margin: 0 0 8px 0; color: #60a5fa; font-size: 20px; font-weight: 950;'>BB84</p><p style='margin: 0 0 8px 0; color: #bfdbfe; font-size: 10px; border-top: 1px solid rgba(96, 165, 250, 0.3); padding-top: 8px;'>Bennett & Brassard</p><p style='margin: 0; color: #93c5fd; font-size: 10px; font-weight: 600;'>Proven Secure</p></div>
             </div>
-            <div style='margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(96, 165, 250, 0.25); display: flex; gap: 20px; justify-content: space-around; position: relative; z-index: 10;'>
+            """
+            st.markdown(header_html, unsafe_allow_html=True)
+        
+        with col3:
+            protocol_html = """
+            <div style='background: linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #3b82f6 100%); padding: 30px 15px; border-radius: 18px; box-shadow: 0 20px 60px rgba(30, 64, 175, 0.35), inset 0 1px 0 rgba(255,255,255,0.15); border: 2px solid rgba(96, 165, 250, 0.4); text-align: center; height: 100%;'>
+                <p style='margin: 0 0 8px 0; color: #93c5fd; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;'>Protocol</p>
+                <p style='margin: 0 0 8px 0; color: #60a5fa; font-size: 24px; font-weight: 950;'>BB84</p>
+                <p style='margin: 0 0 8px 0; color: #bfdbfe; font-size: 9px; border-top: 1px solid rgba(96, 165, 250, 0.3); padding-top: 8px;'>Bennett & Brassard</p>
+                <p style='margin: 0; color: #93c5fd; font-size: 9px; font-weight: 600;'>Proven Secure</p>
+            </div>
+            """
+            st.markdown(protocol_html, unsafe_allow_html=True)
+        
+        st.markdown("")
+        
+        # FEATURE SHOWCASE
+        feature_html = """
+        <div style='background: linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #3b82f6 100%); padding: 20px; border-radius: 18px; margin-bottom: 25px; box-shadow: 0 20px 60px rgba(30, 64, 175, 0.35), inset 0 1px 0 rgba(255,255,255,0.15); border: 2px solid rgba(96, 165, 250, 0.4);'>
+            <div style='display: flex; gap: 20px; justify-content: space-around;'>
                 <div style='text-align: center;'><p style='margin: 0; color: #60a5fa; font-size: 16px; font-weight: 900; letter-spacing: 2px;'>[ ]</p><p style='margin: 4px 0 0 0; color: #bfdbfe; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Secure Keys</p></div>
                 <div style='text-align: center;'><p style='margin: 0; color: #60a5fa; font-size: 16px; font-weight: 900; letter-spacing: 2px;'>{ }</p><p style='margin: 4px 0 0 0; color: #bfdbfe; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Eve Detection</p></div>
                 <div style='text-align: center;'><p style='margin: 0; color: #60a5fa; font-size: 16px; font-weight: 900; letter-spacing: 2px;'>< ></p><p style='margin: 4px 0 0 0; color: #bfdbfe; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;'>Real-Time</p></div>
@@ -1770,7 +1792,7 @@ def main():
             </div>
         </div>
         """
-        st.markdown(header_html, unsafe_allow_html=True)
+        st.markdown(feature_html, unsafe_allow_html=True)
         
         # ADVANCED ANIMATED SESSION BOX
         st.markdown("""

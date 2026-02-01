@@ -773,7 +773,7 @@ def render_final_key_download():
 
 @st.fragment
 def render_metrics_display():
-    """Display main metrics - Comparison layout. UI-only, reads from session_state."""
+    """Display main metrics - Professional table comparison. UI-only, reads from session_state."""
     # Fragment safety guard
     if not st.session_state.get("simulation_completed", False):
         return
@@ -787,54 +787,122 @@ def render_metrics_display():
 
     st.markdown("### Key Metrics Comparison")
     
-    # SIDE-BY-SIDE COMPARISON LAYOUT
-    col_no_eve, col_eve = st.columns(2)
+    # METRICS TABLE - SIDE BY SIDE COMPARISON
+    metrics_data = {
+        'Metric': ['Sifted Bits', 'Errors Detected', 'QBER', 'Final Key Length', 'Key Rate'],
+        'No Eavesdropper': [
+            f"{no_eve['sifted_count']}",
+            f"{no_eve['errors']}",
+            f"{no_eve['qber']:.4f}",
+            f"{no_eve['final_key_length']}",
+            f"{no_eve['final_key_length'] / num_bits:.4f}"
+        ],
+        'With Eve': [
+            f"{eve['sifted_count']}",
+            f"{eve['errors']}",
+            f"{eve['qber']:.4f}",
+            f"{eve['final_key_length']}",
+            f"{eve['final_key_length'] / num_bits:.4f}"
+        ]
+    }
     
-    # NO EVE SCENARIO - LEFT
-    with col_no_eve:
-        st.markdown("**No Eavesdropper Scenario**")
-        metrics_col1, metrics_col2, metrics_col3, metrics_col4, metrics_col5 = st.columns(5)
-        
-        with metrics_col1:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
-                <h2 style='color: #1e40af; margin: 0; font-size: 24px;'>{no_eve['sifted_count']}</h2>
-                <p style='color: #1e40af; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Sifted Bits</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with metrics_col2:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #fca5a5;'>
-                <h2 style='color: #991b1b; margin: 0; font-size: 24px;'>{no_eve['errors']}</h2>
-                <p style='color: #991b1b; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Errors</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with metrics_col3:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #86efac;'>
-                <h2 style='color: #166534; margin: 0; font-size: 24px;'>{no_eve['qber']:.4f}</h2>
-                <p style='color: #166534; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>QBER</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with metrics_col4:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #c4b5fd;'>
-                <h2 style='color: #5b21b6; margin: 0; font-size: 24px;'>{no_eve['final_key_length']}</h2>
-                <p style='color: #5b21b6; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Key</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with metrics_col5:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
-                <h2 style='color: #1e3a8a; margin: 0; font-size: 24px;'>{no_eve['final_key_length'] / num_bits:.4f}</h2>
-                <p style='color: #1e3a8a; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Rate</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
+    # Create styled comparison table
+    st.markdown("""
+    <style>
+        .metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .metrics-table th {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            border: none;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+        .metrics-table td {
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e7ff;
+            font-size: 14px;
+        }
+        .metrics-table tr:last-child td {
+            border-bottom: none;
+        }
+        .metrics-table tr:hover {
+            background-color: #f0f4ff;
+        }
+        .metric-label {
+            text-align: left;
+            font-weight: 600;
+            color: #1e40af;
+            width: 25%;
+        }
+        .metric-value-no-eve {
+            background: linear-gradient(180deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+            font-weight: 600;
+        }
+        .metric-value-eve {
+            background: linear-gradient(180deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+            font-weight: 600;
+        }
+    </style>
+    <table class='metrics-table'>
+        <thead>
+            <tr>
+                <th>Metric</th>
+                <th>No Eavesdropper</th>
+                <th>With Eve</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class='metric-label'>Sifted Bits</td>
+                <td class='metric-value-no-eve'>{}</td>
+                <td class='metric-value-eve'>{}</td>
+            </tr>
+            <tr>
+                <td class='metric-label'>Errors Detected</td>
+                <td class='metric-value-no-eve'>{}</td>
+                <td class='metric-value-eve'>{}</td>
+            </tr>
+            <tr>
+                <td class='metric-label'>QBER</td>
+                <td class='metric-value-no-eve'>{}</td>
+                <td class='metric-value-eve'>{}</td>
+            </tr>
+            <tr>
+                <td class='metric-label'>Final Key Length</td>
+                <td class='metric-value-no-eve'>{}</td>
+                <td class='metric-value-eve'>{}</td>
+            </tr>
+            <tr>
+                <td class='metric-label'>Key Rate</td>
+                <td class='metric-value-no-eve'>{}</td>
+                <td class='metric-value-eve'>{}</td>
+            </tr>
+        </tbody>
+    </table>
+    """.format(
+        no_eve['sifted_count'], eve['sifted_count'],
+        no_eve['errors'], eve['errors'],
+        f"{no_eve['qber']:.4f}", f"{eve['qber']:.4f}",
+        no_eve['final_key_length'], eve['final_key_length'],
+        f"{no_eve['final_key_length'] / num_bits:.4f}", f"{eve['final_key_length'] / num_bits:.4f}"
+    ), unsafe_allow_html=True)
+    
+    # GAUGES BELOW TABLE
+    gauge_col1, gauge_col2 = st.columns(2)
+    
+    with gauge_col1:
+        st.markdown("**No Eavesdropper - QBER Status**")
         st.plotly_chart(
             qber_gauge(no_eve['qber'], st.session_state.threshold),
             use_container_width=True,
@@ -842,51 +910,8 @@ def render_metrics_display():
             config={'displayModeBar': False}
         )
     
-    # EVE SCENARIO - RIGHT
-    with col_eve:
-        st.markdown("**Eavesdropper Present Scenario**")
-        metrics_col1, metrics_col2, metrics_col3, metrics_col4, metrics_col5 = st.columns(5)
-        
-        with metrics_col1:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
-                <h2 style='color: #1e40af; margin: 0; font-size: 24px;'>{eve['sifted_count']}</h2>
-                <p style='color: #1e40af; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Sifted Bits</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with metrics_col2:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #fca5a5;'>
-                <h2 style='color: #991b1b; margin: 0; font-size: 24px;'>{eve['errors']}</h2>
-                <p style='color: #991b1b; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Errors</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with metrics_col3:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #86efac;'>
-                <h2 style='color: #166534; margin: 0; font-size: 24px;'>{eve['qber']:.4f}</h2>
-                <p style='color: #166534; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>QBER</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with metrics_col4:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #c4b5fd;'>
-                <h2 style='color: #5b21b6; margin: 0; font-size: 24px;'>{eve['final_key_length']}</h2>
-                <p style='color: #5b21b6; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Key</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with metrics_col5:
-            st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
-                <h2 style='color: #1e3a8a; margin: 0; font-size: 24px;'>{eve['final_key_length'] / num_bits:.4f}</h2>
-                <p style='color: #1e3a8a; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Rate</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
+    with gauge_col2:
+        st.markdown("**Eavesdropper Present - QBER Status**")
         st.plotly_chart(
             qber_gauge(eve['qber'], st.session_state.threshold),
             use_container_width=True,

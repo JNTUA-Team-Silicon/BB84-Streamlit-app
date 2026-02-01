@@ -1829,29 +1829,29 @@ def main():
         
         session_html = f"""
         <div class='session-box session-glow' style='
-            background: linear-gradient(135deg, #1a2a4a 0%, #2d5a8c 50%, #4a7ba7 100%);
-            border: 2px solid rgba(74, 123, 167, 0.5);
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+            border: 2px solid rgba(21, 101, 192, 0.4);
             border-radius: 20px;
-            padding: 35px 40px;
+            padding: 28px 35px;
             margin: 25px 0;
-            box-shadow: 0 12px 45px rgba(45, 90, 140, 0.2), inset 0 1px 0 rgba(255,255,255,0.12);
+            box-shadow: 0 10px 40px rgba(135, 206, 250, 0.2), inset 0 1px 0 rgba(255,255,255,0.3);
         '>
-            <div style='display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 35px;'>
-                <div style='text-align: center; padding-right: 25px; border-right: 2px solid rgba(255,255,255,0.15);'>
-                    <p style='margin: 0; color: #c1d9f0; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;'>Session ID</p>
-                    <h3 style='margin: 10px 0 0 0; color: #b3d9ff; font-size: 20px; font-family: monospace; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.2);'>#{session_id}</h3>
+            <div style='display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 30px;'>
+                <div style='text-align: center; padding-right: 20px; border-right: 2px solid rgba(21, 101, 192, 0.2);'>
+                    <p style='margin: 0; color: #0d47a1; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Session ID</p>
+                    <h3 style='margin: 10px 0 0 0; color: #1565c0; font-size: 18px; font-family: monospace; font-weight: 900;'>#{session_id}</h3>
                 </div>
-                <div style='text-align: center; padding-right: 25px; border-right: 2px solid rgba(255,255,255,0.15);'>
-                    <p style='margin: 0; color: #c1d9f0; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;'>Simulations</p>
-                    <h3 style='margin: 10px 0 0 0; color: #b3d9ff; font-size: 20px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.2);'>{sims}</h3>
+                <div style='text-align: center; padding-right: 20px; border-right: 2px solid rgba(21, 101, 192, 0.2);'>
+                    <p style='margin: 0; color: #0d47a1; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Simulations Run</p>
+                    <h3 style='margin: 10px 0 0 0; color: #1565c0; font-size: 18px; font-weight: 900;'>{sims}</h3>
                 </div>
-                <div style='text-align: center; padding-right: 25px; border-right: 2px solid rgba(255,255,255,0.15);'>
-                    <p style='margin: 0; color: #c1d9f0; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;'>Uptime</p>
-                    <h3 style='margin: 10px 0 0 0; color: #b3d9ff; font-size: 20px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.2);'>{uptime}s</h3>
+                <div style='text-align: center; padding-right: 20px; border-right: 2px solid rgba(21, 101, 192, 0.2);'>
+                    <p style='margin: 0; color: #0d47a1; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Uptime</p>
+                    <h3 style='margin: 10px 0 0 0; color: #1565c0; font-size: 18px; font-weight: 900;'>{uptime}s</h3>
                 </div>
                 <div style='text-align: center;'>
-                    <p style='margin: 0; color: #c1d9f0; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;'>Status</p>
-                    <h3 style='margin: 10px 0 0 0; color: #6dd5d2; font-size: 20px; font-weight: 900; text-shadow: 0 2px 8px rgba(109, 213, 210, 0.2);'>ACTIVE</h3>
+                    <p style='margin: 0; color: #0d47a1; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800;'>Status</p>
+                    <h3 style='margin: 10px 0 0 0; color: #2e7d32; font-size: 18px; font-weight: 900;'>ACTIVE</h3>
                 </div>
             </div>
         </div>

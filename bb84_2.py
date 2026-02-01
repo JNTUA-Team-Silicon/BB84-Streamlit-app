@@ -34,7 +34,7 @@ if hasattr(st, 'session_state'):
     if not st.session_state._init_done:
         # Set all defaults
         st.session_state.num_bits = 200
-        st.session_state.threshold = 11.0
+        st.session_state.threshold = 0.11
         st.session_state.eve_prob = 0.5
         st.session_state.noise_prob = 0.0
         st.session_state.eve_attack = "Intercept-Resend"

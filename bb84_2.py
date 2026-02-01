@@ -42,7 +42,7 @@ try:
     if 'eve_prob' not in st.session_state:
         st.session_state.eve_prob = 0.5
     if 'noise_prob' not in st.session_state:
-        st.session_state.noise_prob = 0.0
+        st.session_state.noise_prob = 0.01
     if 'eve_attack' not in st.session_state:
         st.session_state.eve_attack = "Intercept-Resend"
     if 'window' not in st.session_state:
@@ -2020,6 +2020,7 @@ def main():
         st.slider(
             " Channel Noise Probability",
             0.0, 0.1,
+            value=0.01,
             key="noise_prob",
             step=0.005,
             help="Environmental noise causing bit flips. Realistic channels have 1-3% noise"

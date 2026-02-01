@@ -795,19 +795,44 @@ def render_metrics_display():
         metrics_col1, metrics_col2, metrics_col3, metrics_col4, metrics_col5 = st.columns(5)
         
         with metrics_col1:
-            st.markdown(f"<div style='text-align: center;'><h3 style='color: #2563eb; margin: 0;'>{no_eve['sifted_count']}</h3><p style='font-size: 11px; color: #666; margin: 0;'>Sifted Bits</p></div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
+                <h2 style='color: #1e40af; margin: 0; font-size: 24px;'>{no_eve['sifted_count']}</h2>
+                <p style='color: #1e40af; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Sifted Bits</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with metrics_col2:
-            st.markdown(f"<div style='text-align: center;'><h3 style='color: #dc2626; margin: 0;'>{no_eve['errors']}</h3><p style='font-size: 11px; color: #666; margin: 0;'>Errors</p></div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #fca5a5;'>
+                <h2 style='color: #991b1b; margin: 0; font-size: 24px;'>{no_eve['errors']}</h2>
+                <p style='color: #991b1b; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Errors</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with metrics_col3:
-            st.markdown(f"<div style='text-align: center;'><h3 style='color: #059669; margin: 0;'>{no_eve['qber']:.4f}</h3><p style='font-size: 11px; color: #666; margin: 0;'>QBER</p></div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #86efac;'>
+                <h2 style='color: #166534; margin: 0; font-size: 24px;'>{no_eve['qber']:.4f}</h2>
+                <p style='color: #166534; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>QBER</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with metrics_col4:
-            st.markdown(f"<div style='text-align: center;'><h3 style='color: #7c3aed; margin: 0;'>{no_eve['final_key_length']}</h3><p style='font-size: 11px; color: #666; margin: 0;'>Key</p></div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #c4b5fd;'>
+                <h2 style='color: #5b21b6; margin: 0; font-size: 24px;'>{no_eve['final_key_length']}</h2>
+                <p style='color: #5b21b6; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Key</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with metrics_col5:
-            st.markdown(f"<div style='text-align: center;'><h3 style='color: #1e40af; margin: 0;'>{no_eve['final_key_length'] / num_bits:.4f}</h3><p style='font-size: 11px; color: #666; margin: 0;'>Rate</p></div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
+                <h2 style='color: #1e3a8a; margin: 0; font-size: 24px;'>{no_eve['final_key_length'] / num_bits:.4f}</h2>
+                <p style='color: #1e3a8a; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Rate</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         st.plotly_chart(
             qber_gauge(no_eve['qber'], st.session_state.threshold),
@@ -821,19 +846,44 @@ def render_metrics_display():
         metrics_col1, metrics_col2, metrics_col3, metrics_col4, metrics_col5 = st.columns(5)
         
         with metrics_col1:
-            st.markdown(f"<div style='text-align: center;'><h3 style='color: #2563eb; margin: 0;'>{eve['sifted_count']}</h3><p style='font-size: 11px; color: #666; margin: 0;'>Sifted Bits</p></div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
+                <h2 style='color: #1e40af; margin: 0; font-size: 24px;'>{eve['sifted_count']}</h2>
+                <p style='color: #1e40af; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Sifted Bits</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with metrics_col2:
-            st.markdown(f"<div style='text-align: center;'><h3 style='color: #dc2626; margin: 0;'>{eve['errors']}</h3><p style='font-size: 11px; color: #666; margin: 0;'>Errors</p></div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #fca5a5;'>
+                <h2 style='color: #991b1b; margin: 0; font-size: 24px;'>{eve['errors']}</h2>
+                <p style='color: #991b1b; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Errors</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with metrics_col3:
-            st.markdown(f"<div style='text-align: center;'><h3 style='color: #059669; margin: 0;'>{eve['qber']:.4f}</h3><p style='font-size: 11px; color: #666; margin: 0;'>QBER</p></div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #86efac;'>
+                <h2 style='color: #166534; margin: 0; font-size: 24px;'>{eve['qber']:.4f}</h2>
+                <p style='color: #166534; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>QBER</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with metrics_col4:
-            st.markdown(f"<div style='text-align: center;'><h3 style='color: #7c3aed; margin: 0;'>{eve['final_key_length']}</h3><p style='font-size: 11px; color: #666; margin: 0;'>Key</p></div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #c4b5fd;'>
+                <h2 style='color: #5b21b6; margin: 0; font-size: 24px;'>{eve['final_key_length']}</h2>
+                <p style='color: #5b21b6; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Key</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with metrics_col5:
-            st.markdown(f"<div style='text-align: center;'><h3 style='color: #1e40af; margin: 0;'>{eve['final_key_length'] / num_bits:.4f}</h3><p style='font-size: 11px; color: #666; margin: 0;'>Rate</p></div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #93c5fd;'>
+                <h2 style='color: #1e3a8a; margin: 0; font-size: 24px;'>{eve['final_key_length'] / num_bits:.4f}</h2>
+                <p style='color: #1e3a8a; font-size: 12px; margin: 5px 0 0 0; font-weight: 600;'>Rate</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         st.plotly_chart(
             qber_gauge(eve['qber'], st.session_state.threshold),
@@ -1673,7 +1723,7 @@ def main():
         col_logo, col_text, col_session = st.columns([1, 3, 1.5])
         
         with col_logo:
-            st.image("spy.png", width=100, use_column_width=False)
+            st.image("spy.png", width=100)
         
         with col_text:
             st.markdown("""

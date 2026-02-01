@@ -44,6 +44,18 @@ from qiskit.visualization import plot_bloch_multivector
 from qiskit_aer import AerSimulator
 from qiskit import transpile
 
+# Import professional cliparts
+from bb84_cliparts import (
+    get_quantum_bit_svg,
+    get_encryption_lock_svg,
+    get_key_exchange_svg,
+    get_protocol_steps_svg,
+    get_security_status_svg,
+    get_qber_gauge_svg,
+    get_bloch_sphere_svg,
+    get_timeline_comparison_svg
+)
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -531,7 +543,7 @@ def render_final_key_download():
             st.code(key_no_str[:100] + "..." if len(key_no_str) > 100 else key_no_str, language="text")
             st.caption(f"Length: {len(key_no_str)} bits | Status: {no_eve['status']}")
         else:
-            st.markdown("<div style='padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; color: #856404;'><strong>Notice:</strong> No key generated. Increase qubits for better sifting efficiency.</div>", unsafe_allow_html=True)
+            st.info("No key generated. Increase qubits for better sifting efficiency.", icon="📊")
     
     with key_col2:
         st.markdown("**With Eve Scenario Key:**")
@@ -540,7 +552,7 @@ def render_final_key_download():
             st.code(key_eve_str[:100] + "..." if len(key_eve_str) > 100 else key_eve_str, language="text")
             st.caption(f"Length: {len(key_eve_str)} bits | Status: {eve['status']}")
         else:
-            st.markdown("<div style='padding: 10px; background: #f8d7da; border-left: 4px solid #dc3545; color: #721c24;'><strong>Alert:</strong> Eavesdropping detected. No secure key could be generated.</div>", unsafe_allow_html=True)
+            st.warning("Eavesdropping detected. No secure key could be generated.", icon="⚠️")
     
     # Download buttons
     st.markdown("---")
@@ -681,7 +693,7 @@ def render_sifted_key_display():
             })
             st.dataframe(df_no, key="sifted_df_no", use_container_width=True)
         else:
-            st.markdown("*No sifted bits available*")
+            st.info("No sifted bits available")
 
     with col_e:
         st.markdown(f"**With Eve (First {min(sifted_display_size, eve['sifted_count'])} Sifted Bits):**")
@@ -695,7 +707,7 @@ def render_sifted_key_display():
             })
             st.dataframe(df_e, key="sifted_df_e", use_container_width=True)
         else:
-            st.markdown("*No sifted bits available*")
+            st.info("No sifted bits available", icon="ℹ️")
 
     st.plotly_chart(
         decision_line(eve['qber'], st.session_state.threshold, "**Attack Detection Decision Analysis**"),

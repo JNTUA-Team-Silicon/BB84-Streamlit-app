@@ -1754,22 +1754,22 @@ def main():
         
         # TOP LOGOS SECTION
         st.markdown("""
-        <div style='display: flex; align-items: center; justify-content: center; gap: 50px; margin-bottom: 30px; padding: 10px 0;'>
+        <div style='display: flex; align-items: center; justify-content: center; gap: 50px; margin-bottom: 40px; padding: 10px 0;'>
         """, unsafe_allow_html=True)
         
         logo_col1, logo_col2, logo_col3, logo_col4 = st.columns(4)
         
         with logo_col1:
-            st.image("jntua_logo.png", use_container_width=True, width=80)
+            st.image("jntua_logo.png", use_container_width=True, width=60)
         
         with logo_col2:
-            st.markdown("<div style='text-align: center; color: #0d47a1; font-weight: bold; font-size: 14px;'>AQVH</div>", unsafe_allow_html=True)
+            st.markdown("<div style='text-align: center; color: #0d47a1; font-weight: bold; font-size: 12px;'>AQVH</div>", unsafe_allow_html=True)
         
         with logo_col3:
-            st.markdown("<div style='text-align: center; color: #0d47a1; font-weight: bold; font-size: 14px;'>IBM</div>", unsafe_allow_html=True)
+            st.markdown("<div style='text-align: center; color: #0d47a1; font-weight: bold; font-size: 12px;'>IBM</div>", unsafe_allow_html=True)
         
         with logo_col4:
-            st.markdown("<div style='text-align: center; color: #0d47a1; font-weight: bold; font-size: 14px;'>QBRID</div>", unsafe_allow_html=True)
+            st.markdown("<div style='text-align: center; color: #0d47a1; font-weight: bold; font-size: 12px;'>QBRID</div>", unsafe_allow_html=True)
         
         st.markdown("""
         </div>
@@ -1778,20 +1778,20 @@ def main():
         # PREMIUM HERO SECTION - FIRST IMPRESSION
         st.markdown("""
         <div style='background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%); 
-                    padding: 60px 40px; border-radius: 25px; margin: 0; 
+                    padding: 80px 40px; border-radius: 25px; margin: 0; 
                     box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
                     border: 2px solid rgba(0, 150, 255, 0.3);
-                    position: relative; overflow: hidden;'>
+                    position: relative; overflow: hidden;
+                    display: flex; align-items: center; justify-content: center;'>
             <div style='position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
                         background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%); 
                         border-radius: 50%; pointer-events: none;'></div>
-            <div style='display: flex; align-items: center; justify-content: center; gap: 40px; position: relative; z-index: 10;'>
         """, unsafe_allow_html=True)
         
         st.markdown("""
                 <div style='background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%);
-                            padding: 30px 25px; border-radius: 15px; border: 2px solid rgba(100, 181, 246, 0.4);
-                            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); width: 100%;'>
+                            padding: 40px 30px; border-radius: 15px; border: 2px solid rgba(100, 181, 246, 0.4);
+                            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); width: 100%; text-align: center; position: relative; z-index: 10;'>
                     <p style='margin: 0 0 15px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; 
                              letter-spacing: 3px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.3);'>
                         Interactive BB84 QKD Simulator
@@ -1814,7 +1814,6 @@ def main():
         """, unsafe_allow_html=True)
         
         st.markdown("""
-            </div>
         </div>
         </div>
         """, unsafe_allow_html=True)

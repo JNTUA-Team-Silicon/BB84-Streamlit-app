@@ -703,6 +703,30 @@ def render_metrics_display():
     
     st.divider()
     
+    # 1.5 SIFTED KEY RATE (for each scenario)
+    col1, col2 = st.columns(2)
+    with col1:
+        sift_rate_no = (no_eve['sifted_count'] / num_bits * 100) if num_bits > 0 else 0
+        st.markdown(f"""
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>No Eavesdropper</p>
+            <h2 style='color: #1e40af; margin: 0; font-size: 36px; font-weight: 900;'>{sift_rate_no:.1f}%</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Sifted Key Rate</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        sift_rate_eve = (eve['sifted_count'] / num_bits * 100) if num_bits > 0 else 0
+        st.markdown(f"""
+        <div style='text-align: center; padding: 15px 0;'>
+            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>With Eve</p>
+            <h2 style='color: #dc2626; margin: 0; font-size: 36px; font-weight: 900;'>{sift_rate_eve:.1f}%</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Sifted Key Rate</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.divider()
+    
     # 2. ERRORS DETECTED
     col1, col2 = st.columns(2)
     with col1:

@@ -211,12 +211,72 @@ SilentStreamlitHandler.suppress_errors()
 # PAGE CONFIG - MUST BE FIRST STREAMLIT COMMAND
 try:
     st.set_page_config(
-        page_title="JNTUA BB84 Quantum Key Distribution Simulator - QKD Protocol",
-        page_icon="jntua_logo.png",
+        page_title="JNTUA BB84 QKD Simulator",
+        page_icon="🔐",
         layout="wide",
         initial_sidebar_state="expanded",
         initial_unsupported_session_state=None
     )
+    
+    # Add custom CSS for logo header
+    st.markdown("""
+    <style>
+    .logo-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 30px;
+        background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+        border-bottom: 3px solid #4f46e5;
+        margin: 0 -3rem 30px -3rem;
+        width: calc(100% + 6rem);
+    }
+    
+    .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .logo-icon {
+        font-size: 48px;
+        line-height: 1;
+    }
+    
+    .logo-text h1 {
+        margin: 0;
+        color: white;
+        font-size: 28px;
+        font-weight: 800;
+    }
+    
+    .logo-text p {
+        margin: 5px 0 0 0;
+        color: #e0e7ff;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+    }
+    
+    .header-status {
+        color: white;
+        font-size: 12px;
+        padding: 8px 15px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+    }
+    </style>
+    <div class='logo-header'>
+        <div class='logo-section'>
+            <div class='logo-icon'>🔐</div>
+            <div class='logo-text'>
+                <h1>JNTUA BB84 QKD Simulator</h1>
+                <p>Quantum Key Distribution | Cryptography & Security</p>
+            </div>
+        </div>
+        <div class='header-status'>✓ System Ready</div>
+    </div>
+    """, unsafe_allow_html=True)
 except Exception as e:
     # Silently ignore page config errors
     pass
@@ -275,13 +335,15 @@ def inject_custom_css():
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
-            padding: 60px 40px;
-            border-radius: 20px;
+            padding: 50px 60px;
+            border-radius: 0;
             text-align: center;
-            margin-bottom: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin: 0 -3rem 30px -3rem;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             position: relative;
             overflow: hidden;
+            width: calc(100% + 6rem);
         }
         
         .animated-header h1 {
@@ -388,8 +450,53 @@ def inject_custom_css():
         
         /* Light mode backgrounds for content areas */
         body, .main, .block-container {
-            background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%) !important;
+            background: #ffffff !important;
             color: #1a1a1a !important;
+        }
+        
+        /* FULL WIDTH LAYOUT - PROFESSIONAL & CLEAN */
+        * {
+            box-sizing: border-box !important;
+        }
+        
+        html, body {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow-x: hidden !important;
+        }
+        
+        .stApp {
+            max-width: 100vw !important;
+            width: 100vw !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            background: #ffffff !important;
+        }
+        
+        .block-container {
+            max-width: 100% !important;
+            width: 100% !important;
+            padding: 2rem 3rem !important;
+            margin: 0 auto !important;
+            background: #ffffff !important;
+        }
+        
+        [data-testid="stAppViewContainer"] {
+            padding: 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            background: #ffffff !important;
+        }
+        
+        [data-testid="stDecoration"] {
+            display: none !important;
+        }
+        
+        .main {
+            padding: 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
         }
         
         /* Ensure markdown content is readable */

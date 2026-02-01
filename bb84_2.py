@@ -159,12 +159,15 @@ class SilentStreamlitHandler:
 SilentStreamlitHandler.suppress_errors()
 
 # PAGE CONFIG - MUST BE FIRST STREAMLIT COMMAND
-st.set_page_config(
-    page_title="JNTUA BB84 Quantum Key Distribution Simulator - QKD Protocol",
-    page_icon="jntua_logo.png",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+try:
+    st.set_page_config(
+        page_title="JNTUA BB84 Quantum Key Distribution Simulator - QKD Protocol",
+        page_icon="jntua_logo.png",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
+except Exception:
+    pass  # Silently ignore page config errors
 
 # GPU BACKEND DETECTION (MUST BE BEFORE SESSION INIT)
 @st.cache_resource
@@ -348,39 +351,44 @@ from bb84_visualizations import (
 
 def _initialize_session_state():
     """Initialize ALL session state variables - IDEMPOTENT"""
-    # Simulation parameters
-    st.session_state.setdefault("num_bits", config.DEFAULT_QUBITS)
-    st.session_state.setdefault("threshold", config.DEFAULT_QBER_THRESHOLD)
-    st.session_state.setdefault("eve_prob", config.DEFAULT_EVE_PROB)
-    st.session_state.setdefault("eve_attack", "Intercept-Resend")
-    st.session_state.setdefault("noise_prob", config.DEFAULT_NOISE_PROB)
-    st.session_state.setdefault("window", config.DEFAULT_WINDOW_SIZE)
-    st.session_state.setdefault("pdf_max", config.DEFAULT_PDF_MAX_BITS)
-    st.session_state.setdefault("sifted_display_size", config.DEFAULT_SIFTED_DISPLAY_SIZE)
+    try:
+        # Simulation parameters
+        st.session_state.setdefault("num_bits", config.DEFAULT_QUBITS)
+        st.session_state.setdefault("threshold", config.DEFAULT_QBER_THRESHOLD)
+        st.session_state.setdefault("eve_prob", config.DEFAULT_EVE_PROB)
+        st.session_state.setdefault("eve_attack", "Intercept-Resend")
+        st.session_state.setdefault("noise_prob", config.DEFAULT_NOISE_PROB)
+        st.session_state.setdefault("window", config.DEFAULT_WINDOW_SIZE)
+        st.session_state.setdefault("pdf_max", config.DEFAULT_PDF_MAX_BITS)
+        st.session_state.setdefault("sifted_display_size", config.DEFAULT_SIFTED_DISPLAY_SIZE)
 
-    # Simulation control flags
-    st.session_state.setdefault("simulation_run", False)
-    st.session_state.setdefault("simulation_completed", False)
-    st.session_state.setdefault("simulation_in_progress", False)
+        # Simulation control flags
+        st.session_state.setdefault("simulation_run", False)
+        st.session_state.setdefault("simulation_completed", False)
+        st.session_state.setdefault("simulation_in_progress", False)
 
-    # Simulation results (CACHED - reused across reruns)
-    st.session_state.setdefault("sim_results", None)
-    st.session_state.setdefault("alice_bits_stored", None)
-    st.session_state.setdefault("alice_bases_stored", None)
-    st.session_state.setdefault("bob_bases_stored", None)
+        # Simulation results (CACHED - reused across reruns)
+        st.session_state.setdefault("sim_results", None)
+        st.session_state.setdefault("alice_bits_stored", None)
+        st.session_state.setdefault("alice_bases_stored", None)
+        st.session_state.setdefault("bob_bases_stored", None)
 
-    # UI state for fragments
-    st.session_state.setdefault("bloch_single_idx", 0)
-    st.session_state.setdefault("bloch_range_start", 0)
-    st.session_state.setdefault("bloch_range_end", 10)
-    st.session_state.setdefault("timeline_range_no_start", 0)
-    st.session_state.setdefault("timeline_range_no_end", 0)
-    st.session_state.setdefault("timeline_range_eve_start", 0)
-    st.session_state.setdefault("timeline_range_eve_end", 0)
+        # UI state for fragments
+        st.session_state.setdefault("bloch_single_idx", 0)
+        st.session_state.setdefault("bloch_range_start", 0)
+        st.session_state.setdefault("bloch_range_end", 10)
+        st.session_state.setdefault("timeline_range_no_start", 0)
+        st.session_state.setdefault("timeline_range_no_end", 0)
+        st.session_state.setdefault("timeline_range_eve_start", 0)
+        st.session_state.setdefault("timeline_range_eve_end", 0)
 
-    # Cached visualization objects
-    st.session_state.setdefault("cached_figures", {})
-    st.session_state.setdefault("cached_pdf_bytes", None)
+        # Cached visualization objects
+        st.session_state.setdefault("cached_figures", {})
+        st.session_state.setdefault("cached_pdf_bytes", None)
+    except Exception as e:
+        # Silently ignore any session state errors
+        logger.debug(f"Session state error (ignored): {e}")
+        pass
 
 # ADVANCED: Ensure SessionInfo is initialized at module load time
 # This prevents "SessionInfo before it was initialized" errors in edge cases
@@ -1740,6 +1748,9 @@ def main():
 # APP ENTRY POINT
 if __name__ == "__main__":
     try:
+        # Force initialization before anything else
+        _initialize_session_state()
+        # Run the app
         main()
     except Exception as e:
         # Silently catch any uncaught exceptions

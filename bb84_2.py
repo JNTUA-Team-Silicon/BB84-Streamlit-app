@@ -387,7 +387,32 @@ def inject_custom_css():
         h1 { color: #2563eb !important; font-weight: 800 !important; }
         h2 { color: #1e40af !important; margin-top: 30px !important; font-weight: 700 !important; }
         h3 { color: #2563eb !important; font-weight: 600 !important; }
-        .stButton > button { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important; color: white !important; font-weight: 700; text-transform: uppercase; }
+        
+        /* Enhanced Button Styling */
+        .stButton > button { 
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important; 
+            color: #ffffff !important; 
+            font-weight: 800 !important;
+            font-size: 16px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            padding: 12px 24px !important;
+            border: none !important;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4) !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .stButton > button:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #6d28d9 100%) !important;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.6) !important;
+            transform: translateY(-2px) !important;
+        }
+        
+        .stButton > button:active {
+            transform: translateY(0) !important;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4) !important;
+        }
         
         /* Enhanced Tab Styling - Make them look like beautiful boxes */
         @keyframes tabHover {
@@ -1131,12 +1156,15 @@ def render_bloch_visualizations():
                     state_col1, state_col2 = st.columns([1, 2])
                     with state_col1:
                         st.markdown(f"""
-```
-State: {BB84Simulator.state_label(bit, basis)}
-Bit: {bit}
-Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
-```
-""")
+<div style='background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%); padding: 20px; border-radius: 12px; border-left: 4px solid #2563eb; margin: 10px 0;'>
+<p style='margin: 0 0 12px 0; font-weight: 700; color: #1e40af; font-size: 14px;'><strong>Quantum State Details</strong></p>
+<div style='background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;'>
+<p style='margin: 8px 0; color: #1a1a1a;'><strong style='color: #2563eb;'>State:</strong> {BB84Simulator.state_label(bit, basis)}</p>
+<p style='margin: 8px 0; color: #1a1a1a;'><strong style='color: #2563eb;'>Bit Value:</strong> <span style='background: #2563eb; color: white; padding: 2px 8px; border-radius: 4px; font-weight: 700;'>{bit}</span></p>
+<p style='margin: 8px 0; color: #1a1a1a;'><strong style='color: #2563eb;'>Basis:</strong> {'<span style="background: #059669; color: white; padding: 2px 8px; border-radius: 4px; font-weight: 700;">Z (Rectilinear)</span>' if basis == 0 else '<span style="background: #7c3aed; color: white; padding: 2px 8px; border-radius: 4px; font-weight: 700;">X (Diagonal)</span>'}</p>
+</div>
+</div>
+""", unsafe_allow_html=True)
                     with state_col2:
                         try:
                             fig = plotly_bloch_sphere([sv])

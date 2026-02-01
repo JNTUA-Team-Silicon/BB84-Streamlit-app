@@ -66,35 +66,59 @@ logging.getLogger('plotly').setLevel(logging.WARNING)
 # Suppress all warnings
 warnings.filterwarnings('ignore')
 
-# Create a custom stderr handler to suppress specific errors
+# Create a custom stderr/stdout handler to suppress specific errors
 import io
 class ErrorFilter:
-    """Filter stderr to remove specific error messages"""
-    def __init__(self, original_stderr):
-        self.original_stderr = original_stderr
+    """Filter stderr/stdout to remove specific error messages"""
+    def __init__(self, original_stream):
+        self.original_stream = original_stream
         self.buffer = ""
     
     def write(self, text):
-        # Silently drop these error messages
-        if 'Bad message format' not in text and 'SessionInfo before it was initialized' not in text:
-            self.original_stderr.write(text)
+        # Suppress these specific error messages
+        suppress_patterns = [
+            'Bad message format',
+            'SessionInfo before it was initialized',
+            'Tried to use SessionInfo before it was initialized',
+            'SessionInfo',
+            'message format'
+        ]
+        
+        # Check if text contains any suppressed patterns
+        should_suppress = any(pattern in text for pattern in suppress_patterns)
+        
+        if not should_suppress:
+            self.original_stream.write(text)
     
     def flush(self):
-        self.original_stderr.flush()
+        self.original_stream.flush()
     
     def isatty(self):
-        return self.original_stderr.isatty()
+        return self.original_stream.isatty()
+    
+    def readable(self):
+        return hasattr(self.original_stream, 'readable') and self.original_stream.readable()
+    
+    def read(self, n=-1):
+        return self.original_stream.read(n) if hasattr(self.original_stream, 'read') else ""
 
-# Apply stderr filter
+# Apply filters to both stderr and stdout
 sys.stderr = ErrorFilter(sys.stderr)
+sys.stdout = ErrorFilter(sys.stdout)
 
 # Custom exception handler to suppress errors from being displayed
-import sys
 _original_excepthook = sys.excepthook
 def _silent_excepthook(type, value, traceback):
     """Silent exception handler - logs but doesn't display"""
     error_msg = str(value)
-    if 'SessionInfo' not in error_msg and 'Bad message' not in error_msg:
+    suppress_patterns = [
+        'SessionInfo',
+        'Bad message format',
+        'Tried to use SessionInfo before it was initialized',
+        'message format'
+    ]
+    
+    if not any(pattern in error_msg for pattern in suppress_patterns):
         logger.error(f"Uncaught exception: {type.__name__}: {error_msg}")
     # Don't call the original excepthook to prevent error display
 

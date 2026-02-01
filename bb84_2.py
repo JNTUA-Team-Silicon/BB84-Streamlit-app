@@ -13,6 +13,8 @@ os.environ['PYTHONWARNINGS'] = 'ignore'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ['GRPC_VERBOSITY'] = 'error'
 os.environ['GRPC_GO_LOG_VERBOSITY_LEVEL'] = '99'
+os.environ['STREAMLIT_MAGIC_SYMBOLS'] = 'disable'
+os.environ['STREAMLIT_LOGGER_AUTO_RELOAD'] = 'false'
 
 # IMPORTS - ORGANIZED BY CATEGORY (MUST BE FIRST)
 import streamlit as st
@@ -98,6 +100,31 @@ from qiskit import transpile
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Custom logging filter to suppress specific messages
+class SuppressSpecificFilter(logging.Filter):
+    """Filter to suppress specific error messages at logging level"""
+    def __init__(self):
+        super().__init__()
+        self.suppress_patterns = [
+            'Bad message format',
+            'SessionInfo',
+            'setIn',
+            'protobuf',
+            'grpc'
+        ]
+    
+    def filter(self, record):
+        # Return False to suppress, True to allow
+        message = record.getMessage()
+        return not any(pattern in message for pattern in self.suppress_patterns)
+
+# Apply custom filter to all loggers
+suppress_filter = SuppressSpecificFilter()
+logging.getLogger().addFilter(suppress_filter)
+logging.getLogger('streamlit').addFilter(suppress_filter)
+logging.getLogger('streamlit.logger').addFilter(suppress_filter)
+logging.getLogger('streamlit.client').addFilter(suppress_filter)
+
 # Suppress specific Streamlit warnings
 import warnings
 warnings.filterwarnings('ignore', message='.*Bad message format.*')
@@ -129,13 +156,34 @@ class MinimalErrorFilter:
             'Cannot read properties of undefined',
             'reading \'setIn\'',
             'protobuf',
+            'grpc',
+            'websocket',
+            'connection closed',
+            'message too large'
+        ]
+        self.suppress_phrases = [
+            'Bad message format',
+            'SessionInfo',
+            'setIn',
+            'protobuf',
             'grpc'
         ]
     
     def write(self, text):
-        # Only suppress exact error messages, let everything else through
-        if not any(keyword in text for keyword in self.suppress_keywords):
-            self.original_stream.write(text)
+        # Check if any suppress keyword is in the text
+        should_suppress = any(keyword in str(text) for keyword in self.suppress_keywords)
+        
+        # Also check phrases (case-insensitive)
+        if not should_suppress:
+            text_lower = str(text).lower()
+            should_suppress = any(phrase.lower() in text_lower for phrase in self.suppress_phrases)
+        
+        # Only output if not suppressed
+        if not should_suppress and text:
+            try:
+                self.original_stream.write(text)
+            except:
+                pass
         return len(text) if text else 0
     
     def flush(self):

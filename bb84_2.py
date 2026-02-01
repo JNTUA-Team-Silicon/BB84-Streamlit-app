@@ -6,6 +6,9 @@
 
 # SUPPRESS STREAMLIT ERRORS AT THE ENVIRONMENT LEVEL - MUST BE FIRST
 import os
+import sys
+import io
+
 os.environ['STREAMLIT_LOGGER_LEVEL'] = 'error'
 os.environ['STREAMLIT_CLIENT_LOGGER_LEVEL'] = 'error'
 os.environ['STREAMLIT_SERVER_LOGGER_LEVEL'] = 'error'
@@ -15,11 +18,53 @@ os.environ['GRPC_VERBOSITY'] = 'error'
 os.environ['GRPC_GO_LOG_VERBOSITY_LEVEL'] = '99'
 os.environ['STREAMLIT_MAGIC_SYMBOLS'] = 'disable'
 os.environ['STREAMLIT_LOGGER_AUTO_RELOAD'] = 'false'
+os.environ['STREAMLIT_CLIENT_REMOUNT_SCRIPT'] = 'false'
+
+# Redirect stdout and stderr BEFORE importing streamlit
+class SilentStream:
+    def __init__(self, original=None):
+        self.original = original or open(os.devnull, 'w')
+        self.buffer = []
+        
+    def write(self, message):
+        # Suppress specific error messages
+        suppress_msgs = ['Bad message format', 'SessionInfo', 'setIn', 'protobuf', 'grpc', 'Cannot read']
+        if not any(msg in str(message) for msg in suppress_msgs):
+            if self.original:
+                try:
+                    self.original.write(message)
+                except:
+                    pass
+        return len(message) if message else 0
+    
+    def flush(self):
+        if self.original:
+            try:
+                self.original.flush()
+            except:
+                pass
+    
+    def isatty(self):
+        return False
+    
+    def readable(self):
+        return False
+    
+    def __getattr__(self, name):
+        if self.original:
+            return getattr(self.original, name)
+        return None
+
+# Store originals before replacing
+_original_stderr = sys.stderr
+_original_stdout = sys.stdout
+
+# Replace streams early
+sys.stderr = SilentStream(_original_stderr)
+sys.stdout = SilentStream(_original_stdout)
 
 # IMPORTS - ORGANIZED BY CATEGORY (MUST BE FIRST)
 import streamlit as st
-import sys
-import io
 import base64
 import hashlib
 import time
@@ -143,70 +188,6 @@ logging.getLogger('streamlit.client').setLevel(logging.CRITICAL)
 logging.getLogger('altair').setLevel(logging.CRITICAL)
 logging.getLogger('urllib3').setLevel(logging.CRITICAL)
 logging.getLogger('plotly').setLevel(logging.WARNING)
-
-# Lightweight error suppression - only suppress specific errors
-class MinimalErrorFilter:
-    """Minimal filter for only specific errors - avoids performance issues"""
-    def __init__(self, original_stream):
-        self.original_stream = original_stream
-        self.suppress_keywords = [
-            'Bad message format', 
-            'SessionInfo before it was initialized', 
-            'Tried to use SessionInfo',
-            'Cannot read properties of undefined',
-            'reading \'setIn\'',
-            'protobuf',
-            'grpc',
-            'websocket',
-            'connection closed',
-            'message too large'
-        ]
-        self.suppress_phrases = [
-            'Bad message format',
-            'SessionInfo',
-            'setIn',
-            'protobuf',
-            'grpc'
-        ]
-    
-    def write(self, text):
-        # Check if any suppress keyword is in the text
-        should_suppress = any(keyword in str(text) for keyword in self.suppress_keywords)
-        
-        # Also check phrases (case-insensitive)
-        if not should_suppress:
-            text_lower = str(text).lower()
-            should_suppress = any(phrase.lower() in text_lower for phrase in self.suppress_phrases)
-        
-        # Only output if not suppressed
-        if not should_suppress and text:
-            try:
-                self.original_stream.write(text)
-            except:
-                pass
-        return len(text) if text else 0
-    
-    def flush(self):
-        try:
-            self.original_stream.flush()
-        except:
-            pass
-    
-    def isatty(self):
-        try:
-            return self.original_stream.isatty()
-        except:
-            return False
-    
-    def readable(self):
-        return hasattr(self.original_stream, 'readable') and self.original_stream.readable()
-    
-    def read(self, n=-1):
-        return self.original_stream.read(n) if hasattr(self.original_stream, 'read') else ""
-
-# Apply filter to both stderr and stdout
-sys.stderr = MinimalErrorFilter(sys.stderr)
-sys.stdout = MinimalErrorFilter(sys.stdout)
 
 # Simple exception handler - only suppress known StreamInfo errors
 _original_excepthook = sys.excepthook

@@ -62,19 +62,87 @@ def get_quantum_backend():
         logger.info("🟡 GPU Backend Not Available - Using CPU")
         return AerSimulator(), False
 
-# CUSTOM STYLING - PROFESSIONAL THEME WITH VIBRANT COLORS
+# CUSTOM STYLING - PROFESSIONAL THEME WITH VIBRANT COLORS AND ANIMATIONS
 def inject_custom_css():
-    """Inject custom CSS for professional styling"""
+    """Inject custom CSS for professional styling with animations"""
     try:
-        st.write("""
+        st.markdown("""
         <style>
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255,255,255,0.3), 0 4px 20px rgba(0,0,0,0.3); }
+            50% { text-shadow: 0 0 30px rgba(255,255,255,0.6), 0 4px 20px rgba(0,0,0,0.3); }
+        }
+        
+        @keyframes slideInDown {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animated-header {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            padding: 60px 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .animated-header h1 {
+            color: white;
+            font-size: 72px;
+            margin: 0;
+            font-weight: 900;
+            letter-spacing: -2px;
+            animation: slideInDown 0.8s ease-out, titleGlow 3s ease-in-out infinite;
+        }
+        
+        .animated-header .divider {
+            height: 4px;
+            background: rgba(255,255,255,0.8);
+            margin: 20px auto;
+            width: 400px;
+            border-radius: 2px;
+            animation: slideInDown 1s ease-out 0.2s backwards;
+        }
+        
+        .animated-header p {
+            margin: 15px 0 0 0;
+            animation: slideInDown 1s ease-out 0.4s backwards;
+        }
+        
+        .animated-header .subtitle {
+            color: #f0f0f0;
+            font-size: 22px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        .animated-header .subtext {
+            color: #e0e0e0;
+            font-size: 16px;
+            margin-top: 12px;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+        
         h1 { color: #2563eb !important; font-weight: 800 !important; }
         h2 { color: #1e40af !important; margin-top: 30px !important; font-weight: 700 !important; }
         h3 { color: #2563eb !important; font-weight: 600 !important; }
         .stButton > button { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important; color: white !important; font-weight: 700; text-transform: uppercase; }
         </style>
         """, unsafe_allow_html=True)
-    except Exception:
+    except Exception as e:
+        logger.error(f"CSS injection error (silent): {e}")
         pass
 
 # Local Modules - Configuration & Utilities
@@ -138,6 +206,21 @@ def _initialize_session_state():
     # Cached visualization objects
     st.session_state.setdefault("cached_figures", {})
     st.session_state.setdefault("cached_pdf_bytes", None)
+
+# ADVANCED: Ensure SessionInfo is initialized at module load time
+# This prevents "SessionInfo before it was initialized" errors in edge cases
+try:
+    if not hasattr(st, 'session_state'):
+        # Streamlit not yet initialized, defer to first main() call
+        pass
+    else:
+        # Try to initialize session state at module load
+        # This is safe because setdefault won't overwrite if already set
+        _initialize_session_state()
+except Exception:
+    # Silently ignore any initialization errors at module level
+    # The initialization will happen in main() anyway
+    pass
 
 # SIMULATION ENGINE - RUN ONLY ON BUTTON PRESS
 
@@ -246,11 +329,9 @@ def run_bb84_simulation():
 def render_final_key_download():
     """Display and download final keys. UI-only, reads from session_state."""
     if not st.session_state.get("simulation_completed", False):
-        st.info("Run simulation to see final keys.")
         return
     
     if st.session_state.sim_results is None:
-        st.info("Run simulation to see final keys.")
         return
 
     no_eve = st.session_state.sim_results['no_eve']
@@ -267,7 +348,7 @@ def render_final_key_download():
             st.code(key_no_str[:100] + "..." if len(key_no_str) > 100 else key_no_str, language="text")
             st.caption(f"Length: {len(key_no_str)} bits | Status: {no_eve['status']}")
         else:
-            st.warning("No secure key generated.")
+            st.markdown("<div style='padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; color: #856404;'><strong>Notice:</strong> No key generated. Increase qubits for better sifting efficiency.</div>", unsafe_allow_html=True)
     
     with key_col2:
         st.markdown("**With Eve Scenario Key:**")
@@ -276,7 +357,7 @@ def render_final_key_download():
             st.code(key_eve_str[:100] + "..." if len(key_eve_str) > 100 else key_eve_str, language="text")
             st.caption(f"Length: {len(key_eve_str)} bits | Status: {eve['status']}")
         else:
-            st.error("No secure key generated due to eavesdropping.")
+            st.markdown("<div style='padding: 10px; background: #f8d7da; border-left: 4px solid #dc3545; color: #721c24;'><strong>Alert:</strong> Eavesdropping detected. No secure key could be generated.</div>", unsafe_allow_html=True)
     
     # Download buttons
     st.markdown("---")
@@ -309,11 +390,9 @@ def render_metrics_display():
     """Display main metrics. UI-only, reads from session_state."""
     # Fragment safety guard
     if not st.session_state.get("simulation_completed", False):
-        st.info("Run simulation to see metrics.")
         return
     
     if st.session_state.sim_results is None:
-        st.info("Run simulation to see metrics.")
         return
 
     no_eve = st.session_state.sim_results['no_eve']
@@ -355,7 +434,6 @@ def render_metrics_display():
 def render_error_analysis():
     """Display error analysis. UI-only."""
     if not st.session_state.simulation_completed or st.session_state.sim_results is None:
-        st.info("⏳ Run simulation to see error analysis.")
         return
 
     no_eve = st.session_state.sim_results['no_eve']
@@ -368,11 +446,11 @@ def render_error_analysis():
     with det_col1:
         st.markdown("**No Eve:**")
         num_bits = st.session_state.sim_results['parameters']['num_bits']
-        st.info(f"• Efficiency: {no_eve['sifted_count']/num_bits:.1%}\n• Security: {no_eve['status']}\n• Key Rate: {no_eve['final_key_length']/num_bits:.3f}")
+        st.markdown(f"Efficiency: **{no_eve['sifted_count']/num_bits:.1%}** | Security: **{no_eve['status']}** | Key Rate: **{no_eve['final_key_length']/num_bits:.3f}**")
     
     with det_col2:
         st.markdown("**With Eve:**")
-        st.info(f"• Efficiency: {eve['sifted_count']/num_bits:.1%}\n• Security: {eve['status']}\n• Key Rate: {eve['final_key_length']/num_bits:.3f}")
+        st.markdown(f"Efficiency: **{eve['sifted_count']/num_bits:.1%}** | Security: **{eve['status']}** | Key Rate: **{eve['final_key_length']/num_bits:.3f}**")
 
     st.markdown("---")
     st.markdown("### Error Pattern Analysis")
@@ -382,24 +460,23 @@ def render_error_analysis():
         st.markdown("**No Eve Error Distribution:**")
         if no_eve['errors'] > 0:
             error_indices = no_eve['timeline'][no_eve['timeline']['Error']==True]['BitIndex'].tolist()[:10]
-            st.warning(f"Errors found at positions: {error_indices}...")
+            st.markdown(f"Errors found at positions: {error_indices}...")
         else:
-            st.success("No errors detected!")
+            st.markdown("No errors detected in No Eve scenario.")
     
     with err_col2:
         st.markdown("**With Eve Error Distribution:**")
         if eve['errors'] > 0:
             error_indices = eve['timeline'][eve['timeline']['Error']==True]['BitIndex'].tolist()[:10]
-            st.error(f"Errors found at positions: {error_indices}...")
+            st.markdown(f"Errors found at positions: {error_indices}...")
         else:
-            st.info("Unexpected: No errors with Eve present")
+            st.markdown("No unexpected errors detected.")
 
 
 @st.fragment
 def render_sifted_key_display():
     """Display sifted key comparison. UI-only."""
     if not st.session_state.simulation_completed or st.session_state.sim_results is None:
-        st.info("Run simulation to see sifted keys.")
         return
 
     no_eve = st.session_state.sim_results['no_eve']
@@ -421,7 +498,7 @@ def render_sifted_key_display():
             })
             st.dataframe(df_no, key="sifted_df_no", use_container_width=True)
         else:
-            st.info("No sifted bits.")
+            st.markdown("*No sifted bits available*")
 
     with col_e:
         st.markdown(f"**With Eve (First {min(sifted_display_size, eve['sifted_count'])} Sifted Bits):**")
@@ -435,7 +512,7 @@ def render_sifted_key_display():
             })
             st.dataframe(df_e, key="sifted_df_e", use_container_width=True)
         else:
-            st.info("No sifted bits.")
+            st.markdown("*No sifted bits available*")
 
     st.plotly_chart(
         decision_line(eve['qber'], st.session_state.threshold, "**Attack Detection Decision Analysis**"),
@@ -448,7 +525,6 @@ def render_sifted_key_display():
 def render_timeline_analysis():
     """Display timeline visualizations. UI-only."""
     if not st.session_state.simulation_completed or st.session_state.sim_results is None:
-        st.info("Run simulation to see timelines.")
         return
 
     no_eve = st.session_state.sim_results['no_eve']
@@ -477,7 +553,7 @@ def render_timeline_analysis():
                 )
                 st.pyplot(fig_pdf_no, use_container_width=True)
             except Exception as e:
-                st.error(f"Error displaying timeline: {e}")
+                logger.error(f"Error displaying timeline: {e}")
         
         if show_plotly:
             st.markdown("---")
@@ -517,7 +593,7 @@ def render_timeline_analysis():
                 )
                 st.pyplot(fig_pdf_e, use_container_width=True)
             except Exception as e:
-                st.error(f"Error displaying timeline: {e}")
+                logger.error(f"Error displaying timeline: {e}")
         
         if show_plotly:
             st.markdown("---")
@@ -550,12 +626,10 @@ def render_timeline_analysis():
 def render_bloch_visualizations():
     """Display Bloch sphere visualizations. UI-only."""
     if not st.session_state.simulation_completed:
-        st.info("Run simulation to see Bloch spheres.")
         return
 
     if (st.session_state.alice_bits_stored is None or 
         st.session_state.alice_bases_stored is None):
-        st.warning("Quantum states not available.")
         return
 
     st.markdown("### Quantum Visualization")
@@ -593,7 +667,7 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
             try:
                 st.plotly_chart(plotly_bloch_sphere([sv]), use_container_width=True)
             except Exception as e:
-                st.error(f"Error displaying Bloch sphere: {e}")
+                logger.error(f"Error displaying Bloch sphere: {e}")
 
     with qv_tab2:
         st.subheader("Multi-Qubit Range Analysis")
@@ -629,7 +703,7 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
             st.markdown("**3D Bloch Sphere Multi-State View:**")
             st.plotly_chart(plotly_bloch_sphere(states), use_container_width=True)
         except Exception as e:
-            st.error(f"Error displaying multi-qubit Bloch sphere: {e}")
+            logger.error(f"Error displaying multi-qubit Bloch sphere: {e}")
 
     with qv_tab3:
         st.subheader("Polarization Analysis")
@@ -643,7 +717,7 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
                 sv1 = Statevector.from_label('1')
                 st.plotly_chart(plotly_bloch_sphere([sv0, sv1]), use_container_width=True)
             except Exception as e:
-                st.error(f"Error: {e}")
+                logger.error(f"Error displaying Z-basis: {e}")
             
             bases_array = st.session_state.alice_bases_stored
             bits_array = st.session_state.alice_bits_stored
@@ -660,7 +734,7 @@ Basis: {'Z (Rectilinear)' if basis == 0 else 'X (Diagonal)'}
                 sv_minus = Statevector([1/np.sqrt(2), -1/np.sqrt(2)])
                 st.plotly_chart(plotly_bloch_sphere([sv_plus, sv_minus]), use_container_width=True)
             except Exception as e:
-                st.error(f"Error: {e}")
+                logger.error(f"Error displaying polarization: {e}")
             
             x_bits = [i for i, b in enumerate(bases_array) if b == 1]
             x_plus = sum(1 for i in x_bits if bits_array[i] == 0)
@@ -703,7 +777,6 @@ def generate_pdf_report_bytes(
 def render_report_downloads():
     """Display report generation and downloads. UI-only."""
     if not st.session_state.simulation_completed or st.session_state.sim_results is None:
-        st.info("⏳ Run simulation to generate reports.")
         return
 
     st.markdown("### Professional Report Generation")
@@ -864,15 +937,28 @@ def main():
     """Main Streamlit application entry point"""
     
     # CRITICAL: INITIALIZE SESSION STATE FIRST
+    # CRITICAL: INITIALIZE SESSION STATE FIRST
     # This must be the absolute first operation to prevent SessionInfo errors
     _initialize_session_state()
     
-    # HEADER SECTION - PURE STREAMLIT COMPONENTS (NO HTML)
-    st.title("BB84 Quantum Key Distribution Simulator")
-    st.markdown("Interactive Quantum Cryptography Learning & Research Platform", help=None)
-    
-    # INJECT CSS AFTER HEADER
+    # INJECT CSS AFTER HEADER (BEFORE ANY STREAMLIT COMPONENTS)
     inject_custom_css()
+    
+    # ANIMATED COLORFUL HEADER - BEAUTIFUL AND VIBRANT
+    try:
+        st.markdown("""
+        <div class='animated-header'>
+            <h1>BB84 Quantum Key Distribution Simulator</h1>
+            <div class='divider'></div>
+            <p class='subtitle'>Interactive Quantum Cryptography Platform</p>
+            <p class='subtext'>JNTUA | Department of Electronics and Communication Engineering</p>
+        </div>
+        """, unsafe_allow_html=True)
+    except Exception as e:
+        # Fallback to simple heading if HTML rendering fails
+        logger.error(f"Animated header error (silent): {e}")
+        st.markdown("# BB84 Quantum Key Distribution Simulator")
+        st.markdown("*Interactive Quantum Cryptography Platform*")
     
     # Platform features card - PURE STREAMLIT
     st.subheader("Platform Capabilities")
@@ -886,18 +972,19 @@ def main():
         st.markdown("**Reports:** PDF export with full analysis")
         st.markdown("**Education:** Interactive learning platform")
     
-    # System status badge - PURE STREAMLIT
-    st.success("System Ready - Configure parameters and click Run BB84 Simulation to begin")
-    
-    # Display GPU Backend Status - PURE STREAMLIT
-    try:
-        backend, gpu_available = get_quantum_backend()
-        if gpu_available:
-            st.success("GPU Acceleration Enabled - Using CUDA GPU for quantum simulations")
-        else:
-            st.warning("CPU Mode - GPU not available, using CPU for simulations")
-    except Exception:
-        pass
+    # Status indicator (without pop-up) - using metric instead
+    col_status1, col_status2 = st.columns(2)
+    with col_status1:
+        st.metric("System Status", "Ready", "All Systems Operational")
+    with col_status2:
+        try:
+            backend, gpu_available = get_quantum_backend()
+            if gpu_available:
+                st.metric("Backend", "GPU", "CUDA Acceleration Active")
+            else:
+                st.metric("Backend", "CPU", "Standard Processing")
+        except Exception:
+            st.metric("Backend", "CPU", "Standard Processing")
     
     # NOTE: DO NOT CALL render_meta_tags_safely() - it causes "Bad message format" errors
     # Minimal meta tag injection is redundant and triggers frontend message format issues
@@ -924,14 +1011,25 @@ def main():
     5. **Error checking** - Estimate QBER from a subset of sifted key
     6. **Privacy amplification** - Distill secure key from sifted key using hashing
 
-    ### Security: Any eavesdropping introduces detectable errors due to quantum no-cloning theorem.
+    ### Security: 
+    Any eavesdropping introduces detectable errors due to quantum no-cloning theorem.
+    
+    ### Detailed Protocol Flow:
+    - **Step 1:** Alice randomly generates N bits (0s and 1s) and randomly chooses a basis (Rectilinear or Diagonal) for each bit
+    - **Step 2:** Alice encodes each bit into a qubit using her chosen basis and sends the qubits to Bob through a quantum channel
+    - **Step 3:** Bob independently chooses a random basis for each qubit and measures it, recording his results
+    - **Step 4:** After all qubits are transmitted, Alice publicly announces which bases she used (but NOT the bits)
+    - **Step 5:** Bob publicly announces which bases he used (but NOT his measurement results)
+    - **Step 6:** Both parties compare their bases; they keep only the bits where their bases matched (approximately 50% of the qubits)
+    - **Step 7:** A random subset of the sifted key is publicly compared to estimate the Quantum Bit Error Rate (QBER)
+    - **Step 8:** If QBER exceeds the threshold, eavesdropping is detected and the protocol is aborted
+    - **Step 9:** The remaining sifted key is processed through privacy amplification (hashing) to produce the final secure cryptographic key
     """)
 
     # SIMULATION PARAMETERS SECTION
     st.header("Simulation Configuration")
     
-    # Enhanced parameter description - PURE STREAMLIT
-    st.info("Instructions: Adjust the parameters below to customize your BB84 simulation. Each parameter affects how the quantum key distribution protocol behaves and how secure the shared key is.")
+    st.markdown("**Configuration Instructions:** Adjust the parameters below to customize your BB84 simulation.")
 
     param_col1, param_col2, param_col3 = st.columns(3)
     
@@ -1000,7 +1098,7 @@ def main():
         """
         st.markdown(params_summary)
     except Exception:
-        st.info("Configuration parameters loaded successfully")
+        pass  # Configuration loaded silently
 
     # SIMULATION EXECUTION
     st.markdown("---")
@@ -1012,7 +1110,7 @@ def main():
     # RESULTS DISPLAY - Only show if simulation completed
     if st.session_state.simulation_completed:
         st.markdown("---")
-        st.success(" Simulation completed! Results below:")
+        st.markdown("### Simulation Results")
 
         # Use fragments for UI rendering (not computation)
         render_metrics_display()
@@ -1179,7 +1277,7 @@ def main():
             """)
 
     else:
-        st.info("← Configure parameters above and click **Run BB84 Simulation** to see results.")
+        st.markdown("Configure parameters above and click **Run BB84 Simulation** to see results.")
 
     # FOOTER SECTION
     render_footer()

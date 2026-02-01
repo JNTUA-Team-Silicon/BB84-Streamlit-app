@@ -266,11 +266,11 @@ try:
         overflow-x: hidden !important;
     }
     
-    /* RESPONSIVE CENTERED LAYOUT */
-    section[data-testid="stAppViewContainer"] {
-        max-width: 95% !important;
-        width: 95vw !important;
-        margin: 0 auto !important;
+    /* STREAMLIT CLOUD OPTIMIZED LAYOUT */
+    [data-testid="stAppViewContainer"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
         padding: 0 !important;
     }
     
@@ -281,19 +281,31 @@ try:
         padding: 0 !important;
     }
     
-    [data-testid="stAppViewContainer"] > section {
-        padding: 0 !important;
+    section[data-testid="stAppViewContainer"] {
         width: 100% !important;
+        max-width: 100% !important;
         margin: 0 !important;
-        max-width: unset !important;
+        padding: 0 !important;
     }
     
     .block-container {
         max-width: 100% !important;
         width: 100% !important;
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-        margin: 0 !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+        margin: 0 auto !important;
+    }
+    
+    /* SIDEBAR SIZING FOR STREAMLIT CLOUD */
+    [data-testid="stSidebar"] {
+        width: 250px !important;
+        max-width: 250px !important;
+    }
+    
+    [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+        width: 100% !important;
     }
     
     /* SIDEBAR SIZING */

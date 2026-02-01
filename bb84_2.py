@@ -1749,25 +1749,17 @@ def main():
         # PREMIUM HERO SECTION - FIRST IMPRESSION WITH LOGO AND TEXT
         st.markdown("""
         <div style='background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #0052cc 100%); 
-                    padding: 50px 40px; border-radius: 25px; margin: 0 0 40px 0; 
+                    padding: 80px 40px; border-radius: 25px; margin: 0 0 40px 0; 
                     box-shadow: 0 20px 60px rgba(0, 82, 204, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
                     border: 2px solid rgba(0, 150, 255, 0.3);
                     position: relative; overflow: hidden;
-                    display: flex; align-items: flex-start; justify-content: flex-start; gap: 40px;'>
+                    display: flex; align-items: center; justify-content: center;'>
             <div style='position: absolute; top: -40%; right: -5%; width: 500px; height: 500px; 
                         background: radial-gradient(circle, rgba(0, 150, 255, 0.1) 0%, transparent 70%); 
                         border-radius: 50%; pointer-events: none;'></div>
             
-            <!-- Left Side: Logo Column -->
-            <div style='flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; min-width: 120px;'>
-                <img src="jntua_logo.png" style='width: 80px; height: auto; margin-bottom: 10px;' alt='JNTUA Logo'>
-                <div style='text-align: center; color: #64b5f6; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; line-height: 1.4;'>
-                    JNTUA CEA<br>Department of ECE
-                </div>
-            </div>
-            
-            <!-- Right Side: AQVH Content Column -->
-            <div style='flex: 1; padding: 0; position: relative; z-index: 10;'>
+            <!-- AQVH Content Column - Centered -->
+            <div style='flex: 1; padding: 0; position: relative; z-index: 10; text-align: center;'>
                 <p style='margin: 0 0 10px 0; color: #64b5f6; font-size: 14px; text-transform: uppercase; 
                          letter-spacing: 3px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.3);'>
                     Interactive BB84 QKD Simulator

@@ -29,6 +29,8 @@ import logging
 
 # CRITICAL: Initialize session state BEFORE importing other modules
 # This prevents "Tried to use SessionInfo before it was initialized" errors
+# CRITICAL: Initialize session state BEFORE importing other modules
+# This prevents "Tried to use SessionInfo before it was initialized" errors
 if hasattr(st, 'session_state'):
     st.session_state.setdefault('_init_done', False)
     if not st.session_state._init_done:
@@ -45,7 +47,16 @@ if hasattr(st, 'session_state'):
         st.session_state.simulation_completed = False
         st.session_state.simulation_in_progress = False
         st.session_state.sim_results = None
+        st.session_state.alice_bits_stored = None
+        st.session_state.alice_bases_stored = None
+        st.session_state.bob_bases_stored = None
+        st.session_state.bob_results_no_eve = None
+        st.session_state.eve_results = None
+        st.session_state.bloch_single_idx = 0
         st.session_state._init_done = True
+else:
+    # Fallback if session_state not available
+    pass
 
 # Optional: ReportLab for PDF generation (graceful fallback)
 REPORTLAB_AVAILABLE = False

@@ -804,6 +804,29 @@ def render_metrics_display():
         - Check **QBER** - this shows if Eve was detected through errors
         """)
     
+    # CRUCIAL: Explain Detection vs. Bits Lost
+    if (no_eve['sifted_count'] - eve['sifted_count']) == 0 and eve['qber'] > st.session_state.threshold:
+        st.warning(f"""
+        **KEY INSIGHT: Eve Can Be Detected Even With 0 Bits Lost!** 🔍
+        
+        **Why?** Eve is detected through **QBER (error rate)**, NOT through lost bits count.
+        
+        **Difference:**
+        - **Sifted Bits Lost** = Difference in COUNT (200 vs 200 = 0)
+        - **QBER** = Error RATE in sifted bits (% of errors)
+        
+        **What Happened:**
+        - Same number of sifted bits from both scenarios
+        - BUT the "With Eve" sifted bits contain MORE ERRORS
+        - Eve measured in wrong basis → introduced bit flips
+        - Your QBER = {eve['qber']:.4f} > Threshold {st.session_state.threshold:.2f} = **EVE DETECTED** 🚨
+        
+        **Example:**
+        - No Eve: 100 correct sifted bits (0% errors)
+        - With Eve: 100 sifted bits BUT 10 are wrong (10% error rate - QBER detected!)
+        """)
+
+    
     # 2. ERRORS DETECTED
     col1, col2 = st.columns(2)
     with col1:

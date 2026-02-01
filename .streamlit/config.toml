@@ -1,6 +1,7 @@
 [client]
 showErrorDetails = false
 toolbarMode = "minimal"
+theme = "light"
 
 [server]
 maxUploadSize = 200
@@ -13,3 +14,10 @@ gatherUsageStats = false
 [logger]
 level = "error"
 message.activationTime = "never"
+
+[theme]
+primaryColor = "#2563eb"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f8f9fa"
+textColor = "#1a1a1a"
+font = "sans serif"

@@ -214,11 +214,28 @@ try:
         page_title="JNTUA BB84 Quantum Key Distribution Simulator - QKD Protocol",
         page_icon="jntua_logo.png",
         layout="wide",
-        initial_sidebar_state="expanded"
+        initial_sidebar_state="expanded",
+        initial_unsupported_session_state=None
     )
 except Exception as e:
     # Silently ignore page config errors
     pass
+
+# Force light theme via CSS - ensures light mode even if user has dark theme set globally
+def force_light_theme():
+    """Force light theme regardless of user's Streamlit theme settings"""
+    st.markdown("""
+    <script>
+    const theme = 'light';
+    const root = document.documentElement;
+    root.setAttribute('data-theme', theme);
+    // Set CSS variables for light theme
+    root.style.setProperty('--primary-color', '#2563eb');
+    root.style.setProperty('--text-color', '#1a1a1a');
+    root.style.setProperty('--background-color', '#ffffff');
+    root.style.setProperty('--secondary-background-color', '#f8f9fa');
+    </script>
+    """, unsafe_allow_html=True)
 
 # GPU BACKEND DETECTION (MUST BE BEFORE SESSION INIT)
 @st.cache_resource
@@ -1559,6 +1576,13 @@ def main():
     except Exception as e:
         logger.error(f"Session initialization error: {e}")
         # Continue anyway - setdefault is idempotent
+        pass
+    
+    # FORCE LIGHT THEME FOR ALL USERS
+    try:
+        force_light_theme()
+    except Exception as e:
+        logger.error(f"Light theme enforcement error: {e}")
         pass
     
     # INJECT CSS AFTER HEADER (BEFORE ANY STREAMLIT COMPONENTS)

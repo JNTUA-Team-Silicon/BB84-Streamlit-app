@@ -8,6 +8,8 @@
 import os
 os.environ['STREAMLIT_LOGGER_LEVEL'] = 'error'
 os.environ['STREAMLIT_CLIENT_LOGGER_LEVEL'] = 'error'
+os.environ['STREAMLIT_SERVER_LOGGER_LEVEL'] = 'error'
+os.environ['PYTHONWARNINGS'] = 'ignore'
 
 # IMPORTS - ORGANIZED BY CATEGORY (MUST BE FIRST)
 
@@ -24,6 +26,26 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from matplotlib.patches import Patch
 import logging
+
+# CRITICAL: Initialize session state BEFORE importing other modules
+# This prevents "Tried to use SessionInfo before it was initialized" errors
+if hasattr(st, 'session_state'):
+    st.session_state.setdefault('_init_done', False)
+    if not st.session_state._init_done:
+        # Set all defaults
+        st.session_state.num_bits = 256
+        st.session_state.threshold = 11.0
+        st.session_state.eve_prob = 0.5
+        st.session_state.noise_prob = 0.0
+        st.session_state.eve_attack = "Intercept-Resend"
+        st.session_state.window = 100
+        st.session_state.pdf_max = 100
+        st.session_state.sifted_display_size = 50
+        st.session_state.simulation_run = False
+        st.session_state.simulation_completed = False
+        st.session_state.simulation_in_progress = False
+        st.session_state.sim_results = None
+        st.session_state._init_done = True
 
 # Optional: ReportLab for PDF generation (graceful fallback)
 REPORTLAB_AVAILABLE = False
@@ -104,21 +126,33 @@ class ErrorFilter:
             'proto',
             'delta message',
             'DELTA_MESSAGE',
-            'DeltaMessage'
+            'DeltaMessage',
+            'error',
+            'Error',
+            'ERROR',
+            'warning',
+            'Warning'
         ]
         
         # Check if text contains any suppressed patterns (case-insensitive)
         text_lower = text.lower()
         should_suppress = any(pattern.lower() in text_lower for pattern in suppress_patterns)
         
-        if not should_suppress and text.strip():  # Also skip empty lines
+        # Only write non-empty, non-suppressed messages
+        if not should_suppress and text.strip() and 'traceback' not in text_lower:
             self.original_stream.write(text)
     
     def flush(self):
-        self.original_stream.flush()
+        try:
+            self.original_stream.flush()
+        except:
+            pass
     
     def isatty(self):
-        return self.original_stream.isatty()
+        try:
+            return self.original_stream.isatty()
+        except:
+            return False
     
     def readable(self):
         return hasattr(self.original_stream, 'readable') and self.original_stream.readable()
@@ -134,16 +168,20 @@ sys.stdout = ErrorFilter(sys.stdout)
 _original_excepthook = sys.excepthook
 def _silent_excepthook(type, value, traceback):
     """Silent exception handler - logs but doesn't display"""
-    error_msg = str(value)
-    suppress_patterns = [
-        'SessionInfo',
-        'Bad message format',
-        'Tried to use SessionInfo before it was initialized',
-        'message format'
-    ]
-    
-    if not any(pattern in error_msg for pattern in suppress_patterns):
-        logger.error(f"Uncaught exception: {type.__name__}: {error_msg}")
+    try:
+        error_msg = str(value).lower()
+        suppress_patterns = [
+            'sessioninfo',
+            'bad message',
+            'tried to use',
+            'message format',
+            'error'
+        ]
+        
+        if not any(pattern in error_msg for pattern in suppress_patterns):
+            logger.error(f"Uncaught exception: {type.__name__}: {str(value)}")
+    except:
+        pass
     # Don't call the original excepthook to prevent error display
 
 sys.excepthook = _silent_excepthook
@@ -178,8 +216,9 @@ try:
         layout="wide",
         initial_sidebar_state="expanded"
     )
-except Exception:
-    pass  # Silently ignore page config errors
+except Exception as e:
+    # Silently ignore page config errors
+    pass
 
 # GPU BACKEND DETECTION (MUST BE BEFORE SESSION INIT)
 @st.cache_resource

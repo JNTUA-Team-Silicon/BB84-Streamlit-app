@@ -46,27 +46,55 @@ logger = logging.getLogger(__name__)
 import warnings
 warnings.filterwarnings('ignore', message='.*Bad message format.*')
 warnings.filterwarnings('ignore', message='.*SessionInfo before it was initialized.*')
+warnings.filterwarnings('ignore', message='.*SessionInfo.*')
+warnings.filterwarnings('ignore', message='.*message format.*')
 warnings.filterwarnings('ignore', message='.*Uninitialized.*')
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 warnings.filterwarnings('ignore', category=FutureWarning)
+warnings.filterwarnings('ignore', category=RuntimeWarning)
 
 # Suppress Streamlit internal logger noise
 logging.getLogger('streamlit').setLevel(logging.CRITICAL)
 logging.getLogger('streamlit.logger').setLevel(logging.CRITICAL)
 logging.getLogger('streamlit.web.server.websocket_headers').setLevel(logging.CRITICAL)
+logging.getLogger('streamlit.client').setLevel(logging.CRITICAL)
 logging.getLogger('altair').setLevel(logging.CRITICAL)
 logging.getLogger('urllib3').setLevel(logging.CRITICAL)
 logging.getLogger('plotly').setLevel(logging.WARNING)
 
-# Suppress all warnings except critical
+# Suppress all warnings
 warnings.filterwarnings('ignore')
+
+# Create a custom stderr handler to suppress specific errors
+import io
+class ErrorFilter:
+    """Filter stderr to remove specific error messages"""
+    def __init__(self, original_stderr):
+        self.original_stderr = original_stderr
+        self.buffer = ""
+    
+    def write(self, text):
+        # Silently drop these error messages
+        if 'Bad message format' not in text and 'SessionInfo before it was initialized' not in text:
+            self.original_stderr.write(text)
+    
+    def flush(self):
+        self.original_stderr.flush()
+    
+    def isatty(self):
+        return self.original_stderr.isatty()
+
+# Apply stderr filter
+sys.stderr = ErrorFilter(sys.stderr)
 
 # Custom exception handler to suppress errors from being displayed
 import sys
 _original_excepthook = sys.excepthook
 def _silent_excepthook(type, value, traceback):
     """Silent exception handler - logs but doesn't display"""
-    logger.error(f"Uncaught exception: {type.__name__}: {value}", exc_info=(type, value, traceback))
+    error_msg = str(value)
+    if 'SessionInfo' not in error_msg and 'Bad message' not in error_msg:
+        logger.error(f"Uncaught exception: {type.__name__}: {error_msg}")
     # Don't call the original excepthook to prevent error display
 
 sys.excepthook = _silent_excepthook

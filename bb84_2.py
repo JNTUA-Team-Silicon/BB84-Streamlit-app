@@ -222,8 +222,8 @@ SilentStreamlitHandler.suppress_errors()
 # PAGE CONFIG - MUST BE FIRST STREAMLIT COMMAND
 try:
     st.set_page_config(
-        page_title="JNTUA BB84 QKD Simulator",
-        page_icon="🔐",
+        page_title=" JNTUA BB84 QKD Simulator",
+        page_icon="jntua_logo.png",
         layout="wide",
         initial_sidebar_state="expanded",
         initial_unsupported_session_state=None

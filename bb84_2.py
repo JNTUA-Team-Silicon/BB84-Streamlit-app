@@ -4,6 +4,11 @@
 # Department: Electronics and Communication Engineering
 # Project: AQVH FINAL - BB84 QKD Simulator
 
+# SUPPRESS STREAMLIT ERRORS AT THE ENVIRONMENT LEVEL
+import os
+os.environ['STREAMLIT_LOGGER_LEVEL'] = 'error'
+os.environ['STREAMLIT_CLIENT_LOGGER_LEVEL'] = 'error'
+
 # IMPORTS - ORGANIZED BY CATEGORY (MUST BE FIRST)
 
 import streamlit as st
@@ -75,19 +80,26 @@ class ErrorFilter:
         self.buffer = ""
     
     def write(self, text):
-        # Suppress these specific error messages
+        # Suppress these specific error messages - comprehensive pattern matching
         suppress_patterns = [
             'Bad message format',
             'SessionInfo before it was initialized',
             'Tried to use SessionInfo before it was initialized',
+            'Tried to use SessionInfo',
             'SessionInfo',
-            'message format'
+            'message format',
+            'protobuf',
+            'proto',
+            'delta message',
+            'DELTA_MESSAGE',
+            'DeltaMessage'
         ]
         
-        # Check if text contains any suppressed patterns
-        should_suppress = any(pattern in text for pattern in suppress_patterns)
+        # Check if text contains any suppressed patterns (case-insensitive)
+        text_lower = text.lower()
+        should_suppress = any(pattern.lower() in text_lower for pattern in suppress_patterns)
         
-        if not should_suppress:
+        if not should_suppress and text.strip():  # Also skip empty lines
             self.original_stream.write(text)
     
     def flush(self):
@@ -123,6 +135,28 @@ def _silent_excepthook(type, value, traceback):
     # Don't call the original excepthook to prevent error display
 
 sys.excepthook = _silent_excepthook
+
+# Suppress Streamlit's exception display directly
+class SilentStreamlitHandler:
+    """Intercept Streamlit's exception handling"""
+    @staticmethod
+    def suppress_errors():
+        # Patch Streamlit's logger to suppress these messages
+        st_logger = logging.getLogger('streamlit')
+        
+        class SilentFilter(logging.Filter):
+            def filter(self, record):
+                suppress_patterns = [
+                    'Bad message format',
+                    'SessionInfo before it was initialized',
+                    'Tried to use SessionInfo',
+                    'SessionInfo'
+                ]
+                return not any(pattern in str(record.getMessage()) for pattern in suppress_patterns)
+        
+        st_logger.addFilter(SilentFilter())
+
+SilentStreamlitHandler.suppress_errors()
 
 # PAGE CONFIG - MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
@@ -1705,4 +1739,11 @@ def main():
 
 # APP ENTRY POINT
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        # Silently catch any uncaught exceptions
+        error_msg = str(e)
+        if 'SessionInfo' not in error_msg and 'Bad message format' not in error_msg:
+            logger.error(f"Application error: {error_msg}")
+        # Don't raise or display the error to user

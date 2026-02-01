@@ -8,7 +8,6 @@ reportlab>=3.6.0
 # Quantum Computing Framework
 qiskit==1.0.2
 qiskit-aer==0.13.3
-qiskit-visualization>=0.4.0
 
 # Polarization & Optical Analysis
 scipy>=1.13.0

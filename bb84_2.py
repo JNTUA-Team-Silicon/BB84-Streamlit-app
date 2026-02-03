@@ -19,6 +19,12 @@ os.environ['GRPC_GO_LOG_VERBOSITY_LEVEL'] = '99'
 os.environ['STREAMLIT_MAGIC_SYMBOLS'] = 'disable'
 os.environ['STREAMLIT_LOGGER_AUTO_RELOAD'] = 'false'
 os.environ['STREAMLIT_CLIENT_REMOUNT_SCRIPT'] = 'false'
+os.environ['STREAMLIT_LOGGER_LEVEL'] = 'critical'
+os.environ['STREAMLIT_SERVER_ENABLE_CORS'] = 'false'
+os.environ['STREAMLIT_THEME_BASE'] = 'light'
+# Suppress all known problematic messages
+os.environ['TRANSFORMERS_VERBOSITY'] = 'error'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # Redirect stdout and stderr BEFORE importing streamlit
 class SilentStream:
@@ -228,32 +234,64 @@ def inject_responsive_css():
     """Inject clean CSS for responsive layout - Streamlit Cloud compatible"""
     st.markdown("""
     <script>
-    // Suppress specific JavaScript console errors without affecting functionality
+    // Aggressive suppression of problematic messages at client-side
     (function() {
         const originalError = console.error;
         const originalWarn = console.warn;
+        const originalLog = console.log;
+        
         const suppressPatterns = [
             'Bad message format',
             'SessionInfo',
             'setIn',
             'protobuf',
             'grpc',
-            'Cannot read properties of undefined'
+            'Cannot read properties of undefined',
+            'failed to fetch',
+            'Tried to use',
+            'initialized'
         ];
         
+        // Suppress console.error
         console.error = function(...args) {
-            const message = args.join(' ');
-            if (!suppressPatterns.some(pattern => message.includes(pattern))) {
+            const message = args.join(' ').toLowerCase();
+            if (!suppressPatterns.some(pattern => message.includes(pattern.toLowerCase()))) {
                 originalError.apply(console, args);
             }
         };
         
+        // Suppress console.warn
         console.warn = function(...args) {
-            const message = args.join(' ');
-            if (!suppressPatterns.some(pattern => message.includes(pattern))) {
+            const message = args.join(' ').toLowerCase();
+            if (!suppressPatterns.some(pattern => message.includes(pattern.toLowerCase()))) {
                 originalWarn.apply(console, args);
             }
         };
+        
+        // Suppress console.log for debug messages
+        console.log = function(...args) {
+            const message = args.join(' ').toLowerCase();
+            if (!suppressPatterns.some(pattern => message.includes(pattern.toLowerCase()))) {
+                originalLog.apply(console, args);
+            }
+        };
+        
+        // Suppress window onerror handler
+        window.onerror = function(msg, url, lineNo, colNo, error) {
+            const message = (msg + '').toLowerCase();
+            if (suppressPatterns.some(pattern => message.includes(pattern.toLowerCase()))) {
+                return true; // Return true to prevent default error handling
+            }
+            return false;
+        };
+        
+        // Suppress unhandled promise rejections
+        window.addEventListener('unhandledrejection', function(event) {
+            const message = (event.reason + '').toLowerCase();
+            if (suppressPatterns.some(pattern => message.includes(pattern.toLowerCase()))) {
+                event.preventDefault(); // Prevent from showing in console
+            }
+        });
     })();
     </script>
     <style>

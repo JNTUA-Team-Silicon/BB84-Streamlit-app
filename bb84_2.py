@@ -63,6 +63,10 @@ _original_stdout = sys.stdout
 sys.stderr = SilentStream(_original_stderr)
 sys.stdout = SilentStream(_original_stdout)
 
+# Additional suppression for problematic libraries
+os.environ['STREAMLIT_SUPPRESS_HELLO'] = 'true'
+os.environ['STREAMLIT_LOGGER_LEVEL'] = 'critical'
+
 # IMPORTS - ORGANIZED BY CATEGORY (MUST BE FIRST)
 import streamlit as st
 import base64
@@ -80,6 +84,11 @@ import warnings
 # Suppress all warnings immediately
 warnings.filterwarnings('ignore')
 logging.getLogger().setLevel(logging.CRITICAL)
+
+# Suppress protobuf and grpc warnings
+logging.getLogger('google.protobuf').setLevel(logging.ERROR)
+logging.getLogger('grpc').setLevel(logging.ERROR)
+logging.getLogger('urllib3').setLevel(logging.ERROR)
 
 # CRITICAL: Initialize session state BEFORE anything else
 # This MUST happen before any st.* calls to prevent SessionInfo errors

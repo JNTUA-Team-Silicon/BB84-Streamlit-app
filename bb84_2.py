@@ -856,36 +856,26 @@ def render_metrics_display():
     st.divider()
     
     # 1.6 EVE'S IMPACT ON SIFTED KEY RATE
-    sift_rate_no = (no_eve['sifted_count'] / num_bits * 100) if num_bits > 0 else 0
-    sift_rate_eve = (eve['sifted_count'] / num_bits * 100) if num_bits > 0 else 0
-    eve_impact = sift_rate_no - sift_rate_eve
+    # Calculate actual bit loss due to Eve (additional errors caused by Eve)
+    bits_lost_to_eve = max(0, eve['errors'] - no_eve['errors'])
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     with col1:
         st.markdown(f"""
         <div style='text-align: center; padding: 15px 0;'>
             <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>Impact Metric</p>
-            <h2 style='color: #f59e0b; margin: 0; font-size: 36px; font-weight: 900;'>{eve_impact:.1f}%</h2>
-            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Eve's Impact on Sift Rate</p>
+            <h2 style='color: #dc2626; margin: 0; font-size: 36px; font-weight: 900;'>{bits_lost_to_eve}</h2>
+            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Loss of Sifted Bits Due to Eve</p>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown(f"""
-        <div style='text-align: center; padding: 15px 0;'>
-            <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>Bits Lost</p>
-            <h2 style='color: #dc2626; margin: 0; font-size: 36px; font-weight: 900;'>{no_eve['sifted_count'] - eve['sifted_count']}</h2>
-            <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>Sifted Bits Lost to Eve</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
         detection_status = "🔴 DETECTED" if eve['qber'] > st.session_state.threshold else "🟢 UNDETECTED"
         status_color = "#dc2626" if eve['qber'] > st.session_state.threshold else "#16a34a"
         st.markdown(f"""
         <div style='text-align: center; padding: 15px 0;'>
             <p style='color: #64748b; font-size: 11px; margin: 0 0 8px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;'>Eve Status</p>
-            <h2 style='color: {status_color}; margin: 0; font-size: 20px; font-weight: 900;'>{detection_status}</h2>
+            <h2 style='color: {status_color}; margin: 0; font-size: 36px; font-weight: 900;'>{detection_status}</h2>
             <p style='color: #64748b; font-size: 12px; margin: 8px 0 0 0; font-weight: 600;'>eavesdropping Detection</p>
         </div>
         """, unsafe_allow_html=True)

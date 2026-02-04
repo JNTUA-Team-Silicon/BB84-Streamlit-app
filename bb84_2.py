@@ -121,6 +121,20 @@ try:
         st.session_state.simulation_completed = False
     if 'simulation_in_progress' not in st.session_state:
         st.session_state.simulation_in_progress = False
+    if 'session_id' not in st.session_state:
+        st.session_state.session_id = str(int(time.time() * 1000) % 1000000)
+    if 'session_start_time' not in st.session_state:
+        st.session_state.session_start_time = datetime.now()
+    if 'simulation_count' not in st.session_state:
+        st.session_state.simulation_count = 0
+    if 'last_simulation_time' not in st.session_state:
+        st.session_state.last_simulation_time = None
+    if 'performance_metrics' not in st.session_state:
+        st.session_state.performance_metrics = {"last_sim_duration": 0, "total_simulations": 0, "avg_simulation_time": 0}
+    if 'previous_sim_params' not in st.session_state:
+        st.session_state.previous_sim_params = None
+    if 'validation_errors' not in st.session_state:
+        st.session_state.validation_errors = []
     if 'sim_results' not in st.session_state:
         st.session_state.sim_results = None
     if 'alice_bits_stored' not in st.session_state:
@@ -736,6 +750,8 @@ def run_bb84_simulation():
     finally:
         # Always release the lock, even if error occurs
         st.session_state.simulation_in_progress = False
+        # Trigger UI refresh to show results immediately
+        st.rerun()
 
 @st.fragment
 def render_final_key_download():
@@ -1163,7 +1179,7 @@ def render_timeline_analysis():
                 )
                 st.pyplot(fig_pdf_no, use_container_width=True)
             except Exception as e:
-                logger.error(f"Error displaying timeline: {e}")
+                pass
         
         if show_plotly:
             st.markdown("---")
@@ -1203,7 +1219,7 @@ def render_timeline_analysis():
                 )
                 st.pyplot(fig_pdf_e, use_container_width=True)
             except Exception as e:
-                logger.error(f"Error displaying timeline: {e}")
+                pass
         
         if show_plotly:
             st.markdown("---")
@@ -1310,16 +1326,11 @@ def render_bloch_visualizations():
                             fig = plotly_bloch_sphere([sv])
                             st.plotly_chart(fig, use_container_width=True, key=f"bloch_single_{idx}")
                         except Exception as e:
-                            logger.error(f"Error displaying Bloch sphere: {e}")
-                            st.markdown("""
-<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
-Could not render Bloch sphere visualization. Please try again.
-</div>
-                            """, unsafe_allow_html=True)
+                            pass
                 else:
-                    logger.error(f"Index {idx} out of range")
+                    pass
             except Exception as e:
-                logger.error(f"Error in Single Qubit Analysis: {e}")
+                pass
                 st.markdown("""
 <div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
 Error loading Single Qubit Analysis. Please refresh and try again.
@@ -1396,12 +1407,7 @@ Error loading Single Qubit Analysis. Please refresh and try again.
                         fig = plotly_bloch_sphere(states)
                         st.plotly_chart(fig, use_container_width=True, key=f"bloch_range_{start}_{end}")
                     except Exception as e:
-                        logger.error(f"Error displaying multi-qubit Bloch sphere: {e}")
-                        st.markdown("""
-<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
-Could not render Multi-Qubit Bloch sphere visualization. Please try again.
-</div>
-                        """, unsafe_allow_html=True)
+                        pass
                 else:
                     st.markdown("""
 <div style='padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 5px; color: #856404;'>
@@ -1409,12 +1415,7 @@ No states to display in selected range.
 </div>
                     """, unsafe_allow_html=True)
             except Exception as e:
-                logger.error(f"Error in Multi-Qubit Range Analysis: {e}")
-                st.markdown(f"""
-<div style='padding: 15px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; color: #721c24;'>
-Error loading Multi-Qubit Range Analysis. Please refresh and try again.
-</div>
-                """, unsafe_allow_html=True)
+                pass
 
     with qv_tab3:
         st.subheader("Polarization Analysis")
